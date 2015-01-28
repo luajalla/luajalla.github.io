@@ -19,6 +19,7 @@ tags:
 - quotations
 image:
   feature: header3.jpg
+  credit: Geneva Lake
 comments:
 - id: 12
   author: dungpa
@@ -87,9 +88,10 @@ comments:
   content: Thank you for letting me know, will update the post! (hasn't tried it on
     Mavericks)
 ---
+
 Have you ever thought how exciting verification tools are? How do you *prove* the *correctness* of a program? Of course, the green tests bring some confidence... but we all know it's not a proof.  
 
-> This blog was originally posted [here](http://luajalla.azurewebsites.net/z3-mono-starter). 
+*[Originally posted [here](http://luajalla.azurewebsites.net/z3-mono-starter)].* 
 
 ![Pex Logo]({{ site.url }}/images/pex.png)
 {: .image-right}
@@ -132,8 +134,8 @@ python scripts/mk_make.py
 <span class="l"> 3: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip">
-<span class="k">CXXFLAGS</span>= -D_MP_INTERNAL -m32  -c -fopenmp -mfpmath=sse -O3 -D _EXTERNAL_RELEASE
--fomit-frame-pointer -fPIC -msse -msse2
+<span class="k">CXXFLAGS</span>= -D_MP_INTERNAL -m32  -c -fopenmp -mfpmath=sse -O3
+ -D _EXTERNAL_RELEASE -fomit-frame-pointer -fPIC -msse -msse2
 <span class="k">LINK_FLAGS</span>=-m32
 <span class="k">SLINK_FLAGS</span>=-dynamiclib -m32</pre>
 </td></tr></table>  
@@ -176,7 +178,7 @@ For simplicity we assume that Microsoft.Z3.dll, config and libz3.dylib are in t
 
 *Prove that x = y implies g(x) = g(y).*  
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<table class="presmall"><tr><td class="lines"><pre class="fssnip">
 <span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -258,7 +260,7 @@ Well, it's a pain to write all those `ctx.Mk*`. That's where F# quotations come 
 
 *Simplify expression "x + (y - (x + z))"*  
 
-<table class="pre"><tr><td class="lines"><pre class="fssnip">
+<table class="presmall"><tr><td class="lines"><pre class="fssnip">
 <span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -309,6 +311,8 @@ Looks much better, doesn't it?
 
 *Next time: bringing another f-language to mono...*  
 <br/>
+
+
 
 [^1]: don't forget to clean up (*.a* and *.obj* files) the folder if you have built x64 lib before.
 [^2]: MD-generated makefile & co are available on <a title="Sample on GitHub" href="https://github.com/luajalla/everything-fun/tree/master/z3" target="_blank">github</a>

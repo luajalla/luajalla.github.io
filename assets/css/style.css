@@ -42,12 +42,12 @@ div.tip {
 	display:none;
   color:#d1d1d1;
 }
-table.pre pre {
+table.pre pre, table.presmall pre {
   padding:0px;
   margin:0px;
   border:none;
 } 
-table.pre, pre.fssnip, pre {
+table.pre, pre.fssnip, pre, table.presmall {
   line-height:13pt;
   border:1px solid #d8d8d8;
   border-collapse:separate;
@@ -60,18 +60,30 @@ table.pre, pre.fssnip, pre {
   border-radius:5px;
   color:#d1d1d1;  
 }
+table.presmall, presmall.fssnip, presmall {
+  font: 8pt 'Droid Sans Mono',consolas,monospace;
+  margin-left: 5px;
+  width:100%;
+}
 table.pre pre {
   padding:0px;
   margin:0px;
   border-radius:0px;
   width: 100%;
 }
-table.pre td {
+table.presmall pre {
+  padding:0px;
+  margin:0px;
+  border-radius:0px;
+  font: 8pt 'Droid Sans Mono',consolas,monospace;
+  width:100%;
+}
+table.pre td, table.presmall td {
   padding:0px;
   white-space:normal;
   margin:0px;
 }
-table.pre td.lines {
+table.pre td.lines, table.presmall td {
   width:30px;
 }
 
