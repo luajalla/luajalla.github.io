@@ -80,10 +80,9 @@ comments:
 ---
 ### Intro: Simulation
 
-*[Originally posted [here](http://luajalla.azurewebsites.net/excel-dna-three-stories/).]*
-
 A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I'd say it's several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel. The code is of unknown origin and protected, so no way to check it and I just gave up.  
 
+*[Originally posted [here](http://luajalla.azurewebsites.net/excel-dna-three-stories/).]*  
 
 Now think about an average Excel user. He/she doesn't care about how exactly it works, in which language written or how difficult it was for you to implement. What is important then?  
 
