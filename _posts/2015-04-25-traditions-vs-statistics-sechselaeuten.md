@@ -30,7 +30,7 @@ So is there any correlation between the Böögg's forecast and actual weather? I
 
 The criteria for what makes a _nice summer_ are pretty subjective - I picked the mean, min and max temperature, hours of sunshine, cloud cover, humidity and precipitation. Let's assume the _cold summer_ means lower temperatures, or more clouds, or less sunshine, or all of these together.  
 
-Now when we know more or less what we'd like to look at, we need to prepare the extract that information from the data files - a bunch of simple csv files.  
+Now when we know more or less what we'd like to look at, we need to extract that information from the data - a bunch of simple csv files.  
 
 The weather datasets uses _-9999_ as indication of missing data, and another relevant column contains quality codes. As there's no requirement for each day's data to be present, we'll select only the valid records.
 
@@ -248,6 +248,10 @@ One can argue, that for a number of reasons (the quality of weather measures, di
 #### Expectations
 
 The results are pretty reassuring: we can be optimistic and hope that this summer will be great, or at least average - which is also quite nice. The weather is not an easy thing to predict months in advance!
+
+#### Reality
+
+Update: The summer 2015 happened to be [extremely](http://allaboutgeneva.com/2015/07/15/swiss-heatwave-2015-new-danger-alert/) [hot](http://www.meteoschweiz.admin.ch/home/aktuell/meteoschweiz-blog.subpage.html/de/data/blogs/2015/8/sehr-warmer-august-extrem-heisser-sommer.html) and beat some temperature [records](https://www.washingtonpost.com/news/capital-weather-gang/wp/2015/09/15/the-summer-of-2015-was-earths-hottest-on-record-nasa-data-show/), not only in Europe. Let's hope we'll have more of a regular summer kind in the future.
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
