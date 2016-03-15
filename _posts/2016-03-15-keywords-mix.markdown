@@ -24,7 +24,11 @@ date: 2016-03-15T00:45:43+01:00
 
 I got recently caught up with the paper work and came accross some fun notes from years ago! Couldn't wait to share this contextual keywords mix, the courtesy of [@v2_matveev](https://twitter.com/v2_matveev):
 
+<<<<<<< HEAD
 
+=======
+{% highlight csharp linenos %}
+>>>>>>> b843e72e8973d41887d0d2f7b8532f61da710c7b
 partial class where<partial> where partial: where<partial>
 {
 	dynamic dynamic<yield>(dynamic dynamic)
