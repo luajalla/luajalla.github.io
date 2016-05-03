@@ -32,6 +32,6 @@ partial class where<partial> where partial: where<partial>
 		return dynamic<yield>(dynamic);
 	}
 }
-{% endhighlight %}
+{% endhighlight %}  
 
-Yes, it compiles :) 
+Yes, it compiles :)

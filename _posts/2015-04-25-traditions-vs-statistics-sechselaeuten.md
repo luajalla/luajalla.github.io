@@ -253,6 +253,8 @@ The results are pretty reassuring: we can be optimistic and hope that this summe
 
 Update: The summer 2015 happened to be [extremely](http://allaboutgeneva.com/2015/07/15/swiss-heatwave-2015-new-danger-alert/) [hot](http://www.meteoschweiz.admin.ch/home/aktuell/meteoschweiz-blog.subpage.html/de/data/blogs/2015/8/sehr-warmer-august-extrem-heisser-sommer.html) and beat some temperature [records](https://www.washingtonpost.com/news/capital-weather-gang/wp/2015/09/15/the-summer-of-2015-was-earths-hottest-on-record-nasa-data-show/), not only in Europe. Let's hope we'll have more of a regular summer kind in the future.
 
+And I've recently found out there's also an official study (in German): [Böögg Prognose](http://www.meteoswiss.admin.ch/home/climate/past/climate-of-switzerland/reports-throughout-the-year/boeoegg-prognose.html).
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
