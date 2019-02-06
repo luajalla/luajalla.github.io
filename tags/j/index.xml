@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>J on type-nat</title>
+    <link>http://type-nat.ch/tags/j/</link>
+    <description>Recent content in J on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 25 Aug 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/j/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The World Around Us: back to words with J</title>
+      <link>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</link>
+      <pubDate>Sun, 25 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</guid>
+      <description>Isaac Asimov
+The most exciting phrase to hear in science, the one that heralds new discoveries, is not &amp;ldquo;Eureka!&amp;rdquo; (I&amp;rsquo;ve found it!), but &amp;ldquo;That&amp;rsquo;s funny&amp;hellip;&amp;rdquo;
+ Sometimes everybody wants to get off the beaten track and see the world. See how many exciting discoveries are waiting for you there.
+I want to bring your attention to a language, which changed the vision of some things for me. This language is J.</description>
+    </item>
+    
+  </channel>
+</rss>

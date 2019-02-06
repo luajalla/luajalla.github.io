@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mono on type-nat</title>
+    <link>http://type-nat.ch/tags/mono/</link>
+    <description>Recent content in mono on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/mono/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>FsCheck and co: Testing Excel Financial Functions</title>
+      <link>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</guid>
+      <description>Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.</description>
+    </item>
+    
+    <item>
+      <title>F* Challenge or The Tale of Tails</title>
+      <link>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</link>
+      <pubDate>Fri, 07 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</guid>
+      <description>F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications.</description>
+    </item>
+    
+    <item>
+      <title>Z3 Mono Starter</title>
+      <link>http://type-nat.ch/post/z3-mono-starter/</link>
+      <pubDate>Fri, 24 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/z3-mono-starter/</guid>
+      <description>Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&amp;hellip; but we all know it&amp;rsquo;s not a proof.
+Just look at Pex, it definitely can&amp;rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research.</description>
+    </item>
+    
+  </channel>
+</rss>

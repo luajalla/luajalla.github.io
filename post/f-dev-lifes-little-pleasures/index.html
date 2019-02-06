@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[F#] Dev Life&#39;s Little Pleasures - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &amp;ldquo;[F#] Dev Life&amp;rsquo;s Little Pleasures&amp;rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&amp;rsquo;mon, how can you get kg and m^2 mixed up?" /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/f-dev-lifes-little-pleasures/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="[F#] Dev Life&#39;s Little Pleasures" />
+<meta property="og:description" content="Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &ldquo;[F#] Dev Life&rsquo;s Little Pleasures&rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&rsquo;mon, how can you get kg and m^2 mixed up?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/f-dev-lifes-little-pleasures/" /><meta property="article:published_time" content="2013-10-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-10-17T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="[F#] Dev Life&#39;s Little Pleasures">
+<meta itemprop="description" content="Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &ldquo;[F#] Dev Life&rsquo;s Little Pleasures&rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&rsquo;mon, how can you get kg and m^2 mixed up?">
+
+
+<meta itemprop="datePublished" content="2013-10-17T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-10-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="211">
+
+
+
+<meta itemprop="keywords" content="fsharp,slides," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[F#] Dev Life&#39;s Little Pleasures"/>
+<meta name="twitter:description" content="Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &ldquo;[F#] Dev Life&rsquo;s Little Pleasures&rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&rsquo;mon, how can you get kg and m^2 mixed up?"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[F#] Dev Life&#39;s Little Pleasures</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-10-17 </span>
+        <div class="post-category">
+            <a href="/categories/fsharp/"> fsharp </a>
+            <a href="/categories/talks/"> talks </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    
+  </div>
+</div>
+    <div class="post-content">
+      <p>Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.</p>
+
+<p>Here are the <a title="Slides" href="http://www.slideshare.net/luajalla/fsdev-lifes-littlepleasures" target="_blank">slides</a> and a couple of code <a title="Code Samples " href="https://github.com/luajalla/talks/tree/master/fsdevslife" target="_blank">samples</a> from my talk &ldquo;[F#] Dev Life&rsquo;s Little Pleasures&rdquo;. Briefly, it takes some real-world problems <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> and provides the simple solutions.</p>
+
+<p><img src="/images/captainkitteh-mutability.png#floatright" alt="Captain Kitteh - Mutability" /></p>
+
+<ol>
+<li><p><strong>Units of Measure</strong> - need to admit, I was a long time sceptic (c&rsquo;mon, how can you get kg and m^2 mixed up?)&hellip; until was given a spreadsheet with a &ldquo;correct formula&rdquo;, but its result didn&rsquo;t make sense at all.</p></li>
+
+<li><p><strong>Generic Restrictions</strong> - one of my favourite features! A lot of people don&rsquo;t even know about it. That&rsquo;s unfair. The most complex example I could think of - a static member with out-parameter) is included. But as always - use with care, it might become quite cryptic.</p></li>
+
+<li><p><strong>Immutability as a default</strong> - mostly for the devs with C# or similar background. Great to be sure the things won&rsquo;t change.</p></li>
+
+<li><p><strong>Nulls</strong> and <strong>Options</strong> - the classic.</p></li>
+
+<li><p><strong>Discriminated Unions</strong> and <strong>Pattern-Matching</strong> - invalid states shouldn&rsquo;t have a possibility to appear (and yes, sometimes it&rsquo;s better to forget about the underscores).</p></li>
+</ol>
+
+<p>Let the compiler help you!</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">simplified a bit
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-10-17</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/slides/">slides</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/trying-out-deedle-with-bones-and-regression/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Trying out Deedle with Bones and Regression</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/the-world-around-us-back-to-words-with-j/">
+            <span class="next-text nav-default">The World Around Us: back to words with J</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

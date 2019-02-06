@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Trying out Deedle with Bones and Regression - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="I usually don&amp;rsquo;t need to run a regression anywhere, but it&amp;rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&amp;hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &amp;lsquo;cheated&amp;rsquo; and completed the assignments with R." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Trying out Deedle with Bones and Regression" />
+<meta property="og:description" content="I usually don&rsquo;t need to run a regression anywhere, but it&rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &lsquo;cheated&rsquo; and completed the assignments with R." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/" /><meta property="article:published_time" content="2013-11-02T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-11-02T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Trying out Deedle with Bones and Regression">
+<meta itemprop="description" content="I usually don&rsquo;t need to run a regression anywhere, but it&rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &lsquo;cheated&rsquo; and completed the assignments with R.">
+
+
+<meta itemprop="datePublished" content="2013-11-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-11-02T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="913">
+
+
+
+<meta itemprop="keywords" content="fsharp,data," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Trying out Deedle with Bones and Regression"/>
+<meta name="twitter:description" content="I usually don&rsquo;t need to run a regression anywhere, but it&rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &lsquo;cheated&rsquo; and completed the assignments with R."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Trying out Deedle with Bones and Regression</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-11-02 </span>
+        <div class="post-category">
+            <a href="/categories/fsharp/"> fsharp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    
+  </div>
+</div>
+    <div class="post-content">
+      <p>I usually don&rsquo;t need to run a regression anywhere, but it&rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>. But I &lsquo;cheated&rsquo; and completed the assignments with R.</p>
+
+<p>Though that was only the beginning - my cousin, MD student, was measuring the deflection of bones and other samples with different loads. And this time I decided to try out <a href="http://bluemountaincapital.github.io/Deedle/" title="Deedle: Exploratory data library for .NET" target="_blank">Deedle</a> and help her to explore the data.</p>
+
+<p><em>Hint for Mono users: if XS doesn&rsquo;t load the main Deedle project, you can manually update the fsproj file (delete the reference to FSharp.Core), reload it, add references to Math.NET and FSharp.Data libs - it&rsquo;ll work nicely.</em></p>
+
+<p>Let&rsquo;s start with loading experimental data. No more string splits and manual parsing!</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="o">#</span><span class="n">r</span> <span class="s">&#34;FSharp.Data.dll&#34;</span>
+<span class="o">#</span><span class="n">load</span> <span class="s">&#34;Deedle.fsx&#34;</span>
+
+<span class="k">open</span> <span class="nn">System</span>
+<span class="k">open</span> <span class="nn">Deedle</span>
+<span class="c1">// load data from a csv file
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">ds</span> <span class="o">=</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">ReadCsv</span><span class="o">(__</span><span class="n">SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">&#34;/deflection.csv&#34;</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">ds</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span> 
+        <span class="n">p</span>         <span class="n">sample</span> <span class="k">type</span> <span class="nc">length</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> <span class="n">width</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> <span class="n">height</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> 
+  <span class="n">0</span>  <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">98</span>      <span class="n">bone</span>        <span class="n">47</span>         <span class="n">7</span><span class="o">.</span><span class="n">3</span>       <span class="n">4</span><span class="o">.</span><span class="n">4</span>        <span class="n">0</span><span class="o">.</span><span class="n">06</span> 
+  <span class="n">1</span>  <span class="o">-&gt;</span> <span class="n">1</span><span class="o">.</span><span class="n">96</span>      <span class="n">bone</span>        <span class="n">47</span>         <span class="n">7</span><span class="o">.</span><span class="n">3</span>       <span class="n">4</span><span class="o">.</span><span class="n">4</span>        <span class="n">0</span><span class="o">.</span><span class="n">12</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Then we checked out some properties of different samples groups - say, the average sample deformation. For simplicity we&rsquo;ll use only the bones group, load (&ldquo;p&rdquo;) and deflection columns.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// choose several columns and group the data by sample type
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">bySample</span> <span class="o">=</span> 
+    <span class="n">ds</span><span class="o">.</span><span class="nn">Columns</span><span class="p">.</span><span class="o">[[</span><span class="s">&#34;sample type&#34;</span><span class="o">;</span> <span class="s">&#34;p&#34;</span><span class="o">;</span> <span class="s">&#34;deflection&lt;mm&gt;&#34;</span><span class="o">]]</span> 
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">groupRowsByString</span> <span class="s">&#34;sample type&#34;</span>
+<span class="k">val</span> <span class="n">bySample</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;(</span><span class="kt">string</span> <span class="o">*</span> <span class="n">int</span><span class="o">),</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span>
+                  <span class="n">sample</span> <span class="k">type</span> <span class="nc">p</span>         <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> 
+  <span class="n">bone</span>      <span class="n">0</span>  <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">0</span><span class="o">.</span><span class="n">98</span>      <span class="n">0</span><span class="o">.</span><span class="n">06</span>           
+            <span class="n">1</span>  <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">1</span><span class="o">.</span><span class="n">96</span>      <span class="n">0</span><span class="o">.</span><span class="n">12</span>           
+  <span class="o">...</span>      <span class="o">...</span>    <span class="o">...</span>         <span class="o">...</span>                      
+  <span class="n">duralumin</span> <span class="n">6</span>  <span class="o">-&gt;</span> <span class="n">duralumin</span>   <span class="n">0</span><span class="o">.</span><span class="n">98</span>      <span class="n">0</span><span class="o">.</span><span class="n">03</span>           
+  <span class="o">...</span>      <span class="o">...</span>    <span class="o">...</span>         <span class="o">...</span>                      
+
+<span class="c1">// average deflection by sample type
+</span><span class="c1"></span><span class="n">bySample</span><span class="o">.</span><span class="nn">Columns</span><span class="p">.</span><span class="o">[[</span><span class="s">&#34;sample type&#34;</span><span class="o">;</span> <span class="s">&#34;deflection&lt;mm&gt;&#34;</span><span class="o">]]</span> <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">meanLevel</span> <span class="nn">Pair</span><span class="p">.</span><span class="n">get1Of2</span>
+<span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">,</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span>
+               <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span>    
+  <span class="n">bone</span>      <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">228333333333333</span> 
+  <span class="n">duralumin</span> <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">116666666666667</span> 
+  <span class="o">...</span>       <span class="o">-&gt;</span> <span class="o">...</span>               
+
+<span class="c1">// select the data for bones
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">bones</span> <span class="o">=</span> <span class="o">(</span><span class="nn">Frame</span><span class="p">.</span><span class="n">nest</span> <span class="n">bySample</span><span class="o">).[</span><span class="s">&#34;bone&#34;</span><span class="o">]</span>
+<span class="k">val</span> <span class="n">bones</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span>
+       <span class="n">sample</span> <span class="k">type</span> <span class="nc">p</span>         <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> 
+ <span class="n">0</span>  <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">0</span><span class="o">.</span><span class="n">98</span>      <span class="n">0</span><span class="o">.</span><span class="n">06</span>           
+ <span class="n">1</span>  <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">1</span><span class="o">.</span><span class="n">96</span>      <span class="n">0</span><span class="o">.</span><span class="n">12</span>           
+ <span class="o">...-&gt;</span> <span class="o">...</span>         <span class="o">...</span>       <span class="o">...</span>    </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>You may notice that some of the values in the table are missing (the handwriting can be completely unparsable!), by default they are omited, but we can always specify how we want this data to be filled using <code>Direction</code> or a custom function.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// note that there&#39;re missing values in this dataset
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">deflections</span> <span class="o">=</span> <span class="n">bones</span><span class="o">?</span><span class="n">``deflection&lt;mm&gt;``</span>
+<span class="k">val</span> <span class="n">deflections</span> <span class="o">:</span> <span class="n">Series</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span><span class="kt">float</span><span class="o">&gt;</span> <span class="o">=</span>
+ <span class="n">0</span>  <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">06</span>      
+ <span class="n">1</span>  <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">12</span>      
+ <span class="o">...-&gt;</span> <span class="o">...</span>       
+ <span class="n">12</span> <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">missing</span><span class="o">&gt;</span> 
+<span class="nn">Series</span><span class="p">.</span><span class="n">mean</span> <span class="n">deflections</span>
+ <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">2283333333</span> 
+<span class="c1">// omit missing values
+</span><span class="c1"></span><span class="n">deflections</span> <span class="o">|&gt;</span> <span class="nn">Series</span><span class="p">.</span><span class="n">dropMissing</span> <span class="o">|&gt;</span> <span class="nn">Series</span><span class="p">.</span><span class="n">mean</span>
+ <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">2283333333</span> 
+<span class="c1">// fill missing values by copying forward
+</span><span class="c1"></span><span class="n">deflections</span> <span class="o">|&gt;</span> <span class="nn">Series</span><span class="p">.</span><span class="n">fillMissing</span> <span class="nn">Direction</span><span class="p">.</span><span class="n">Forward</span> <span class="o">|&gt;</span> <span class="nn">Series</span><span class="p">.</span><span class="n">mean</span>
+ <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">2542857143</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now let&rsquo;s check if there&rsquo;s any relation between the deflection and load. In theory, it&rsquo;s supposed to be linear and we&rsquo;re going to test that with a linear regression.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="sd">/// Find slope and intercept with linear regression
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">linearRegression</span> <span class="n">xs</span> <span class="n">ys</span> <span class="o">=</span> <span class="o">(...)</span>
+<span class="c1">// drop rows with missing values
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">bonesreg</span> <span class="o">=</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">dropSparseRows</span> <span class="n">bones</span>
+<span class="k">val</span> <span class="n">bonesreg</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span>
+        <span class="n">sample</span> <span class="k">type</span> <span class="nc">p</span>    <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> 
+   <span class="n">0</span> <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">0</span><span class="o">.</span><span class="n">98</span> <span class="n">0</span><span class="o">.</span><span class="n">06</span>           
+ <span class="o">...</span> <span class="o">-&gt;</span> <span class="o">...</span>         <span class="o">...</span>  <span class="o">...</span>            
+   <span class="n">5</span> <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">5</span><span class="o">.</span><span class="n">88</span> <span class="n">0</span><span class="o">.</span><span class="n">41</span>           
+
+<span class="k">let</span> <span class="nv">load</span> <span class="o">=</span> <span class="nn">Series</span><span class="p">.</span><span class="n">values</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">p</span>
+<span class="k">let</span> <span class="nv">defl</span> <span class="o">=</span> <span class="nn">Series</span><span class="p">.</span><span class="n">values</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">``deflection&lt;mm&gt;``</span>
+<span class="k">let</span> <span class="nv">slope</span><span class="o">,</span> <span class="n">intercept</span> <span class="o">=</span> <span class="n">linearRegression</span> <span class="n">load</span> <span class="n">defl</span>   
+<span class="k">val</span> <span class="n">slope</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">07142857143</span> 
+<span class="k">val</span> <span class="n">intercept</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="o">-</span><span class="n">0</span><span class="o">.</span><span class="n">01666666667</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p><img src="/images/deedle_chart_small.png#floatright" alt="Chart" /></p>
+
+<p>Does this line make a good fit? Here is a chart with a couple of samples from this dataset.</p>
+
+<p>On the other hand a classical metric like R^2 can help to answer this question too, especially when it&rsquo;s extremely simple to add a new column to the dataframe and perform some operations.</p>
+
+<p>The new library is tried out, the lab is completed - everyone is happy ^_^</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">bonesreg</span><span class="o">?</span><span class="n">prediction</span> <span class="o">&lt;-</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span> <span class="o">*</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">p</span> 
+<span class="n">bonesreg</span><span class="o">?</span><span class="n">residualsq</span> <span class="o">&lt;-</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">prediction</span> <span class="o">-</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">``deflection&lt;mm&gt;``</span> 
+                       <span class="o">|&gt;</span> <span class="nn">Series</span><span class="p">.</span><span class="n">mapValues</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="o">)</span>
+<span class="n">bonesreg</span>
+<span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">Frame</span><span class="o">&lt;</span><span class="n">int</span><span class="o">,</span><span class="kt">string</span><span class="o">&gt;</span> <span class="o">=</span>
+       <span class="n">sample</span> <span class="k">type</span> <span class="nc">p</span>    <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> <span class="n">prediction</span>         <span class="n">residualsq</span>           
+  <span class="n">0</span> <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">0</span><span class="o">.</span><span class="n">98</span> <span class="n">0</span><span class="o">.</span><span class="n">06</span>           <span class="n">0</span><span class="o">.</span><span class="n">0533333333333334</span> <span class="n">4</span><span class="o">.</span><span class="n">44444444444441E</span><span class="o">-</span><span class="n">05</span> 
+  <span class="n">1</span> <span class="o">-&gt;</span> <span class="n">bone</span>        <span class="n">1</span><span class="o">.</span><span class="n">96</span> <span class="n">0</span><span class="o">.</span><span class="n">12</span>           <span class="n">0</span><span class="o">.</span><span class="n">123333333333333</span>  <span class="n">1</span><span class="o">.</span><span class="n">11111111111111E</span><span class="o">-</span><span class="n">05</span> 
+ <span class="o">...-&gt;</span> <span class="n">bone</span>        <span class="o">...</span>  <span class="o">...</span>            <span class="o">...</span>                <span class="o">...</span>                  
+
+<span class="k">let</span> <span class="nv">sdvs</span> <span class="o">=</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">sdv</span> <span class="n">bonesreg</span>
+<span class="k">val</span> <span class="n">sdvs</span> <span class="o">:</span> <span class="n">Series</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">,</span><span class="kt">float</span><span class="o">&gt;</span> <span class="o">=</span>
+  <span class="n">sample</span> <span class="k">type</span>    <span class="o">-&gt;</span> <span class="o">&lt;</span><span class="n">missing</span><span class="o">&gt;</span>           
+  <span class="n">p</span>              <span class="o">-&gt;</span> <span class="n">1</span><span class="o">.</span><span class="n">83341211951923</span>    
+  <span class="n">deflection</span><span class="o">&lt;</span><span class="n">mm</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">131059782796503</span>   
+  <span class="n">prediction</span>     <span class="o">-&gt;</span> <span class="n">0</span><span class="o">.</span><span class="n">130958008537088</span>   
+  <span class="n">residualsq</span>     <span class="o">-&gt;</span> <span class="n">1</span><span class="o">.</span><span class="n">72132593164778E</span><span class="o">-</span><span class="n">05</span>
+
+<span class="c1">// compute the metrics:
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">rsquare</span> <span class="o">=</span> <span class="k">let</span> <span class="nv">x</span> <span class="o">=</span> <span class="n">sdvs</span><span class="o">.[</span><span class="s">&#34;prediction&#34;</span><span class="o">]</span> <span class="o">/</span> <span class="n">sdvs</span><span class="o">.[</span><span class="s">&#34;deflection&lt;mm&gt;&#34;</span><span class="o">]</span> <span class="k">in</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">val</span> <span class="n">rsquare</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">9984475063</span> 
+<span class="k">let</span> <span class="nv">df</span> <span class="o">=</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">countRows</span> <span class="n">bonesreg</span> <span class="o">-</span> <span class="n">2</span> <span class="o">|&gt;</span> <span class="kt">float</span>
+<span class="k">val</span> <span class="n">df</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">4</span><span class="o">.</span><span class="n">0</span> 
+<span class="k">let</span> <span class="nv">tvalue</span> <span class="o">=</span> <span class="n">sqrt</span> <span class="o">(</span><span class="n">rsquare</span> <span class="o">/</span> <span class="o">(</span><span class="n">1</span><span class="o">.</span> <span class="o">-</span> <span class="n">rsquare</span><span class="o">)</span> <span class="o">*</span> <span class="n">df</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">tvalue</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">50</span><span class="o">.</span><span class="n">71981861</span> 
+<span class="k">let</span> <span class="nv">se</span> <span class="o">=</span> <span class="o">(</span><span class="nn">Series</span><span class="p">.</span><span class="n">sum</span> <span class="n">bonesreg</span><span class="o">?</span><span class="n">residualsq</span><span class="o">)</span> <span class="o">/</span> <span class="n">df</span> <span class="o">|&gt;</span> <span class="n">sqrt</span>
+<span class="k">val</span> <span class="n">se</span> <span class="o">:</span> <span class="kt">float</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">005773502692</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Yes, it&rsquo;s that simple.</p>
+
+<p><br/><br />
+<br/><br /></p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">to be honest, still don&rsquo;t get why anyone would need that, maybe that&rsquo;s the point where being a PhD helps?<br />
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-11-02</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/data/">data</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/log-music-with-undertone/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Log(music) with Undertone</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/f-dev-lifes-little-pleasures/">
+            <span class="next-text nav-default">[F#] Dev Life&#39;s Little Pleasures</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

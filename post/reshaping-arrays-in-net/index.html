@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Reshaping Arrays in .NET - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Reshape is one of these little functions, which look so simple and straightforward that you don&amp;rsquo;t think much about them. It&amp;rsquo;s quite useful and, I&amp;rsquo;m pretty sure, familiar to everyone who&amp;rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&amp;rsquo;s not really a problem when you know the exact type and dimensionality, e." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/reshaping-arrays-in-net/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Reshaping Arrays in .NET" />
+<meta property="og:description" content="Reshape is one of these little functions, which look so simple and straightforward that you don&rsquo;t think much about them. It&rsquo;s quite useful and, I&rsquo;m pretty sure, familiar to everyone who&rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&rsquo;s not really a problem when you know the exact type and dimensionality, e." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/reshaping-arrays-in-net/" /><meta property="article:published_time" content="2015-02-21T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-02-21T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Reshaping Arrays in .NET">
+<meta itemprop="description" content="Reshape is one of these little functions, which look so simple and straightforward that you don&rsquo;t think much about them. It&rsquo;s quite useful and, I&rsquo;m pretty sure, familiar to everyone who&rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&rsquo;s not really a problem when you know the exact type and dimensionality, e.">
+
+
+<meta itemprop="datePublished" content="2015-02-21T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-02-21T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1321">
+
+
+
+<meta itemprop="keywords" content=".net,matlab,fsharp," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Reshaping Arrays in .NET"/>
+<meta name="twitter:description" content="Reshape is one of these little functions, which look so simple and straightforward that you don&rsquo;t think much about them. It&rsquo;s quite useful and, I&rsquo;m pretty sure, familiar to everyone who&rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&rsquo;s not really a problem when you know the exact type and dimensionality, e."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Reshaping Arrays in .NET</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-02-21 </span>
+        <div class="post-category">
+            <a href="/categories/interop/"> interop </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#question">Question</a></li>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#meet-system-array">Meet System.Array</a></li>
+<li><a href="#reshape">Reshape</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>Reshape is one of these little functions, which look so simple and straightforward that you don&rsquo;t think much about them. It&rsquo;s quite useful and, I&rsquo;m pretty sure, familiar to everyone who&rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.</p>
+
+<h3 id="question">Question</h3>
+
+<p>I asked a bunch of people how they would write <a href="http://ch.mathworks.com/help/matlab/ref/reshape.html">reshape</a> in a .NET language. That&rsquo;s not really a problem when you know the exact type and dimensionality, e.g. when you <em>always</em> convert 2D-array to 3D, but what if you don&rsquo;t? Given the limitations of generic constraints, the only requirement to the output (in addition to correctness, of course) was an ability to get the full information about the underlying types. And that&rsquo;s where the challenge starts&hellip;</p>
+
+<h3 id="requirements">Requirements</h3>
+
+<p>Let&rsquo;s take a look at a somewhat simplified problem - converting a single-dimensional array into a multidimensional one. My usecase was reading the files in .mat binary format as a part of the <a href="https://github.com/luajalla/matprovider">type provider</a>: read the bytes, figure out the type and if it&rsquo;s supposed to be an array - make it an array. Type conversions are not relevant for reshaping itself, so we can skip that for now.</p>
+
+<ul>
+<li>The input is a single-dimensional array of any type and another array with dimension sizes;</li>
+<li>The output is another array, properly reshaped, where the type information is preserved (not necessary explicitly);</li>
+<li>Use standard types if possible.</li>
+</ul>
+
+<h3 id="meet-system-array">Meet System.Array</h3>
+
+<p>Unfortunately, that&rsquo;s not the case for fancy type signatures, so we&rsquo;ll go with a plain old <code>System.Array</code>.</p>
+
+<p>The simplest example is 1D -&gt; 1D &ldquo;conversion&rdquo;, it&rsquo;s possible to get the type information or cast the output to a real array type, whether it&rsquo;s <code>int[]</code>, <code>string[]</code>, <code>float[][]</code> or anything else:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="nn">System</span><span class="p">.</span><span class="n">Array</span><span class="o">)</span> <span class="o">=</span> <span class="n">xs</span>
+
+<span class="k">let</span> <span class="nv">xs</span> <span class="o">=</span> <span class="o">[|</span> <span class="n">1</span><span class="o">;</span><span class="n">2</span><span class="o">;</span><span class="n">3</span><span class="o">;</span><span class="n">4</span><span class="o">;</span><span class="n">5</span> <span class="o">|]</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f</span> <span class="n">xs</span>     <span class="c1">// val ys : System.Array = [|1; 2; 3; 4; 5|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="o">//</span> <span class="s">&#34;Int32[]&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Great! The next step is to add a dimension:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f2</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="nn">System</span><span class="p">.</span><span class="n">Array</span><span class="o">)</span> <span class="o">=</span> <span class="o">[|</span> <span class="n">xs</span><span class="o">;</span> <span class="n">xs</span> <span class="o">|]</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f2</span> <span class="n">xs</span> <span class="o">//</span> <span class="k">val</span> <span class="n">ys</span> <span class="o">:</span> <span class="nn">System</span><span class="p">.</span><span class="n">Array</span> <span class="bp">[]</span> <span class="o">=</span> <span class="o">[|[|</span><span class="n">1</span><span class="o">;</span> <span class="n">2</span><span class="o">;</span> <span class="n">3</span><span class="o">;</span> <span class="n">4</span><span class="o">;</span> <span class="n">5</span><span class="o">|];</span> <span class="o">[|</span><span class="n">1</span><span class="o">;</span> <span class="n">2</span><span class="o">;</span> <span class="n">3</span><span class="o">;</span> <span class="n">4</span><span class="o">;</span> <span class="n">5</span><span class="o">|]|]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This one doesn&rsquo;t work for us because of its return type, so:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f3</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">=</span> <span class="o">[|</span> <span class="n">xs</span><span class="o">;</span> <span class="n">xs</span> <span class="o">|]</span> <span class="o">:&gt;</span> <span class="n">Array</span><span class="o">;;</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f3</span> <span class="n">xs</span>    <span class="c1">// val ys : Array = [|[|1; 2; 3; 4; 5|]; [|1; 2; 3; 4; 5|]|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="o">//</span> <span class="s">&#34;Array[]&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>And the same output with <code>Array.init</code> methods:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f4</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">init</span> <span class="n">2</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">xs</span><span class="o">)</span> <span class="o">:&gt;</span> <span class="n">Array</span><span class="o">;;</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f4</span> <span class="n">xs</span>    <span class="c1">// val ys : System.Array = [|[|1; 2; 3; 4; 5|]; [|1; 2; 3; 4; 5|]|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="o">//</span> <span class="s">&#34;Array[]&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>You also can&rsquo;t cast the result any more - <code>ys :?&gt; int[][]</code> throws an exception:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-text" data-lang="text">System.InvalidCastException: Cannot cast from source type to destination type.
+      at &amp;lt;StartupCode$FSI_0017&amp;gt;.$FSI_0017.main@ () [0x00000] in &amp;lt;filename unknown&amp;gt;:0 
+      at (wrapper managed-to-native) System.Reflection.MonoMethod:InternalInvoke (System.Reflection.MonoMethod,object,object[],System.Exception&amp;)
+      at System.Reflection.MonoMethod.Invoke (System.Object obj, BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00000] in &amp;lt;filename unknown&amp;gt;:0 </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>And yes, of course, you <em>can</em> get the ints out of it:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">arr</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">GetValue</span> <span class="n">0</span> <span class="c1">// val arr : obj = [|1; 2; 3; 4; 5|]
+</span><span class="c1"></span><span class="n">arr</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span>      <span class="c1">// val it : string = &#34;Int32[]&#34;
+</span><span class="c1"></span><span class="n">arr</span> <span class="o">:?&gt;</span> <span class="n">int</span><span class="bp">[]</span>           <span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">int</span> <span class="bp">[]</span> <span class="o">=</span> <span class="o">[|</span><span class="n">1</span><span class="o">;</span> <span class="n">2</span><span class="o">;</span> <span class="n">3</span><span class="o">;</span> <span class="n">4</span><span class="o">;</span> <span class="n">5</span><span class="o">|]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>That&rsquo;s somewhat disappointing, because we do need something castable, with more or less concrete type. But it&rsquo;s quite intuitive: the argument is <code>Array</code> - the output is <code>Array[]</code>, in the typed version <code>'T[]</code> - <code>'T[][]</code>:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f5</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="n">int</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">init</span> <span class="n">2</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">xs</span><span class="o">)</span> <span class="o">:&gt;</span> <span class="n">Array</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f5</span> <span class="n">xs</span>    <span class="c1">// val ys : System.Array = [|[|1; 2; 3; 4; 5|]; [|1; 2; 3; 4; 5|]|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="c1">// val it : string = &#34;Int32[][]&#34;
+</span><span class="c1"></span><span class="n">ys</span> <span class="o">:?&gt;</span> <span class="n">int</span><span class="bp">[][]</span>    <span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">int</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">=</span> <span class="o">[|[|</span><span class="n">1</span><span class="o">;</span> <span class="n">2</span><span class="o">;</span> <span class="n">3</span><span class="o">;</span> <span class="n">4</span><span class="o">;</span> <span class="n">5</span><span class="o">|];</span> <span class="o">[|</span><span class="n">1</span><span class="o">;</span> <span class="n">2</span><span class="o">;</span> <span class="n">3</span><span class="o">;</span> <span class="n">4</span><span class="o">;</span> <span class="n">5</span><span class="o">|]|]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>or something like that:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f6</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">init</span> <span class="n">2</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">xs</span> <span class="o">:?&gt;</span> <span class="n">int</span><span class="bp">[]</span><span class="o">)</span> <span class="o">:&gt;</span> <span class="n">Array</span>
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f6</span> <span class="n">xs</span>    <span class="c1">// val ys : Array = [|[|1; 2; 3; 4; 5|]; [|1; 2; 3; 4; 5|]|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s">&#34;Int32[][]&#34;</span>  </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>At this point  we&rsquo;re back to <code>System.Array</code> and its method <code>CreateInstance</code>:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">f7</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">=</span>                   
+    <span class="k">let</span> <span class="nv">t</span>  <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span>                                                
+    <span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">CreateInstance</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">2</span><span class="o">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">0</span><span class="o">..</span><span class="n">1</span> <span class="k">do</span> <span class="n">ys</span><span class="o">.</span><span class="n">SetValue</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span>
+    <span class="n">ys</span> 
+<span class="k">let</span> <span class="nv">ys</span> <span class="o">=</span> <span class="n">f7</span> <span class="n">xs</span>    <span class="c1">// val ys : Array = [|[|1; 2; 3; 4; 5|]; [|1; 2; 3; 4; 5|]|]
+</span><span class="c1"></span><span class="n">ys</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">Name</span> <span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">=</span> <span class="s">&#34;Int32[][]&#34;</span>  </code></pre></td></tr></table>
+</div>
+</div>
+
+<h3 id="reshape">Reshape</h3>
+
+<p>So this is the way to go. For an arbitrary number of dimensions we can use the same set of functions, the only thing left is filling the array with actual values.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// init array of specific type
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">fill</span> <span class="n">t</span> <span class="o">(</span><span class="n">len</span><span class="o">:</span> <span class="n">int</span><span class="o">)</span> <span class="n">f</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">xs</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">CreateInstance</span><span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">len</span><span class="o">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">0</span><span class="o">..</span><span class="n">len</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span> <span class="n">xs</span><span class="o">.</span><span class="n">SetValue</span><span class="o">(</span><span class="n">f</span> <span class="n">i</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span>
+    <span class="n">xs</span>
+
+<span class="c1">// prod of prev dimensions: [|2; 3; 4|] -&gt; [|1; 2; 6; 24|]
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">inline</span> <span class="n">prods</span> <span class="n">dims</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">scan</span> <span class="o">((*))</span> <span class="n">1</span> <span class="n">dims</span> 
+
+<span class="c1">// all array types from T[][]..[] to T[]
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">types</span> <span class="o">(</span><span class="n">t</span><span class="o">:</span> <span class="n">Type</span><span class="o">)</span> <span class="n">n</span> <span class="o">=</span>
+    <span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">0</span><span class="o">)</span>
+    <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">unfold</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">=</span> <span class="n">n</span> <span class="k">then</span> <span class="n">None</span> <span class="k">else</span> <span class="n">Some</span> <span class="o">(</span><span class="n">t</span><span class="o">,</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">MakeArrayType</span><span class="bp">()</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">)))</span>
+    <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">toArray</span>
+    <span class="o">|&gt;</span> <span class="nn">Array</span><span class="p">.</span><span class="n">rev</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>For simplicity let&rsquo;s assume that all inputs are already nice and valid (no nulls, the product of dimensions is equal to the length of array and so on), then <code>reshape</code> might look like:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">reshape</span> <span class="o">(</span><span class="n">arr</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">(</span><span class="n">dims</span><span class="o">:</span> <span class="n">int</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">t</span>  <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">GetElementType</span><span class="bp">()</span>
+    <span class="k">let</span> <span class="nv">ts</span> <span class="o">=</span> <span class="n">types</span> <span class="n">t</span> <span class="n">dims</span><span class="o">.</span><span class="n">Length</span>
+
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">init</span> <span class="n">dim</span> <span class="n">k</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">dims</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">then</span> 
+            <span class="n">fill</span> <span class="n">ts</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">GetValue</span> <span class="o">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">+</span> <span class="n">i</span><span class="o">))</span>
+        <span class="k">else</span>         
+            <span class="n">fill</span> <span class="n">ts</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">init</span> <span class="o">(</span><span class="n">dim</span><span class="o">+</span><span class="n">1</span><span class="o">)</span> <span class="o">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">+</span> <span class="n">i</span><span class="o">))</span>
+    <span class="n">init</span> <span class="n">0</span> <span class="n">0</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>This function initializes the elements sequentially:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">reshape</span> <span class="o">[|</span><span class="n">1</span><span class="o">..</span><span class="n">12</span><span class="o">|]</span> <span class="o">[|</span><span class="n">2</span><span class="o">;</span><span class="n">3</span><span class="o">;</span><span class="n">2</span><span class="o">|]</span>                                                   
+<span class="c1">// val it : Array =
+</span><span class="c1">//   [|[|[|1; 2|]; [|3; 4|]; [|5; 6|]|]; [|[|7; 8|]; [|9; 10|]; [|11; 12|]|]|]
+</span><span class="c1"></span><span class="n">reshape</span> <span class="o">[|</span><span class="n">1</span><span class="o">..</span><span class="n">12</span><span class="o">|]</span> <span class="o">[|</span><span class="n">2</span><span class="o">;</span><span class="n">6</span><span class="o">|];;</span>  
+<span class="c1">// val it : Array = [|[|1; 2; 3; 4; 5; 6|]; [|7; 8; 9; 10; 11; 12|]|]
+</span><span class="c1"></span><span class="n">reshape</span> <span class="o">[|</span><span class="n">1</span><span class="o">..</span><span class="n">12</span><span class="o">|]</span> <span class="o">[|</span><span class="n">1</span><span class="o">;</span><span class="n">1</span><span class="o">;</span><span class="n">12</span><span class="o">|];;</span>                                                   
+<span class="c1">// val it : Array = [|[|[|1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12|]|]|]
+</span><span class="c1"></span><span class="o">(</span><span class="n">reshape</span> <span class="o">[|</span><span class="n">1</span><span class="o">..</span><span class="n">12</span><span class="o">|]</span> <span class="o">[|</span><span class="n">2</span><span class="o">;</span><span class="n">3</span><span class="o">;</span><span class="n">2</span><span class="o">|]).</span><span class="n">GetValue</span> <span class="n">1</span> <span class="o">:?&gt;</span> <span class="n">int</span><span class="bp">[][]</span>
+<span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">int</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">=</span> <span class="o">[|[|</span><span class="n">7</span><span class="o">;</span> <span class="n">8</span><span class="o">|];</span> <span class="o">[|</span><span class="n">9</span><span class="o">;</span> <span class="n">10</span><span class="o">|];</span> <span class="o">[|</span><span class="n">11</span><span class="o">;</span> <span class="n">12</span><span class="o">|]|]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>However, that&rsquo;s not how the original function works. For example (you can try it out in <a href="http://octave-online.net/">octave-online</a>),</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-m" data-lang="m"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-m" data-lang="m"><span class="n">squeeze</span><span class="p">(</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="o">:</span><span class="mi">12</span><span class="p">),[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">2</span><span class="p">])(</span><span class="mi">2</span><span class="p">,</span><span class="o">:</span><span class="p">,</span><span class="o">:</span><span class="p">))</span>
+    <span class="n">ans</span> <span class="o">=</span>
+        <span class="mi">2</span>    <span class="mi">8</span>
+        <span class="mi">4</span>   <span class="mi">10</span>
+        <span class="mi">6</span>   <span class="mi">12</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>It might take a while to get a feeling how the arrays are reshaped, just run some examples and check where the numbers go. Meanwhile here&rsquo;s a function which does what&rsquo;s required:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">reshape</span> <span class="o">(</span><span class="n">arr</span><span class="o">:</span> <span class="n">Array</span><span class="o">)</span> <span class="o">(</span><span class="n">dims</span><span class="o">:</span> <span class="n">int</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span> 
+    <span class="k">let</span> <span class="nv">t</span>  <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">GetType</span><span class="bp">()</span><span class="o">.</span><span class="n">GetElementType</span><span class="bp">()</span>
+
+    <span class="k">let</span> <span class="nv">ps</span> <span class="o">=</span> <span class="n">prods</span> <span class="n">dims</span>
+    <span class="k">let</span> <span class="nv">ts</span> <span class="o">=</span> <span class="n">types</span> <span class="n">t</span> <span class="n">dims</span><span class="o">.</span><span class="n">Length</span>
+
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">init</span> <span class="n">dim</span> <span class="n">k</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">dims</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">then</span>
+            <span class="n">fill</span> <span class="n">ts</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">arr</span><span class="o">.</span><span class="n">GetValue</span> <span class="o">(</span><span class="n">ps</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="o">))</span>
+        <span class="k">else</span> 
+            <span class="n">fill</span> <span class="n">ts</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="n">dims</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">init</span> <span class="o">(</span><span class="n">dim</span><span class="o">+</span><span class="n">1</span><span class="o">)</span> <span class="o">(</span><span class="n">ps</span><span class="o">.[</span><span class="n">dim</span><span class="o">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">k</span><span class="o">))</span>
+    <span class="n">init</span> <span class="n">0</span> <span class="n">0</span>  
+    
+<span class="o">(</span><span class="n">reshape</span> <span class="o">[|</span><span class="n">1</span><span class="o">..</span><span class="n">12</span><span class="o">|]</span> <span class="o">[|</span><span class="n">2</span><span class="o">;</span><span class="n">3</span><span class="o">;</span><span class="n">2</span><span class="o">|]).</span><span class="n">GetValue</span> <span class="n">1</span> <span class="o">:?&gt;</span> <span class="n">int</span><span class="bp">[][]</span><span class="o">;;</span>                             
+<span class="o">//</span> <span class="k">val</span> <span class="n">it</span> <span class="o">:</span> <span class="n">int</span> <span class="bp">[]</span> <span class="bp">[]</span> <span class="o">=</span> <span class="o">[|[|</span><span class="n">2</span><span class="o">;</span> <span class="n">8</span><span class="o">|];</span> <span class="o">[|</span><span class="n">4</span><span class="o">;</span> <span class="n">10</span><span class="o">|];</span> <span class="o">[|</span><span class="n">6</span><span class="o">;</span> <span class="n">12</span><span class="o">|]|]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>In the end we do get a new array together with its type information, so the type provider can help you to avoid the casts from <code>System.Array</code>.</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2015-02-21</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/.net/">.net</a>
+          <a href="/tags/matlab/">matlab</a>
+          <a href="/tags/fsharp/">fsharp</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/traditions-vs-statistics-sechselaeuten/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Traditions vs Statistics: Sechseläuten</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/interop-adventure-from-net-to-matlab-and-back/">
+            <span class="next-text nav-default">Interop Adventure: From .NET to Matlab and Back</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

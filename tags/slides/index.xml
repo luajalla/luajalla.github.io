@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>slides on type-nat</title>
+    <link>http://type-nat.ch/tags/slides/</link>
+    <description>Recent content in slides on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 17 Oct 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/slides/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[F#] Dev Life&#39;s Little Pleasures</title>
+      <link>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</link>
+      <pubDate>Thu, 17 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</guid>
+      <description>Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &amp;ldquo;[F#] Dev Life&amp;rsquo;s Little Pleasures&amp;rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&amp;rsquo;mon, how can you get kg and m^2 mixed up?</description>
+    </item>
+    
+  </channel>
+</rss>

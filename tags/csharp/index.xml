@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>csharp on type-nat</title>
+    <link>http://type-nat.ch/tags/csharp/</link>
+    <description>Recent content in csharp on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 15 Mar 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/csharp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Keywords Mix</title>
+      <link>http://type-nat.ch/post/keywords-mix/</link>
+      <pubDate>Tue, 15 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/keywords-mix/</guid>
+      <description>I got recently caught up with the paper work and came accross some fun notes from years ago! Couldn&amp;rsquo;t wait to share this contextual keywords mix, the courtesy of @v2_matveev:
+1 2 3 4 5 6 7  partial class where&amp;lt;partial&amp;gt; where partial: where&amp;lt;partial&amp;gt;{dynamic dynamic&amp;lt;yield&amp;gt;(dynamic dynamic){return dynamic&amp;lt;yield&amp;gt;(dynamic);}}   Yes, it compiles :)</description>
+    </item>
+    
+    <item>
+      <title>It looks almost like a property</title>
+      <link>http://type-nat.ch/post/it-almost-looks-like-a-property/</link>
+      <pubDate>Sun, 26 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/it-almost-looks-like-a-property/</guid>
+      <description>Based on a true story. Only the names, places, and events have been changed.
+Many people today forget that the tools are just tools. Doesn&amp;rsquo;t matter if it&amp;rsquo;s OO or functional programming, take any language: there&amp;rsquo;re plenty of ways to write awesome and even more - to write terrifying code. lets . compose . these . functions . until . your . type-checker . explodes . btw . did . you .</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Days and Ghost Refinements - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 &#43; (em - sm) * 30 &#43; (ed - sd)   We can even write a bunch of tests to be sure the function works:" /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/days-and-ghost-refinements/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Days and Ghost Refinements" />
+<meta property="og:description" content="Let&rsquo;s look at the simple function, which calculates the number of days between dates, when there&rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 &#43; (em - sm) * 30 &#43; (ed - sd)   We can even write a bunch of tests to be sure the function works:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/days-and-ghost-refinements/" /><meta property="article:published_time" content="2013-07-07T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-07-07T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Days and Ghost Refinements">
+<meta itemprop="description" content="Let&rsquo;s look at the simple function, which calculates the number of days between dates, when there&rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 &#43; (em - sm) * 30 &#43; (ed - sd)   We can even write a bunch of tests to be sure the function works:">
+
+
+<meta itemprop="datePublished" content="2013-07-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-07-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1671">
+
+
+
+<meta itemprop="keywords" content="fstar,refinements,Excel," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Days and Ghost Refinements"/>
+<meta name="twitter:description" content="Let&rsquo;s look at the simple function, which calculates the number of days between dates, when there&rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 &#43; (em - sm) * 30 &#43; (ed - sd)   We can even write a bunch of tests to be sure the function works:"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Days and Ghost Refinements</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-07-07 </span>
+        <div class="post-category">
+            <a href="/categories/languages/"> languages </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#references">References</a></li>
+<li><a href="#bonus">Bonus</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>Let&rsquo;s look at the simple function, which calculates the number of days between dates, when there&rsquo;re 30 days in a month (and 360 in a year).</p>
+
+<p>Something like this F# code:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">days360</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="o">=</span>
+    <span class="o">(</span><span class="n">ey</span> <span class="o">-</span> <span class="n">sy</span><span class="o">)</span> <span class="o">*</span> <span class="n">360</span> <span class="o">+</span> <span class="o">(</span><span class="n">em</span> <span class="o">-</span> <span class="n">sm</span><span class="o">)</span> <span class="o">*</span> <span class="n">30</span> <span class="o">+</span> <span class="o">(</span><span class="n">ed</span> <span class="o">-</span> <span class="n">sd</span><span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>We can even write a bunch of tests to be sure the function works:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">tests</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">29</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2013</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">28</span><span class="o">),</span> <span class="n">359</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">29</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">03</span><span class="o">,</span> <span class="n">01</span><span class="o">),</span>   <span class="n">2</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">29</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2013</span><span class="o">,</span> <span class="n">03</span><span class="o">,</span> <span class="n">01</span><span class="o">),</span> <span class="n">362</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">03</span><span class="o">,</span> <span class="n">01</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2013</span><span class="o">,</span> <span class="n">03</span><span class="o">,</span> <span class="n">01</span><span class="o">),</span> <span class="n">360</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2011</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">28</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2013</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">28</span><span class="o">),</span> <span class="n">720</span>
+    <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">05</span><span class="o">,</span> <span class="n">31</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">07</span><span class="o">,</span> <span class="n">31</span><span class="o">),</span>  <span class="n">60</span>
+<span class="o">]</span>
+
+<span class="c1">// true
+</span><span class="c1"></span><span class="n">tests</span> <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">forall</span><span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">s</span><span class="o">,</span> <span class="n">e</span><span class="o">,</span> <span class="n">res</span><span class="o">)</span> <span class="o">-&gt;</span>
+    <span class="n">days360</span> <span class="n">s</span><span class="o">.</span><span class="n">Year</span> <span class="n">s</span><span class="o">.</span><span class="n">Month</span> <span class="n">s</span><span class="o">.</span><span class="n">Day</span> <span class="n">e</span><span class="o">.</span><span class="n">Year</span> <span class="n">e</span><span class="o">.</span><span class="n">Month</span> <span class="n">e</span><span class="o">.</span><span class="n">Day</span> <span class="o">=</span> <span class="n">res</span><span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>As you see <code>days360</code> doesn&rsquo;t take .NET <code>DateTime</code> as parameters, but ints. Would be nice to check them. Say, a month can take value from 1 to 12 - so what we need is a refinement type. F* supports two types of refinements: concrete and ghost. Here is how they are defined in “Secure Distributed Programming with Value-Dependent Types” <a title="Secure Distributed Programming with Value-Dependent Types" href="http://research.microsoft.com/apps/pubs/default.aspx?id=141708" target="_blank">paper</a>:</p>
+
+<blockquote>
+<p><strong>Concrete refinements</strong> are pairs representing a value and a proof term serving as a logical evidence of the refinement property, similar to those in Coq and Fine.<br />
+<p>&nbsp;</p></p>
+
+<p><strong>Ghost refinements</strong> are used to state specifications for which proof terms are not maintained at run time. Ghost refinements have the form $x:t\{\phi\}$ where $x$ is a value variable, $t$ is a type, and $\phi$ is a logical formula, itself represented as a type that must have kind $E$ and may depend on $x$ and other in-scope variables. Ghost refinements provide the following benefits:<br />
+ - they enable precise symbolic models for many cryptographic patterns and primitives, and evidence for ghost refinement properties can be constructed and communicated using cryptographic constructions, such as digital signatures;<br />
+ - they benefit from a powerful subtyping relation: $x:t\{\phi\}$ is a subtype of $t$; this structural subtyping is convenient to write and verify higher-order programs;<br />
+ - they provide precise specification to legacy code without requiring any modifications;<br />
+ - when used in conjunction with concrete refinements, they support selective erasure and dynamic reconstruction of evidence, enabling a variety of new applications and greatly reducing the performance penalty for runtime proofs.</p>
+</blockquote>
+
+<p>Here we use the numbers as an example, because they are simple and intersections/unions of types are obvious. Note that we don&rsquo;t verify that the dates are entirely valid. This is an artificial example - small enough to try it online =).</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">type</span> <span class="nc">year</span>  <span class="o">=</span> <span class="n">x</span><span class="o">:</span><span class="n">int</span><span class="o">{</span> <span class="n">1900</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">/</span><span class="err">\</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">9999</span> <span class="o">}</span>
+<span class="k">type</span> <span class="nc">month</span> <span class="o">=</span> <span class="n">x</span><span class="o">:</span><span class="n">int</span><span class="o">{</span>    <span class="n">1</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">/</span><span class="err">\</span> <span class="n">x</span> <span class="o">&lt;=</span>   <span class="n">12</span> <span class="o">}</span>
+<span class="k">type</span> <span class="nc">day</span>   <span class="o">=</span> <span class="n">x</span><span class="o">:</span><span class="n">int</span><span class="o">{</span>    <span class="n">1</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">/</span><span class="err">\</span> <span class="n">x</span> <span class="o">&lt;=</span>   <span class="n">31</span> <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">days360</span><span class="o">:</span> <span class="n">year</span> <span class="o">-&gt;</span> <span class="n">month</span> <span class="o">-&gt;</span> <span class="n">day</span> <span class="o">-&gt;</span> <span class="n">int</span>
+
+<span class="k">let</span> <span class="nv">days360</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="o">=</span>
+    <span class="o">(</span><span class="n">ey</span> <span class="o">-</span> <span class="n">sy</span><span class="o">)</span> <span class="o">*</span> <span class="n">360</span> <span class="o">+</span> <span class="o">(</span><span class="n">em</span> <span class="o">-</span> <span class="n">sm</span><span class="o">)</span> <span class="o">*</span> <span class="n">30</span> <span class="o">+</span> <span class="o">(</span><span class="n">ed</span> <span class="o">-</span> <span class="n">sd</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="nv">_</span> <span class="o">=</span> <span class="n">days360</span> <span class="n">2013</span> <span class="n">6</span> <span class="n">1</span> <span class="n">2013</span> <span class="n">6</span> <span class="n">42</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>We run F* - and get a type check time failure!</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">input</span><span class="o">(</span><span class="n">12</span><span class="o">,</span><span class="n">8</span><span class="o">-</span><span class="n">12</span><span class="o">,</span><span class="n">34</span><span class="o">)</span> <span class="o">:</span> <span class="n">Error</span> <span class="o">:</span> <span class="n">Expected</span> <span class="n">an</span> <span class="n">expression</span> <span class="k">of</span> <span class="k">type</span><span class="o">:</span>
+<span class="n">x_5_1</span><span class="o">:</span><span class="n">int</span><span class="o">{((</span><span class="n">LTE</span> <span class="n">1</span> <span class="n">x_5_1</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">LTE</span> <span class="n">x_5_1</span> <span class="n">31</span><span class="o">))}</span>
+<span class="n">but</span> <span class="n">got</span> <span class="o">(</span><span class="n">42</span><span class="o">):</span> <span class="n">int</span>
+<span class="n">Type</span> <span class="n">checking</span> <span class="n">failed</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Well, 12 was supposed to be here:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">_</span> <span class="o">=</span> <span class="n">days360</span> <span class="n">2013</span> <span class="n">6</span> <span class="n">1</span> <span class="n">2013</span> <span class="n">6</span> <span class="n">12</span> <span class="o">//</span> <span class="n">ok</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>But wait, there&rsquo;re still 31-day months&hellip; and February. With EU 30 / 360 convention 31 is simply replaced with 30, so we modify the function:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">adjDay</span> <span class="n">d</span> <span class="o">=</span> <span class="k">if</span> <span class="n">d</span> <span class="o">=</span> <span class="n">31</span> <span class="k">then</span> <span class="n">30</span> <span class="k">else</span> <span class="n">d</span>
+
+<span class="k">let</span> <span class="nv">days360</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">sd</span><span class="o">,</span> <span class="n">ed</span> <span class="o">=</span> <span class="n">adjDay</span> <span class="n">sd</span><span class="o">,</span> <span class="n">adjDay</span> <span class="n">ed</span>
+    <span class="o">(</span><span class="n">ey</span> <span class="o">-</span> <span class="n">sy</span><span class="o">)</span> <span class="o">*</span> <span class="n">360</span> <span class="o">+</span> <span class="o">(</span><span class="n">em</span> <span class="o">-</span> <span class="n">sm</span><span class="o">)</span> <span class="o">*</span> <span class="n">30</span> <span class="o">+</span> <span class="o">(</span><span class="n">ed</span> <span class="o">-</span> <span class="n">sd</span><span class="o">)</span>
+
+<span class="c1">// DateTime(2012, 04, 25), DateTime(2012, 07, 31), 95
+</span><span class="c1">// DateTime(2012, 06, 30), DateTime(2012, 07, 31), 30
+</span><span class="c1">// DateTime(2012, 02, 28), DateTime(2012, 03, 31), 32
+</span><span class="c1"></span><span class="o">//</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">02</span><span class="o">,</span> <span class="n">29</span><span class="o">),</span> <span class="n">DateTime</span><span class="o">(</span><span class="n">2012</span><span class="o">,</span> <span class="n">03</span><span class="o">,</span> <span class="n">31</span><span class="o">),</span> <span class="n">31</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>In this case start and end dates can&rsquo;t be greater than 30. Can we define that with types? Sure!</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">type</span> <span class="nc">day30</span> <span class="o">=</span> <span class="n">x</span><span class="o">:</span><span class="n">day</span><span class="o">{</span> <span class="n">x</span> <span class="o">&lt;&gt;</span> <span class="n">31</span> <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">adjDay</span><span class="o">:</span> <span class="n">day</span> <span class="o">-&gt;</span> <span class="n">day30</span>
+<span class="k">let</span> <span class="nv">adjDay</span> <span class="n">d</span> <span class="o">=</span> <span class="k">if</span> <span class="n">d</span> <span class="o">=</span> <span class="n">31</span> <span class="k">then</span> <span class="n">30</span> <span class="k">else</span> <span class="n">d</span> <span class="o">//</span> <span class="k">try</span> <span class="k">to</span> <span class="n">leave</span> <span class="n">only</span> <span class="n">d</span> <span class="n">here</span> <span class="o">-</span> <span class="n">it</span> <span class="n">fails</span> <span class="k">to</span> <span class="n">typecheck</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>What if we want to add another convention? US 30 / 360 handles EOM dates differently, so if a start date is greater than end date the function results can become inconsistent. So we expect start date to be less than (or equal to) end date. A type checker can verify this requirement too:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">val</span> <span class="n">daysInMonth</span><span class="o">:</span> <span class="n">year</span> <span class="o">-&gt;</span> <span class="n">month</span> <span class="o">-&gt;</span> <span class="n">day</span>
+
+<span class="k">val</span> <span class="n">lastDay</span><span class="o">:</span> <span class="n">year</span> <span class="o">-&gt;</span> <span class="n">month</span> <span class="o">-&gt;</span> <span class="n">day</span> <span class="o">-&gt;</span> <span class="kt">bool</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+<span class="c1">//EU 30/360: the last day of Feb is not changed to 30
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">lastDay</span> <span class="n">y</span> <span class="n">m</span> <span class="n">d</span> <span class="n">eu</span> <span class="o">=</span>
+    <span class="k">if</span> <span class="n">eu</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">m</span> <span class="o">=</span> <span class="n">2</span><span class="o">)</span> <span class="k">then</span> <span class="k">false</span>
+    <span class="k">else</span> <span class="n">d</span> <span class="o">=</span> <span class="o">(</span><span class="n">daysInMonth</span> <span class="n">y</span> <span class="n">m</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="nv">adjDay</span> <span class="n">d</span> <span class="n">last</span> <span class="o">=</span> <span class="k">if</span> <span class="n">last</span> <span class="k">then</span> <span class="n">30</span> <span class="k">else</span> <span class="n">d</span>
+
+<span class="k">val</span> <span class="n">days360</span><span class="o">:</span> <span class="n">sy</span><span class="o">:</span><span class="n">year</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">:</span><span class="n">month</span> <span class="o">-&gt;</span> <span class="n">sd</span><span class="o">:</span> <span class="n">day</span>
+    <span class="o">-&gt;</span> <span class="n">ey</span><span class="o">:</span><span class="n">year</span><span class="o">{</span><span class="n">ey</span> <span class="o">&gt;=</span> <span class="n">sy</span><span class="o">}</span>
+    <span class="o">-&gt;</span> <span class="n">em</span><span class="o">:</span><span class="n">month</span><span class="o">{</span><span class="n">ey</span> <span class="o">&gt;</span> <span class="n">sy</span> <span class="err">\</span><span class="o">/</span> <span class="o">(</span><span class="n">ey</span> <span class="o">=</span> <span class="n">sy</span> <span class="o">/</span><span class="err">\</span> <span class="n">em</span> <span class="o">&gt;=</span> <span class="n">sm</span><span class="o">)}</span>
+    <span class="o">-&gt;</span> <span class="n">ed</span><span class="o">:</span><span class="n">day</span><span class="o">{</span><span class="n">ey</span> <span class="o">&gt;</span> <span class="n">sy</span> <span class="err">\</span><span class="o">/</span> <span class="n">em</span> <span class="o">&gt;</span> <span class="n">sm</span> <span class="err">\</span><span class="o">/</span> <span class="n">ed</span> <span class="o">&gt;=</span> <span class="n">sd</span><span class="o">}</span>
+    <span class="o">-&gt;</span> <span class="kt">bool</span>
+    <span class="o">-&gt;</span> <span class="n">int</span>
+
+<span class="k">let</span> <span class="nv">days360</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="n">convEU</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">slast</span><span class="o">,</span> <span class="n">elast</span> <span class="o">=</span> <span class="n">lastDay</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">convEU</span><span class="o">,</span> <span class="n">lastDay</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="n">convEU</span> <span class="k">in</span>
+
+    <span class="c1">// EU: 31 -&gt; 30
+</span><span class="c1"></span>    <span class="c1">// US: 31 -&gt; 30; end of Feb -&gt; 30
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">sd</span> <span class="o">=</span> <span class="n">adjDay</span> <span class="n">sd</span> <span class="n">slast</span> <span class="k">in</span>
+    <span class="c1">// EU: 31 -&gt; 30
+</span><span class="c1"></span>    <span class="c1">// US: 31 -&gt; 30 if sd is EOM; end of Feb -&gt; 30 if sd was end of Feb too
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">checkEndDate</span> <span class="o">=</span> <span class="n">convEU</span> <span class="o">||</span> <span class="o">(</span><span class="n">slast</span> <span class="o">&amp;&amp;</span> <span class="o">((</span><span class="n">sm</span> <span class="o">=</span> <span class="n">2</span><span class="o">)</span> <span class="o">||</span> <span class="ow">not</span> <span class="o">(</span><span class="n">em</span> <span class="o">=</span> <span class="n">2</span><span class="o">)))</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="nv">ed</span> <span class="o">=</span> <span class="n">adjDay</span> <span class="n">ed</span> <span class="o">(</span><span class="n">elast</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">convEU</span> <span class="o">||</span> <span class="n">checkEndDate</span><span class="o">))</span> <span class="k">in</span>
+
+    <span class="o">(</span><span class="n">ey</span> <span class="o">-</span> <span class="n">sy</span><span class="o">)*</span><span class="n">360</span> <span class="o">+</span> <span class="o">(</span><span class="n">em</span> <span class="o">-</span> <span class="n">sm</span><span class="o">)*</span><span class="n">30</span> <span class="o">+</span> <span class="o">(</span><span class="n">ed</span> <span class="o">-</span> <span class="n">sd</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="nv">_</span> <span class="o">=</span> <span class="n">days360</span> <span class="n">2013</span> <span class="n">7</span> <span class="n">6</span> <span class="n">2015</span> <span class="n">7</span> <span class="n">6</span> <span class="k">true</span>
+<span class="k">let</span> <span class="nv">_</span> <span class="o">=</span> <span class="n">days360</span> <span class="n">2015</span> <span class="n">7</span> <span class="n">6</span> <span class="n">2013</span> <span class="n">7</span> <span class="n">6</span> <span class="k">true</span> <span class="o">//</span> <span class="n">error</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The last line gives the following error:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">input</span><span class="o">(</span><span class="n">44</span><span class="o">,</span><span class="n">8</span><span class="o">-</span><span class="n">44</span><span class="o">,</span><span class="n">29</span><span class="o">)</span> <span class="o">:</span> <span class="n">Error</span> <span class="o">:</span>
+<span class="n">Expected</span> <span class="n">an</span> <span class="n">expression</span> <span class="k">of</span> <span class="k">type</span><span class="o">:</span> <span class="n">x_23_6</span><span class="o">:</span> <span class="nn">Dates</span><span class="p">.</span><span class="n">year</span><span class="o">{</span><span class="n">GTE</span> <span class="n">x_23_6</span> <span class="n">2013</span><span class="o">}</span>
+<span class="n">but</span> <span class="n">got</span> <span class="o">(</span><span class="n">2013</span><span class="o">):</span> <span class="n">int</span>
+<span class="n">Type</span> <span class="n">checking</span> <span class="n">failed</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>All these &gt;, \/, /\, &lt; look funny, if it&rsquo;s not enough – just imagine the effect of adding time components. Fortunately, the relation between the dates can be defined as a separate type:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// start date &lt;= end date
+</span><span class="c1"></span><span class="k">type</span> <span class="nc">LTE</span> <span class="o">=</span> <span class="k">fun</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="o">=&gt;</span> 
+    <span class="n">ey</span> <span class="o">&gt;</span> <span class="n">sy</span> <span class="err">\</span><span class="o">/</span> <span class="o">(</span><span class="n">ey</span> <span class="o">=</span> <span class="n">sy</span> <span class="o">/</span><span class="err">\</span> <span class="o">(</span><span class="n">em</span> <span class="o">&gt;</span> <span class="n">sm</span> <span class="err">\</span><span class="o">/</span> <span class="o">(</span><span class="n">em</span> <span class="o">=</span> <span class="n">sm</span> <span class="o">/</span><span class="err">\</span> <span class="n">ed</span> <span class="o">&gt;=</span> <span class="n">sd</span><span class="o">)))</span>
+
+<span class="k">val</span> <span class="n">days360</span><span class="o">:</span> <span class="n">sy</span><span class="o">:</span><span class="n">year</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">:</span><span class="n">month</span> <span class="o">-&gt;</span> <span class="n">sd</span><span class="o">:</span><span class="n">day</span>
+    <span class="o">-&gt;</span> <span class="n">ey</span><span class="o">:</span><span class="n">year</span> <span class="o">-&gt;</span> <span class="n">em</span><span class="o">:</span><span class="n">month</span> <span class="o">-&gt;</span> <span class="n">ed</span><span class="o">:</span><span class="n">day</span><span class="o">{</span><span class="n">LTE</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span><span class="o">}</span>
+    <span class="o">-&gt;</span> <span class="kt">bool</span>
+    <span class="o">-&gt;</span> <span class="n">int</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now let&rsquo;s assume that a date is valid when it&rsquo;s not 2 / 30 or 2/ 31. We can define a logical function using <code>logic val</code> construct. Such functions can be used in refinements but not in code itself. The axioms are defined using the <code>assume</code> construct:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">logic</span> <span class="k">val</span> <span class="n">isValidDate</span><span class="o">:</span> <span class="n">year</span> <span class="o">-&gt;</span> <span class="n">month</span> <span class="o">-&gt;</span> <span class="n">day</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+<span class="n">assume</span> <span class="n">Valid</span><span class="o">:</span> <span class="n">forall</span> <span class="n">y</span> <span class="n">m</span> <span class="o">(</span><span class="n">d</span><span class="o">:</span><span class="n">day</span><span class="o">{</span><span class="n">m</span> <span class="o">&lt;&gt;</span> <span class="n">2</span> <span class="err">\</span><span class="o">/</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">30</span><span class="o">}).</span> <span class="n">isValidDate</span> <span class="n">y</span> <span class="n">m</span> <span class="n">d</span> <span class="o">=</span> <span class="k">true</span> 
+
+<span class="k">val</span> <span class="n">days360</span><span class="o">:</span> <span class="n">sy</span><span class="o">:</span><span class="n">year</span> <span class="o">-&gt;</span> <span class="n">sm</span><span class="o">:</span><span class="n">month</span> <span class="o">-&gt;</span> <span class="n">sd</span><span class="o">:</span><span class="n">day</span><span class="o">{</span><span class="n">isValidDate</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="o">=</span> <span class="k">true</span><span class="o">}</span>
+    <span class="o">-&gt;</span> <span class="n">ey</span><span class="o">:</span><span class="n">year</span> <span class="o">-&gt;</span> <span class="n">em</span><span class="o">:</span><span class="n">month</span> <span class="o">-&gt;</span> <span class="n">ed</span><span class="o">:</span><span class="n">day</span><span class="o">{</span><span class="n">isValidDate</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span> <span class="o">=</span> <span class="k">true</span> <span class="o">/</span><span class="err">\</span> <span class="n">LTE</span> <span class="n">sy</span> <span class="n">sm</span> <span class="n">sd</span> <span class="n">ey</span> <span class="n">em</span> <span class="n">ed</span><span class="o">}</span>
+    <span class="o">-&gt;</span> <span class="kt">bool</span>
+    <span class="o">-&gt;</span> <span class="n">int</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Well, quite enough of refinements for a start. There’s much more ways to apply them: for example, refinements with affine values are great for verification of stateful programs (see the “Secure multi-party sessions in F<em>” section in the paper). With rise4fun you may get a request timeout in more complex cases, so I’d recommend to download the F</em> package for your experiments.</p>
+
+<h3 id="references">References</h3>
+
+<p><strong>1.</strong> &ldquo;Secure Distributed Programming with Value-Dependent Types&rdquo; <a title="Secure Distributed Programming with Value-Dependent Types" href="http://research.microsoft.com/apps/pubs/default.aspx?id=141708" target="_blank">paper</a>.<br />
+<strong>2.</strong> F* <a title="F* project home" href="http://research.microsoft.com/en-us/projects/fstar/" target="_blank">home page</a>.<br />
+<strong>3.</strong> Rise4fun <a title="Rise4Fun - F* tutorial" href="http://rise4fun.com/FStar/tutorial/guide" target="_blank">tutorial</a>.</p>
+
+<h3 id="bonus">Bonus</h3>
+
+<p>Time to get back to the good old tests: the obvious idea is to compare the results with Excel. We are interested in two functions: DAYS360 and YEARFRAC - multiplying the result with 360. Look at the following comparison (when the <a title="Days - Comparison" href="https://docs.google.com/spreadsheet/ccc?key=0AsEtPrcHNCbXdHQyb2JJQzgzNkgyREFlWF9ENEVTeEE&amp;usp=sharing" target="_blank">spreadsheet</a> was converted to Google Docs format, the results were changed, so I added separate rows with Excel output):</p>
+
+<iframe src="https://docs.google.com/spreadsheet/pub?key=0AsEtPrcHNCbXdHQyb2JJQzgzNkgyREFlWF9ENEVTeEE&amp;single=true&amp;gid=0&amp;output=html&amp;widget=true" height="480" width="640" frameborder="0"></iframe>  
+
+<p>There’re obvious problems with DAYS360 when the dates are swapped (start date &gt; end date) and end-of-Feb cases. But our function is different from YEARFRAC too.</p>
+
+<blockquote>
+<p>Date adjustments rules for 30/360US:<br />
+1. If the investment is EOM and D1, D2 are the last day of Feb, then D2 = 30.<br />
+2. If the investment is EOM and D1 is the last day of Feb, then D1 = 30.<br />
+3. If D2 is 31 and D1 is 30 or 31, then D2 = 30.<br />
+4. If D1 is 31, then D1 = 30.</p>
+</blockquote>
+
+<p>Let the start and end dates be 2/29/2012 and 3/31/2012 respectively. The rules are applied in order:<br />
+<code>D2 - D1 = D2 - 30 = 30 - 30 = 0</code></p>
+
+<p>But in Excel the rule 3 goes before the rule 2 (our function can be simply modified to behave the same way: <code>sm = 2 || em &lt;&gt; 2</code> should be replaced with <code>(sm = 2) = (em = 2)</code>):<br />
+<code>D2 - D1 = 31 - D1 = 31 - 30 = 1</code></p>
+
+<p>So we expect to see <code>(2012 – 2012)*360 + (3 – 2)*30 + 0 = 30</code> and not <code>31</code>.<br />
+F# version is available <a title="GitHub - days360.fsx" href="https://github.com/luajalla/everything-fun/blob/master/days360.fsx" target="_blank">here</a>.<br />
+<p>&nbsp;</p>
+<p>&nbsp;</p></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-07-07</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/fstar/">fstar</a>
+          <a href="/tags/refinements/">refinements</a>
+          <a href="/tags/excel/">Excel</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/excel-dna-three-stories/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Excel-DNA: Three Stories</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/lp-simplex-draft/">
+            <span class="next-text nav-default">LP - Simplex Draft</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

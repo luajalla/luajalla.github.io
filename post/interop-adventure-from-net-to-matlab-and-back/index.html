@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Interop Adventure: From .NET to Matlab and Back - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&amp;rsquo;t want to spend years rewriting." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Interop Adventure: From .NET to Matlab and Back" />
+<meta property="og:description" content="A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&rsquo;t want to spend years rewriting." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/" /><meta property="article:published_time" content="2015-02-01T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-02-01T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Interop Adventure: From .NET to Matlab and Back">
+<meta itemprop="description" content="A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&rsquo;t want to spend years rewriting.">
+
+
+<meta itemprop="datePublished" content="2015-02-01T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-02-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="878">
+
+
+
+<meta itemprop="keywords" content=".net,matlab," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Interop Adventure: From .NET to Matlab and Back"/>
+<meta name="twitter:description" content="A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&rsquo;t want to spend years rewriting."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Interop Adventure: From .NET to Matlab and Back</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-02-01 </span>
+        <div class="post-category">
+            <a href="/categories/interop/"> interop </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#why-would-anyone-need-that">Why would anyone need that?</a></li>
+<li><a href="#what-are-the-options">What are the options?</a></li>
+<li><a href="#data-conversion">Data conversion</a>
+<ul>
+<li><a href="#structs-and-classes">Structs and Classes</a></li>
+<li><a href="#numerical-types">Numerical Types</a></li>
+<li><a href="#arrays">Arrays</a></li>
+</ul></li>
+<li><a href="#when-you-finally-got-the-data-right">When you finally got the data right</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>A lot of exciting things start with the word <em>interop</em>, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?</p>
+
+<p><em>This post as a short summary of our discoveries by trial and error method.</em></p>
+
+<h3 id="why-would-anyone-need-that">Why would anyone need that?</h3>
+
+<p>Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&rsquo;t want to spend years rewriting. The calls performance wasn&rsquo;t a big issue either. On the other hand, it worked quite well and produced expected results <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> and should have been a benchmark for the code which we actually moved to .NET.</p>
+
+<h3 id="what-are-the-options">What are the options?</h3>
+
+<p>There&rsquo;s not that many options to choose from, so if you don&rsquo;t want to deal with C or COM (and don&rsquo;t mind buying an extra package) you go for the NE Builder. There&rsquo;s also an F# <a href="http://bayardrock.github.io/Matlab-Type-Provider/">Matlab Type Provider</a>, which wasn&rsquo;t an option for us though. The nice thing about the builder is that it generates &ldquo;type-safe&rdquo; APIs and the libraries can be deployed on the machines without Matlab installation, the only requirement is MCR (Matlab Compiler Runtime) - which is free.</p>
+
+<h3 id="data-conversion">Data conversion</h3>
+
+<p>Type safe APIs are great. When they are type safe. And they definitely were&hellip; to some extent. You start with writing an interface and compiling a library, carefully type-checking Matlab sources in your head <sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup> and writing down the output, then run the builder - and hopefully grab the compiled dlls. If something breaks at this stage - it&rsquo;s pure luck, because the error&rsquo;d be more or less comprehensible.</p>
+
+<p>Attention now goes to:<br />
+- types (careful with number conversions and out parameters),<br />
+- names (function and its parameters),<br />
+- project definition (the functions should be mapped to the API in the build project).</p>
+
+<p>The errors probably mean that a function is missing, or its parameter, or it was renamed&hellip; However, you still can successfully build the library which will happilly crash at runtime. And here the fun begins.</p>
+
+<p>There&rsquo;re some docs about <a href="http://ch.mathworks.com/help/mps/dotnet/conversion-between-matlab-types-and-net-types.html">types</a> and <a href="http://ch.mathworks.com/help/mps/dotnet/data-conversion-with-c-and-matlab-types.html">data</a> conversion. Unfortunately, I don&rsquo;t have Matlab installed on my machine now, so can&rsquo;t check that, but seems like some things changed for the better in the most recent version (2014b).</p>
+
+<h4 id="structs-and-classes">Structs and Classes</h4>
+
+<p>The first thing to remember is that the names of fields/properties should match <em>exactly</em>, including case. If you have a property &lsquo;Name&rsquo; in C# and call &lsquo;name&rsquo; in Matlab, you&rsquo;ll get a runtime error. Just as if you call non-existent property. Obviously, all the checks for existing fields like <code>isfield(Person, 'Name')</code> become useless and need to be replaced.</p>
+
+<p>It&rsquo;s also a good idea to define the data structures with structs and not classes, otherwise dealing with function is quite painful.</p>
+
+<h4 id="numerical-types">Numerical Types</h4>
+
+<p>Just be very careful about the numbers. It&rsquo;s easy when you have only doubles, but everything else requires extra attention:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">int32(5) + [0.1 1 10].^2
+Error using  + 
+Integers can only be combined with integers of the same class, or scalar doubles.  </pre></td></tr></table>
+</div>
+</div>
+<p>But these are ok:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">5 + [0.1 1.0].^2  
+int32(5) + 0.1.^2</pre></td></tr></table>
+</div>
+</div>
+<p>Interesting, but all the examples work in <a href="http://octave-online.net/">octave</a>.</p>
+
+<h4 id="arrays">Arrays</h4>
+
+<blockquote>
+<p>Note: Multidimensional arrays of above C# types are supported. Jagged arrays are not supported.</p>
+
+<p>When a null is passed from C# to MATLAB, it will always be marshaled into [] in MATLAB as a zero by zero (0 x 0) double.</p>
+</blockquote>
+
+<p>Depending on a use case multidimensional arrays might be not useful at all, but passing around jagged arrays actually somehow worked, though the dimensions were mixed up: you pass [A x B x C] and get [B x C x A] in Matlab, but nothing <code>permute(matrix, [3 1 2])</code> couldn&rsquo;t fix. And, of course, the opposite when passing the results back. Also, passing nulls didn&rsquo;t work, so to avoid all the NRE we had to create empty arrays, like 1x1x0, that didn&rsquo;t kill anyone.</p>
+
+<p>What you don&rsquo;t want to use is a Matlab function returning 3d+ array. At least if there&rsquo;s a chance that the last dimensions are singleton, because Matlab &lsquo;ignores&rsquo; them. Everything is fine when you have 1000x1000x1000 or 2x3x4, but 1x1x1 is the same as 1x1, so .NET wrapper (which expects 3d, i.e. 1x1x1) will fail.</p>
+
+<h3 id="when-you-finally-got-the-data-right">When you finally got the data right</h3>
+
+<p>There&rsquo;s a bunch of Matlab functions which you can&rsquo;t use in a deployed application, e.g. <code>addpath</code>, you&rsquo;ll have to remove them or check for <code>isdeployed</code> flag and use only when it&rsquo;s false.</p>
+
+<p>Setting up Matlab builds on a build server was another special kind of pain, when it turned out that if the installation path (which happened to be Program Files something) contained a space, Matlab couldn&rsquo;t resolve the dependencies&hellip;</p>
+
+<p>But - with some patience, of course - it worked out, happy end! Hope that your way will be more peaceful than this one ;)</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">as you might guess, there were more results than &lsquo;expected&rsquo;, so we ended up fixing the Matlab part too. And the fact that the Optimization toolbox was changed between different Matlab versions was quite exciting too.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">pleease, please always add a comment describing function parameters in the code, at least the matrix dimensions! Unless you hate all the people.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2015-02-01</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/.net/">.net</a>
+          <a href="/tags/matlab/">matlab</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/reshaping-arrays-in-net/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Reshaping Arrays in .NET</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/abs-puzzle/">
+            <span class="next-text nav-default">Abs Puzzle</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

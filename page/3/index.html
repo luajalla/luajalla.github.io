@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}" /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/" />
+  <link href="http://type-nat.ch/index.xml" rel="alternate" type="application/rss+xml" title="type-nat" />
+  <link href="http://type-nat.ch/index.xml" rel="feed" type="application/rss+xml" title="type-nat" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="type-nat" />
+<meta property="og:description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://type-nat.ch/" />
+<meta property="og:updated_time" content="2013-10-17T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="type-nat">
+<meta itemprop="description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="type-nat"/>
+<meta name="twitter:description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/f-dev-lifes-little-pleasures/">[F#] Dev Life&#39;s Little Pleasures</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-10-17 </span>
+      <div class="post-category">
+          <a href="/categories/fsharp/"> fsharp </a>
+          <a href="/categories/talks/"> talks </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &ldquo;[F#] Dev Life&rsquo;s Little Pleasures&rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&rsquo;mon, how can you get kg and m^2 mixed up?
+    </div>
+    <div class="read-more">
+      <a href="/post/f-dev-lifes-little-pleasures/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/the-world-around-us-back-to-words-with-j/">The World Around Us: back to words with J</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-08-25 </span>
+      <div class="post-category">
+          <a href="/categories/languages/"> languages </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Isaac Asimov
+The most exciting phrase to hear in science, the one that heralds new discoveries, is not &ldquo;Eureka!&rdquo; (I&rsquo;ve found it!), but &ldquo;That&rsquo;s funny&hellip;&rdquo;
+ Sometimes everybody wants to get off the beaten track and see the world. See how many exciting discoveries are waiting for you there.
+I want to bring your attention to a language, which changed the vision of some things for me. This language is J.
+    </div>
+    <div class="read-more">
+      <a href="/post/the-world-around-us-back-to-words-with-j/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/excel-dna-three-stories/">Excel-DNA: Three Stories</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-08-05 </span>
+      <div class="post-category">
+          <a href="/categories/fsharp/"> fsharp </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&rsquo;d say it&rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.
+    </div>
+    <div class="read-more">
+      <a href="/post/excel-dna-three-stories/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/days-and-ghost-refinements/">Days and Ghost Refinements</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-07-07 </span>
+      <div class="post-category">
+          <a href="/categories/languages/"> languages </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Let&rsquo;s look at the simple function, which calculates the number of days between dates, when there&rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:
+    </div>
+    <div class="read-more">
+      <a href="/post/days-and-ghost-refinements/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/lp-simplex-draft/">LP - Simplex Draft</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-06-22 </span>
+      <div class="post-category">
+          <a href="/categories/math/"> math </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Everybody solves some optimization problems – the airlines schedule flights, companies manage production facilities, salesman still looks for traveling options… When you need to achieve the best outcome minimizing/maximizing a linear cost functions you meet linear programming.
+LP was developed for military purposes in 1939, so it has a long history. Now it is one of the most important problems in operations research and heavily used in different areas directly or as sub-problems.
+    </div>
+    <div class="read-more">
+      <a href="/post/lp-simplex-draft/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="/page/2/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="/page/4/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

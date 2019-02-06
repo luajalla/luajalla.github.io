@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lp on type-nat</title>
+    <link>http://type-nat.ch/tags/lp/</link>
+    <description>Recent content in lp on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 22 Jun 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/lp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LP - Simplex Draft</title>
+      <link>http://type-nat.ch/post/lp-simplex-draft/</link>
+      <pubDate>Sat, 22 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/lp-simplex-draft/</guid>
+      <description>Everybody solves some optimization problems – the airlines schedule flights, companies manage production facilities, salesman still looks for traveling options… When you need to achieve the best outcome minimizing/maximizing a linear cost functions you meet linear programming.
+LP was developed for military purposes in 1939, so it has a long history. Now it is one of the most important problems in operations research and heavily used in different areas directly or as sub-problems.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Excel on type-nat</title>
+    <link>http://type-nat.ch/tags/excel/</link>
+    <description>Recent content in Excel on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/excel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>FsCheck and co: Testing Excel Financial Functions</title>
+      <link>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</guid>
+      <description>Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.</description>
+    </item>
+    
+    <item>
+      <title>Excel-DNA: Three Stories</title>
+      <link>http://type-nat.ch/post/excel-dna-three-stories/</link>
+      <pubDate>Mon, 05 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/excel-dna-three-stories/</guid>
+      <description>Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&amp;rsquo;d say it&amp;rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.</description>
+    </item>
+    
+    <item>
+      <title>Days and Ghost Refinements</title>
+      <link>http://type-nat.ch/post/days-and-ghost-refinements/</link>
+      <pubDate>Sun, 07 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/days-and-ghost-refinements/</guid>
+      <description>Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:</description>
+    </item>
+    
+  </channel>
+</rss>

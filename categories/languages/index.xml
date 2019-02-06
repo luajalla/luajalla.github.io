@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>languages on type-nat</title>
+    <link>http://type-nat.ch/categories/languages/</link>
+    <description>Recent content in languages on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 25 Apr 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/categories/languages/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Abs Puzzle</title>
+      <link>http://type-nat.ch/post/abs-puzzle/</link>
+      <pubDate>Fri, 25 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/abs-puzzle/</guid>
+      <description>If someone asked you to implement abs function (say, for ints), how would you do that? A simple experiment shows that almost everyone comes up with something like that, whether it&amp;rsquo;s F#, C#, Scala or anything else:
+1  let abs x = if x &amp;lt; 0 then -x else x   The obvious question - do the answers match your expectations? That depends&amp;hellip;
+It&amp;rsquo;s quite obvious when you think about the corner cases - here it&amp;rsquo;s the minimal integer value:</description>
+    </item>
+    
+    <item>
+      <title>It looks almost like a property</title>
+      <link>http://type-nat.ch/post/it-almost-looks-like-a-property/</link>
+      <pubDate>Sun, 26 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/it-almost-looks-like-a-property/</guid>
+      <description>Based on a true story. Only the names, places, and events have been changed.
+Many people today forget that the tools are just tools. Doesn&amp;rsquo;t matter if it&amp;rsquo;s OO or functional programming, take any language: there&amp;rsquo;re plenty of ways to write awesome and even more - to write terrifying code. lets . compose . these . functions . until . your . type-checker . explodes . btw . did . you .</description>
+    </item>
+    
+    <item>
+      <title>The World Around Us: back to words with J</title>
+      <link>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</link>
+      <pubDate>Sun, 25 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</guid>
+      <description>Isaac Asimov
+The most exciting phrase to hear in science, the one that heralds new discoveries, is not &amp;ldquo;Eureka!&amp;rdquo; (I&amp;rsquo;ve found it!), but &amp;ldquo;That&amp;rsquo;s funny&amp;hellip;&amp;rdquo;
+ Sometimes everybody wants to get off the beaten track and see the world. See how many exciting discoveries are waiting for you there.
+I want to bring your attention to a language, which changed the vision of some things for me. This language is J.</description>
+    </item>
+    
+    <item>
+      <title>Days and Ghost Refinements</title>
+      <link>http://type-nat.ch/post/days-and-ghost-refinements/</link>
+      <pubDate>Sun, 07 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/days-and-ghost-refinements/</guid>
+      <description>Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:</description>
+    </item>
+    
+  </channel>
+</rss>

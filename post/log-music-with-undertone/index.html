@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Log(music) with Undertone - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Whether you&amp;rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&amp;rsquo;ll meet the Markov chains sooner or later. And today we&amp;rsquo;ll try them on&amp;hellip; music!
+If you&amp;rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/log-music-with-undertone/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Log(music) with Undertone" />
+<meta property="og:description" content="Whether you&rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&rsquo;ll meet the Markov chains sooner or later. And today we&rsquo;ll try them on&hellip; music!
+If you&rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/log-music-with-undertone/" /><meta property="article:published_time" content="2013-12-26T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-12-26T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Log(music) with Undertone">
+<meta itemprop="description" content="Whether you&rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&rsquo;ll meet the Markov chains sooner or later. And today we&rsquo;ll try them on&hellip; music!
+If you&rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.">
+
+
+<meta itemprop="datePublished" content="2013-12-26T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-12-26T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2533">
+
+
+
+<meta itemprop="keywords" content="fsharp,math,R,music,undertone,matlab," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Log(music) with Undertone"/>
+<meta name="twitter:description" content="Whether you&rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&rsquo;ll meet the Markov chains sooner or later. And today we&rsquo;ll try them on&hellip; music!
+If you&rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Log(music) with Undertone</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-12-26 </span>
+        <div class="post-category">
+            <a href="/categories/fsharp/"> fsharp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#1-eigen-vectors">1. Eigen vectors</a></li>
+<li><a href="#2-generator-matrices">2. Generator matrices</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>Whether you&rsquo;re a physicist, biologist, economist, data scientist, whatever,  the chances are you&rsquo;ll meet the Markov chains sooner or later. And today we&rsquo;ll try them on&hellip; music!</p>
+
+<p><img src="/images/christmas-musical.jpg#floatright" alt="Christmas" /></p>
+
+<p>If you&rsquo;re not up to the math part, feel free to <a href="#music">skip it</a>.</p>
+
+<h2 id="math">Math</h2>  
+
+<p>The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.</p>
+
+<p>The math behind that is very straightforward - we need just a matrix power. Oh, wait - what if it is fractional, for example, when representing time? There&rsquo;re many ways to compute it, let&rsquo;s take a look at some of them.</p>
+
+<h3 id="1-eigen-vectors">1. Eigen vectors</h3>
+
+<p>This method is based on properties of eigen values decomposition:</p>
+
+<p>$$\begin{array}{1}
+\text{V - eigen vectors}\\<br />
+A v_j = \lambda_j v_j\\<br />
+A V = V D \text{, where } D = diag(\lambda_1, &hellip;, \lambda_n)\\<br />
+A^n = V (D ^ n) V^{-1}
+\end{array}$$</p>
+
+<p>That&rsquo;s actually how Matlab <code>mpower</code> function <a href="http://www.mathworks.com/help/matlab/ref/mpower.html">looks like</a>:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-m" data-lang="m"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-m" data-lang="m"><span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="n">D</span><span class="p">]</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">An</span>    <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="p">(</span><span class="n">D</span> <span class="p">.</span><span class="o">^</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">)</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>We can take advantage of Math.NET matrix decompositions to implement this method:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">open</span> <span class="nn">MathNet.Numerics.LinearAlgebra.Double</span>
+<span class="k">open</span> <span class="nn">MathNet.Numerics.LinearAlgebra.Generic</span>
+<span class="k">open</span> <span class="nn">Matrix</span>
+<span class="k">open</span> <span class="nn">SparseMatrix</span>
+
+<span class="k">let</span> <span class="o">[&lt;</span><span class="n">Literal</span><span class="o">&gt;]</span> <span class="n">MAX_ITER</span> <span class="o">=</span> <span class="n">10000</span>
+<span class="k">let</span> <span class="o">[&lt;</span><span class="n">Literal</span><span class="o">&gt;]</span> <span class="n">PREC</span>     <span class="o">=</span> <span class="n">1e</span><span class="o">-</span><span class="n">60</span>
+
+<span class="sd">/// Matrix power: eigen values decomposition method
+</span><span class="sd">/// M^p = V * (D .^ p) / V
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mpowEig</span> <span class="o">(</span><span class="n">m</span><span class="o">:</span> <span class="n">SparseMatrix</span><span class="o">)</span> <span class="n">p</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">evd</span>  <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Evd</span><span class="bp">()</span>
+    <span class="k">let</span> <span class="nv">v</span><span class="o">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">evd</span><span class="o">.</span><span class="n">EigenVectors</span><span class="bp">()</span><span class="o">,</span> <span class="n">evd</span><span class="o">.</span><span class="n">D</span><span class="bp">()</span>
+    <span class="n">mapInPlace</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">**</span> <span class="n">p</span><span class="o">)</span> <span class="n">d</span>
+    <span class="n">v</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">v</span><span class="o">.</span><span class="n">Inverse</span><span class="bp">()</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>What are the pros/cons?</p>
+
+<p><strong>+</strong> the method is rather efficient<br />
+<strong>-</strong> inverse matrix $V$ might not exist <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
+
+<p>$$A = \begin{bmatrix} 0.78 &amp; 0.2 &amp; 0.12\\ 0 &amp; 0.78 &amp; 0.32\\0 &amp; 0 &amp; 0.78 \end{bmatrix}$$</p>
+
+<p>$$V = \begin{bmatrix} 1.0000 &amp; -1.0000\\ 0.0000 &amp; 0.0000 \end{bmatrix}$$</p>
+
+<p><strong>-</strong> some matrices cannot be diagonalised:</p>
+
+<p>$$A = \begin{bmatrix} 3 &amp; 2\\0 &amp; 3 \end{bmatrix}$$</p>
+
+<h3 id="2-generator-matrices">2. Generator matrices</h3>
+
+<p>If we can find a matrix $G$, such as $A = \exp(G)$, then (remember series?)</p>
+
+<p>$$A^x = \exp(xG) = I + (xG) + (xG)^2 / 2! + (xG)^3 / 3! + &hellip; $$</p>
+
+<p>We are interested in finding a generator $G$ with zero row sums and nonnegative off-diagonal entries. So we&rsquo;ll use Mercator&rsquo;s series:</p>
+
+<p>$$\log(1 + x) = x - x^2 / 2 + x^3 / 3 - x^4 / 4 + &hellip;$$</p>
+
+<p>In matrix case it&rsquo;s</p>
+
+<p>$$G = \log(I + (A - I)) = (A - I) - (A - I)^2 / 2 + (A - I)^3 / 3 - &hellip;$$</p>
+
+<p>The common concern is that the series methods are not very efficient and may be not accurate enough. It&rsquo;s easy to compare the methods by computing the squared error between the actual and expected values (say, compute $(A^\frac{1}{3})^3$).</p>
+
+<p>Another problem is that a generator matrix (and power too) might have negative elements - not really what you want when dealing with probabilities. We can make them non-negative and keep the rows sums equal to zero&hellip; but the power properties won&rsquo;t be preserved. For example, you can find out that $A^7 &lt;&gt; A^{3.5} * A^{3.5}$.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="sd">/// Generator matrix
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">genm</span> <span class="o">(</span><span class="n">a</span><span class="o">:</span> <span class="n">SparseMatrix</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">size</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">RowCount</span>
+    <span class="k">let</span> <span class="nv">mid</span>  <span class="o">=</span> <span class="n">constDiag</span> <span class="n">size</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span>
+    <span class="k">let</span> <span class="nv">a_i</span>  <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">mid</span>
+
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">logm</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">qpow</span><span class="o">:</span> <span class="n">SparseMatrix</span><span class="o">)</span> <span class="n">res</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">=</span> <span class="n">MAX_ITER</span> <span class="k">then</span> <span class="n">res</span>
+        <span class="k">else</span>
+           <span class="k">let</span> <span class="nv">qdiv</span> <span class="o">=</span> <span class="n">qpow</span><span class="o">.</span><span class="n">Divide</span> <span class="o">(</span><span class="kt">float</span> <span class="n">i</span><span class="o">)</span>
+           <span class="k">if</span> <span class="n">sumSq</span> <span class="n">qdiv</span> <span class="o">&lt;</span> <span class="n">PREC</span> <span class="k">then</span> <span class="n">res</span> <span class="o">+</span> <span class="n">qdiv</span>
+           <span class="k">else</span> 
+               <span class="n">logm</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="o">-</span><span class="n">qpow</span> <span class="o">*</span> <span class="n">a_i</span><span class="o">)</span> <span class="o">(</span><span class="n">res</span> <span class="o">+</span> <span class="n">qdiv</span><span class="o">)</span>
+    <span class="c1">// find log(A - I)
+</span><span class="c1"></span>    <span class="c1">// update negative off-diagonal entries, the row-sum = 0
+</span><span class="c1"></span>    <span class="n">logm</span> <span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">a_i</span><span class="o">)</span> <span class="o">(</span><span class="n">zeroCreate</span> <span class="n">size</span> <span class="n">size</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="n">updateneg</span>
+
+<span class="sd">/// Exp series approximation
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">expSeries</span> <span class="o">(</span><span class="n">m</span><span class="o">:</span> <span class="n">SparseMatrix</span><span class="o">)</span>  <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">size</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">RowCount</span>
+    
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">sum</span> <span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">k</span><span class="o">,</span> <span class="n">mpow</span><span class="o">:</span> <span class="n">SparseMatrix</span><span class="o">)</span> <span class="n">res</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">=</span> <span class="n">MAX_ITER</span> <span class="k">then</span> <span class="n">res</span>
+        <span class="k">else</span>
+            <span class="k">let</span> <span class="nv">mpowi</span><span class="o">,</span> <span class="n">ki</span> <span class="o">=</span> <span class="n">mpow</span> <span class="o">*</span> <span class="n">m</span><span class="o">,</span> <span class="n">k</span> <span class="o">*</span> <span class="kt">float</span> <span class="n">i</span>
+            <span class="k">let</span> <span class="nv">mdiv</span>      <span class="o">=</span> <span class="n">mpowi</span><span class="o">.</span><span class="n">Divide</span> <span class="n">ki</span>
+            <span class="k">if</span> <span class="n">sumSq</span> <span class="n">mdiv</span> <span class="o">&lt;</span> <span class="n">PREC</span> <span class="k">then</span> <span class="n">res</span> <span class="o">+</span> <span class="n">mdiv</span>
+            <span class="k">else</span>
+                <span class="n">sum</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">,</span> <span class="n">ki</span><span class="o">,</span> <span class="n">mpowi</span><span class="o">)</span> <span class="o">(</span><span class="n">res</span> <span class="o">+</span> <span class="n">mdiv</span><span class="o">)</span> 
+
+    <span class="k">let</span> <span class="nv">mid</span> <span class="o">=</span> <span class="n">constDiag</span> <span class="n">size</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span>
+    <span class="n">sum</span> <span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span><span class="o">,</span> <span class="n">mid</span><span class="o">)</span> <span class="n">mid</span>
+
+<span class="sd">/// Matrix power: series method
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mpowSeries</span> <span class="n">m</span> <span class="o">(</span><span class="n">p</span><span class="o">:</span> <span class="kt">float</span><span class="o">)</span> <span class="o">=</span> <span class="nn">SparseMatrix</span><span class="p">.</span><span class="n">OfMatrix</span> <span class="o">(</span><span class="n">genm</span> <span class="n">m</span> <span class="o">*</span> <span class="n">p</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="n">expSeries</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p><strong>+</strong> Works for non-diagonizable matrices<br />
+<strong>-</strong> Not very efficient<br />
+<strong>-</strong> May be not accurate enough or even fail to converge</p>
+
+<p>These are just the most simple algorithms - would be interesting to check the others, but let&rsquo;s move on.</p>
+
+<h3 id="references">References</h3>
+
+<ol>
+<li><a href="http://www.cs.cornell.edu/cv/researchpdf/19ways+.pdf">19 Dubious Ways to Compute the Exponential of a Matrix</a><br /></li>
+<li><a href="http://www.math.ubc.ca/~israel/irw/">Finding Generators for Markov Chains via empirical transition matrices, with applications to credit ratings</a><br /></li>
+</ol>
+
+<h2 id="music">Music</h2>
+
+<p>It&rsquo;s not a secret, that Markov models are often used for generative music, here&rsquo;s one of the examples: <a href="http://vikparuchuri.com/blog/making-instrumental-music-from-scratch/">Programming Instrumental Music From Scratch</a> (there&rsquo;re also some interesting references in the comments). We&rsquo;ll do a different thing, though: given notes, we can calculate the transition probabilities and&hellip; generate new melodies.</p>
+
+<p>But everything in its time.</p>
+
+<p>We need to somehow define the sequences of notes and play them. And thanks to <a href="https://github.com/robertpi/Undertone">Undertone</a> that&rsquo;s pretty easy! First of all, let&rsquo;s download the piano samples - University of Iowa has a collection of recordings <a href="http://theremin.music.uiowa.edu/MISpiano.html">here</a>. You can get them manually or using <a href="https://github.com/robertpi/Undertone/blob/master/src/Undertone/DownloadsSamples.fsx">this script</a>. It&rsquo;s also ok to generate the notes programmatically - but somewhat a bit more realistic is more fun ^_^</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// Size: 2/4
+</span><span class="c1"></span>
+<span class="sd">/// 1/16 (semiquaver)
+</span><span class="sd"></span><span class="o">[&lt;</span><span class="n">Literal</span><span class="o">&gt;]</span> 
+<span class="k">let</span> <span class="nv">Sq</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">0625</span>
+<span class="sd">/// 1/8 (quaver)
+</span><span class="sd"></span><span class="o">[&lt;</span><span class="n">Literal</span><span class="o">&gt;]</span> 
+<span class="k">let</span> <span class="nv">Q1</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">125</span>
+<span class="sd">/// 3/8
+</span><span class="sd"></span><span class="o">[&lt;</span><span class="n">Literal</span><span class="o">&gt;]</span> 
+<span class="k">let</span> <span class="nv">Q3</span> <span class="o">=</span> <span class="n">0</span><span class="o">.</span><span class="n">375</span>
+
+<span class="o">...</span>
+
+<span class="sd">/// Mapping between note enum and file name convention 
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">noteToPianoName</span> <span class="n">note</span> <span class="o">=</span>
+    <span class="k">match</span> <span class="n">note</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">C</span>      <span class="o">-&gt;</span> <span class="s">&#34;C&#34;</span> 
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">Csharp</span> <span class="o">-&gt;</span> <span class="s">&#34;Db&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">D</span>      <span class="o">-&gt;</span> <span class="s">&#34;D&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">Dsharp</span> <span class="o">-&gt;</span> <span class="s">&#34;Eb&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">E</span>      <span class="o">-&gt;</span> <span class="s">&#34;E&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">F</span>      <span class="o">-&gt;</span> <span class="s">&#34;F&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">Fsharp</span> <span class="o">-&gt;</span> <span class="s">&#34;Gb&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">G</span>      <span class="o">-&gt;</span> <span class="s">&#34;G&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">Gsharp</span> <span class="o">-&gt;</span> <span class="s">&#34;Ab&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">A</span>      <span class="o">-&gt;</span> <span class="s">&#34;A&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">Asharp</span> <span class="o">-&gt;</span> <span class="s">&#34;Bb&#34;</span>
+    <span class="o">|</span> <span class="nn">Note</span><span class="p">.</span><span class="n">B</span>      <span class="o">-&gt;</span> <span class="s">&#34;B&#34;</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s">&#34;invalid note&#34;</span>
+
+<span class="sd">/// Read piano note from .aiff file
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">readPianoNote</span><span class="bp">()</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">cache</span> <span class="o">=</span> <span class="n">Dictionary</span><span class="o">&lt;_,_&gt;</span> <span class="nn">HashIdentity</span><span class="p">.</span><span class="n">Structural</span>
+    <span class="k">let</span> <span class="nv">inline</span> <span class="n">path</span> <span class="o">(</span><span class="n">noteName</span><span class="o">,</span> <span class="n">octave</span><span class="o">)</span> <span class="o">=</span> 
+        <span class="nn">Path</span><span class="p">.</span><span class="n">Combine</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="s">&#34;Piano.ff.&#34;</span> <span class="o">+</span> <span class="n">noteName</span> <span class="o">+</span> <span class="kt">string</span> <span class="n">octave</span> <span class="o">+</span> <span class="s">&#34;.aiff&#34;</span><span class="o">)</span>
+
+    <span class="k">fun</span> <span class="o">(</span><span class="n">note</span><span class="o">,</span> <span class="n">octave</span><span class="o">)</span> <span class="o">-&gt;</span>
+        <span class="k">let</span> <span class="nv">noteKey</span> <span class="o">=</span> <span class="n">noteToPianoName</span> <span class="n">note</span><span class="o">,</span> <span class="n">octave</span>
+        <span class="k">match</span> <span class="n">cache</span><span class="o">.</span><span class="n">TryGetValue</span> <span class="n">noteKey</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="k">true</span><span class="o">,</span> <span class="n">wave</span> <span class="o">-&gt;</span> <span class="n">wave</span>
+        <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> 
+            <span class="k">let</span> <span class="nv">wave</span> <span class="o">=</span> <span class="nn">IO</span><span class="p">.</span><span class="n">read</span> <span class="o">(</span><span class="n">path</span> <span class="n">noteKey</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">toArray</span>
+            <span class="n">cache</span><span class="o">.</span><span class="n">Add</span><span class="o">(</span><span class="n">noteKey</span><span class="o">,</span> <span class="n">wave</span><span class="o">)</span>
+            <span class="n">wave</span>
+
+<span class="k">let</span> <span class="nv">makeNote</span> <span class="o">=</span> <span class="n">readPianoNote</span><span class="bp">()</span> 
+<span class="k">let</span> <span class="nv">getMelody</span> <span class="o">=</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">collect</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">noct</span><span class="o">,</span> <span class="n">time</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">makeNote</span> <span class="n">noct</span> <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">take</span> <span class="o">(</span><span class="n">noteValue</span> <span class="n">time</span><span class="o">))</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The note is defined with its symbol (C = Do, F# = Fis = Fa-diesis = F sharp), octave and time (♪ - <sup>1</sup>&frasl;<sub>8</sub>, ♬ - 2 notes * <sup>1</sup>&frasl;<sub>16</sub>). The sequence of notes gives a melody, which can be played and even saved later. Can you guess the following one?</p>
+
+<p><a href="/sounds/original.mp3">Original</a></p>
+
+<p>Sounds recognizable, but awkwardly stumbling - makes me feel <em>much</em> better about my piano skills. I&rsquo;d recommend to watch <a href="http://www.youtube.com/watch?v=7cFkae0j_Ns">this performace</a>, it&rsquo;s amazing! (and that pianist-feeling suddenly goes down again)). I believe there&rsquo;s a way to make the generated sound smoother and so on, but that&rsquo;s not the goal now.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="c1">// Define commonly used notes
+</span><span class="c1"></span>
+<span class="sd">/// Sample melody
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">ent</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="n">D3</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">Ds3</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">E3</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Q1</span><span class="o">;</span> <span class="n">E3</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Q1</span><span class="o">;</span> <span class="n">E3</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Q3</span>
+    <span class="n">C4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">Ds4</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Q1</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Q1</span>
+    <span class="n">C4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D3</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">Ds3</span><span class="o">,</span><span class="nn">Sq</span> <span class="p">...</span>
+    <span class="n">C4</span><span class="o">,</span><span class="n">Q3</span>
+<span class="o">]</span>
+
+<span class="nn">Player</span><span class="p">.</span><span class="n">Play</span> <span class="o">(</span><span class="n">getMelody</span> <span class="n">ent</span><span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p><em>(Note, the example above has 3 times faster tempo that the one you&rsquo;ll get with downloaded notes)</em></p>
+
+<p>The next thing to do is to calculate the transition probabilities. Consider the following sequence: <em>E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>1</sup>&frasl;<sub>8</sub>, E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>3</sup>&frasl;<sub>8</sub>, C4 - <sup>1</sup>&frasl;<sub>16</sub></em>.</p>
+
+<p>The first option is to simply count transitions between notes and then normalize the rows, so the sum are equal to 1:</p>
+
+<p>$$
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 0 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 1 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 2 \\ C4 &amp; 1 &amp; 0 \end{matrix} \rightarrow$$<br />
+$$
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 2 \\ C4 &amp; 1 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 2 \\ C4 &amp; 1 &amp; 1 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 0.5 &amp; 0.5 \end{matrix} $$</p>
+
+<p>But wait, what about time? There&rsquo;re different notes, we can take that into account too: if the &lsquo;smallest&rsquo; length is <sup>1</sup>&frasl;<sub>16</sub>, then we can count, how many such intervals each note takes, multiplying by 16<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>:</p>
+
+<p><em>E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>1</sup>&frasl;<sub>8</sub>, E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>3</sup>&frasl;<sub>8</sub>, C4 - <sup>1</sup>&frasl;<sub>16</sub></em></p>
+
+<p>$$
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 0 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 1 &amp; 1 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 2 \\ C4 &amp; 1 &amp; 1 \end{matrix} \rightarrow$$
+$$
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 2 \\ C4 &amp; 1 &amp; 7 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 1 \\ C4 &amp; 0.125 &amp; 0.875 \end{matrix}$$</p>
+
+<p>So, we know the transitions and times when the next note should be played. A uniform random number generator will choose this next note: e.g. if transitions are 0.4 0.2 0.1 0.3 and generated number is 0.65, that&rsquo;s the 3rd one (this operation is called <code>choose</code> below).<br />
+The note at time <code>t</code>, given transition matrix <code>P</code> is</p>
+
+<p>$$n_t = choose(P^t _{n _{t - 1}})$$</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="sd">/// Compute the times and probabilities of transitions between notes
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">transitions</span> <span class="n">xs</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">noteToId</span> <span class="o">=</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">distinctBy</span> <span class="n">fst</span> <span class="n">xs</span> <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">mapi</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">(</span><span class="n">note</span><span class="o">,</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="n">note</span><span class="o">,</span> <span class="n">i</span><span class="o">)</span> <span class="o">|&gt;</span> <span class="n">dict</span>
+
+    <span class="c1">// # of unique notes and # of notes in melody
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">n</span><span class="o">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">noteToId</span><span class="o">.</span><span class="n">Count</span><span class="o">,</span> <span class="nn">List</span><span class="p">.</span><span class="n">length</span> <span class="n">xs</span>
+
+    <span class="k">let</span> <span class="nv">matrix</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">init</span> <span class="n">n</span> <span class="o">(</span><span class="k">fun</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="nn">Array</span><span class="p">.</span><span class="n">zeroCreate</span> <span class="n">n</span><span class="o">)</span>
+    <span class="k">let</span> <span class="nv">times</span>  <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">zeroCreate</span> <span class="n">m</span>
+
+    <span class="c1">// fill the matrix
+</span><span class="c1"></span>    <span class="nn">Seq</span><span class="p">.</span><span class="n">pairwise</span> <span class="n">xs</span>
+    <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">iteri</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">((</span><span class="n">note1</span><span class="o">,</span> <span class="n">time1</span><span class="o">),</span> <span class="o">(</span><span class="n">note2</span><span class="o">,</span> <span class="o">_))</span> <span class="o">-&gt;</span>
+        <span class="k">let</span> <span class="nv">n1</span><span class="o">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="n">noteToId</span><span class="o">.[</span><span class="n">note1</span><span class="o">],</span> <span class="n">noteToId</span><span class="o">.[</span><span class="n">note2</span><span class="o">]</span>
+        <span class="c1">// option #1 - ignore times
+</span><span class="c1"></span>        <span class="c1">//   matrix.[n1].[n2] &lt;- matrix.[n1].[n2] + 1.
+</span><span class="c1"></span>        <span class="c1">// option #2 - add extra probability for transition to the same note
+</span><span class="c1"></span>        <span class="c1">//    matrix.[n1].[n1] &lt;- matrix.[n1].[n1] + time1 * 16.0
+</span><span class="c1"></span>        <span class="c1">//    matrix.[n1].[n2] &lt;- matrix.[n1].[n2] + 1.0
+</span><span class="c1"></span>        <span class="c1">// option #3 - take time into account (scale by 16)
+</span><span class="c1"></span>        <span class="k">let</span> <span class="nv">p</span> <span class="o">=</span> <span class="n">time1</span> <span class="o">*</span> <span class="n">16</span><span class="o">.</span> <span class="o">-</span> <span class="n">1</span><span class="o">.</span> <span class="k">in</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">0</span><span class="o">.</span> <span class="k">then</span> <span class="n">matrix</span><span class="o">.[</span><span class="n">n1</span><span class="o">].[</span><span class="n">n1</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="o">.[</span><span class="n">n1</span><span class="o">].[</span><span class="n">n1</span><span class="o">]</span> <span class="o">+</span> <span class="n">p</span>
+        <span class="n">matrix</span><span class="o">.[</span><span class="n">n1</span><span class="o">].[</span><span class="n">n2</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="o">.[</span><span class="n">n1</span><span class="o">].[</span><span class="n">n2</span><span class="o">]</span> <span class="o">+</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span>
+        
+        <span class="n">times</span><span class="o">.[</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">]</span>    <span class="o">&lt;-</span> <span class="n">times</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="n">time1</span><span class="o">)</span>
+    
+    <span class="n">normalizeRows</span> <span class="n">matrix</span><span class="o">,</span> <span class="n">times</span><span class="o">,</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">toArray</span> <span class="n">noteToId</span><span class="o">.</span><span class="n">Keys</span>
+
+<span class="k">let</span> <span class="nv">matrix</span><span class="o">,</span> <span class="n">times</span><span class="o">,</span> <span class="n">idToNote</span> <span class="o">=</span> <span class="n">transitions</span> <span class="n">ent</span>
+
+<span class="sd">/// Find index of the next note given probability
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">transTo</span> <span class="o">(</span><span class="n">ps</span><span class="o">:</span> <span class="o">_</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="sd">/// Generate music from transition matrices in a file
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">genMusic</span> <span class="n">matricesFileName</span> <span class="o">(</span><span class="n">fstNote</span><span class="o">,</span> <span class="n">idToNote</span><span class="o">:</span> <span class="o">_</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="c1">// transition matrices and times
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">ps</span><span class="o">,</span> <span class="n">ts</span> <span class="o">=</span> <span class="n">readMatrices</span> <span class="n">matricesFileName</span>
+    <span class="k">let</span> <span class="nv">n</span>      <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">Count</span>
+    <span class="k">let</span> <span class="nv">rand</span>   <span class="o">=</span> <span class="nn">System</span><span class="p">.</span><span class="n">Random</span><span class="bp">()</span>
+    
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">gen</span> <span class="n">i</span> <span class="n">prevInd</span> <span class="n">res</span> <span class="o">=</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">n</span><span class="o">-</span><span class="n">1</span> <span class="k">then</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="n">res</span>
+        <span class="k">else</span>
+            <span class="k">let</span> <span class="nv">j</span>    <span class="o">=</span> <span class="n">transTo</span> <span class="n">ps</span><span class="o">.[</span><span class="n">i</span><span class="o">].[</span><span class="n">prevInd</span><span class="o">]</span> <span class="o">(</span><span class="n">rand</span><span class="o">.</span><span class="n">NextDouble</span><span class="bp">()</span><span class="o">)</span>
+            <span class="k">let</span> <span class="nv">next</span> <span class="o">=</span> <span class="n">idToNote</span><span class="o">.[</span><span class="n">j</span><span class="o">],</span> <span class="n">ts</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+            <span class="n">gen</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">1</span><span class="o">)</span> <span class="n">j</span> <span class="o">(</span><span class="n">next</span> <span class="o">::</span> <span class="n">res</span><span class="o">)</span>
+
+    <span class="n">gen</span> <span class="n">0</span> <span class="n">0</span> <span class="o">[</span><span class="n">fstNote</span><span class="o">]</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>I tried to compute the transition matrix - and both method failed! Turns out this is the real-life &lsquo;unlucky&rsquo; matrix. To be sure that doesn&rsquo;t work, checked R&rsquo;s <a href="http://cran.r-project.org/web/packages/expm/index.html">expm</a> package:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-R" data-lang="R">logm<span class="p">(</span>x<span class="p">,</span> method <span class="o">=</span> <span class="s">&#34;Eigen&#34;</span><span class="p">)</span>
+Error <span class="kr">in</span> logm<span class="p">(</span>x<span class="p">,</span> method <span class="o">=</span> <span class="s">&#34;Eigen&#34;</span><span class="p">)</span> <span class="o">:</span> non diagonalisable <span class="kt">matrix</span>
+logm<span class="p">(</span>x<span class="p">,</span> method <span class="o">=</span> <span class="s">&#34;Higham08&#34;</span><span class="p">)</span>
+Error <span class="kr">in</span> <span class="kp">solve.default</span><span class="p">(</span>X<span class="p">[</span>ii<span class="p">,</span> ii<span class="p">]</span> <span class="o">+</span> X<span class="p">[</span>ij<span class="p">,</span> ij<span class="p">],</span> S<span class="p">[</span>ii<span class="p">,</span> ij<span class="p">]</span> <span class="o">-</span> sumU<span class="p">)</span> <span class="o">:</span>
+system is computationally singular<span class="o">:</span> reciprocal condition number <span class="o">=</span> <span class="m">0</span>
+In addition<span class="o">:</span> Warning messages<span class="o">:</span>
+<span class="m">1</span><span class="o">:</span> In <span class="kp">sqrt</span><span class="p">(</span>S<span class="p">[</span>ij<span class="p">,</span> ij<span class="p">])</span> <span class="o">:</span> NaNs produced
+<span class="m">2</span><span class="o">:</span> In <span class="kp">sqrt</span><span class="p">(</span>S<span class="p">[</span>ij<span class="p">,</span> ij<span class="p">])</span> <span class="o">:</span> NaNs produced</code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Fortunately, we don&rsquo;t need fraction power here: if we count time in 1/16th, it becomes integer! <sup>1</sup>&frasl;<sub>16</sub> is 1, <sup>3</sup>&frasl;<sub>8</sub> is 6 and so on. Good old multiplication saves the situation.</p>
+
+<p>Here&rsquo;s several examples of generated melodies - there&rsquo;re only 10 notes are in the game, but the results are already pretty different from the original:</p>
+
+<p><a href="/sounds/gen1.mp3">Generated-1</a><br />
+<a href="/sounds/gen2.mp3">Generated-2</a><br />
+<a href="/sounds/gen3.mp3">Generated-3</a></p>
+
+<p>What if we add an &lsquo;extra-probability&rsquo; for note to stay in the same state?</p>
+
+<p><em>E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>1</sup>&frasl;<sub>8</sub>, E3 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>3</sup>&frasl;<sub>8</sub>, C4 - <sup>1</sup>&frasl;<sub>16</sub></em></p>
+
+<p>$$
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0 &amp; 0 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 1 &amp; 1 \\ C4 &amp; 0 &amp; 0 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 1 &amp; 1 \\ C4 &amp; 1 &amp; 2 \end{matrix} \rightarrow<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 2 &amp; 2 \\ C4 &amp; 1 &amp; 2 \end{matrix} \rightarrow $$
+$$<br />
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 2 &amp; 2 \\ C4 &amp; 1 &amp; 9 \end{matrix} \rightarrow
+\begin{matrix} &amp; E3 &amp; C4 \\ E3 &amp; 0.5 &amp; 0.5 \\ C4 &amp; 0.1 &amp; 0.9 \end{matrix} $$</p>
+
+<p>For this matrix, the generator does exist and we can programmatically compose something like that:</p>
+
+<p><a href="/sounds/genseries1.mp3">Generated-series-1</a><br />
+<a href="/sounds/genseries2.mp3">Generated-series-2</a></p>
+
+<p>Why stop here? We could define the similar transitions for note length; or add chords - say, generated according to the current tonality; or switch tonalities/modes&hellip; Well, there&rsquo;s a whole &lsquo;musical math&rsquo;, solfeggio, full of different functions - plenty of space to experiment!</p>
+
+<p><a href="/sounds/jingleBells.mp3">Happy Holidays!</a></p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">jingleBells</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Q1</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Q1</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">G4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">C4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Q1</span><span class="o">*</span><span class="n">2</span><span class="o">.</span><span class="n">0</span>
+    <span class="n">F4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">F4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">F4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">F4</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">F4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">D4</span><span class="o">,</span><span class="n">Sq</span><span class="o">;</span> <span class="n">E4</span><span class="o">,</span><span class="n">Sq</span>
+    <span class="n">D4</span><span class="o">,</span><span class="n">Q1</span><span class="o">;</span> <span class="n">G4</span><span class="o">,</span><span class="n">Q1</span>
+<span class="o">]</span>
+
+<span class="nn">Player</span><span class="p">.</span><span class="n">Play</span> <span class="o">(</span><span class="n">getMelody</span> <span class="n">jingleBells</span><span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">the example matrix isn&rsquo;t actually a transition matrix - the row sums should be equal to 1 - it&rsquo;s here just to demonstrate a possible problem.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">the sequence C4 - <sup>1</sup>&frasl;<sub>8</sub>, E3 - <sup>1</sup>&frasl;<sub>16</sub> is almost the same as C4 - <sup>1</sup>&frasl;<sub>16</sub>, C4 - <sup>1</sup>&frasl;<sub>16</sub>, E3 - <sup>1</sup>&frasl;<sub>16</sub>. That gives us <sup>50</sup>&frasl;<sub>50</sub> transitions: after each period of time C4 can either stay as C4 or transform to E3.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-12-26</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/math/">math</a>
+          <a href="/tags/r/">R</a>
+          <a href="/tags/music/">music</a>
+          <a href="/tags/undertone/">undertone</a>
+          <a href="/tags/matlab/">matlab</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/it-almost-looks-like-a-property/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">It looks almost like a property</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/trying-out-deedle-with-bones-and-regression/">
+            <span class="next-text nav-default">Trying out Deedle with Bones and Regression</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

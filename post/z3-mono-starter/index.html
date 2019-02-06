@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Z3 Mono Starter - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&amp;hellip; but we all know it&amp;rsquo;s not a proof.
+Just look at Pex, it definitely can&amp;rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/z3-mono-starter/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Z3 Mono Starter" />
+<meta property="og:description" content="Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&hellip; but we all know it&rsquo;s not a proof.
+Just look at Pex, it definitely can&rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/z3-mono-starter/" /><meta property="article:published_time" content="2013-05-24T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-05-24T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Z3 Mono Starter">
+<meta itemprop="description" content="Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&hellip; but we all know it&rsquo;s not a proof.
+Just look at Pex, it definitely can&rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research.">
+
+
+<meta itemprop="datePublished" content="2013-05-24T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-05-24T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="978">
+
+
+
+<meta itemprop="keywords" content="z3,mono,fsharp,quotations," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Z3 Mono Starter"/>
+<meta name="twitter:description" content="Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&hellip; but we all know it&rsquo;s not a proof.
+Just look at Pex, it definitely can&rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Z3 Mono Starter</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-05-24 </span>
+        <div class="post-category">
+            <a href="/categories/mono/"> mono </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#resources">Resources:</a></li>
+<li><a href="#z3-mono">Z3 + Mono</a></li>
+<li><a href="#examples-time">Examples time</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>Have you ever thought how exciting verification tools are? How do you <strong>prove</strong> the <strong>correctness</strong> of a program? Of course, the green tests bring some confidence&hellip; but we all know it&rsquo;s not a proof.<br />
+<img src="/images/pex.png#floatright" alt="Pex Logo" /></p>
+
+<p>Just look at <a title="Pex" href="http://www.pexforfun.com" target="_blank">Pex</a>, it definitely can&rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).</p>
+
+<p>But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research. You may ask why you should care (at least I always  do when looking at something new - a tool/language/app/whatever), the answer is simple - because we want the proof, not only a bunch of valid inputs. The work made me a bit paranoid to this point - it takes more time, but the shining correctness allows you not to worry about how much customers can lose just because someone forgot about a not-likely-to-happen workflow, like an unexpected negative number from nowhere -&gt; power -&gt; NaN (surprise, surprise!).</p>
+
+<h3 id="resources">Resources:</h3>
+
+<p><img src="/images/z3.png#floatright" alt="Z3 Logo" />
+* Z3 on <a title="Z3 Home" href="http://z3.codeplex.com/" target="_blank">codeplex</a>, with documentation, papers and slides.<br />
+* Try it online with <a title="Rise4Fun" href="http://rise4fun.com/Z3/tutorial/guide" target="_blank">Rise4Fun</a>.<br />
+* Z3 Constraint Solver on <a title="Nikolaj Bjørner and Leonardo de Moura: The Z3 Constraint Solver" href="http://channel9.msdn.com/blogs/peli/the-z3-constraint-solver" target="_blank">Ch9 </a>.<br />
+* Original home of <a title="Z3: Theorem Prover" href="http://research.microsoft.com/en-us/um/redmond/projects/z3/old/index.html" target="_blank">Z3 project</a>.</p>
+
+<p>Z3 is supported on Windows, OSX, Linux and FreeBSD and has an extensive API:  C, C++, OCaml, .NET languages, Python, Java.</p>
+
+<h3 id="z3-mono">Z3 + Mono</h3>
+
+<p>The standard Z3 distrubution for OSX comes with x64 binaries, but to get it working with Mono we need to compile it ourselves with x86 architecture.</p>
+
+<p><strong>1.</strong> Download the sources <a title="Z3 Home" href="http://z3.codeplex.com/" target="_blank">here</a>.<br />
+<strong>2.</strong> Open the folder and generate the makefiles.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd">python scripts/mk_make.py
+<span class="k">cd</span> build</code></pre></td></tr></table>
+</div>
+</div>
+
+<p><strong>3.</strong> We&rsquo;re interested in <code>config.mk</code> file. By default the result architecture is x86_x64, that&rsquo;s where the compiler flags help:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-make" data-lang="make"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-make" data-lang="make"><span class="nv">CXXFLAGS</span><span class="o">=</span> -D_MP_INTERNAL -m32  -c -fopenmp -mfpmath<span class="o">=</span>sse -O3
+ -D _EXTERNAL_RELEASE -fomit-frame-pointer -fPIC -msse -msse2
+<span class="nv">LINK_FLAGS</span><span class="o">=</span>-m32
+<span class="nv">SLINK_FLAGS</span><span class="o">=</span>-dynamiclib
+</code></pre></td></tr></table>
+</div>
+</div>
+
+<p><em>Update:</em> according to the Yu&rsquo;s comment you might need to replace the option <code>-fopenmp</code> with <code>-D_NO_OMP_</code>.</p>
+
+<p><strong>4.</strong> Just make it <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>. The recent Z3 versions require a little change as compiler gives <code>typename outside of template</code> error, I just removed <code>typename</code> from <code>fdd.h</code>.</p>
+
+<p><strong>5.</strong> Check the architecture</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-cmd" data-lang="cmd">$ lipo -info libz3.dylib
+Non-fat file: libz3.dylib is architecture: i386</code></pre></td></tr></table>
+</div>
+</div>
+
+<p><strong>6.</strong>  <strong>cd</strong> to <code>z3/src/api/dotnet</code> folder and compile Microsoft.Z3.csproj with Mono/.NET 4.0 as a target framework <sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>. Also you&rsquo;d need to add a config file to map <code>libz3.dll</code> to our fresh native <code>libz3.dylib</code>.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-xml" data-lang="xml"><span class="err">&lt;</span>?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;&gt;
+<span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;dllmap</span> <span class="na">dll=</span><span class="s">&#34;libz3.dll&#34;</span> <span class="na">target=</span><span class="s">&#34;libz3.dylib&#34;</span> <span class="na">os=</span><span class="s">&#34;osx&#34;</span> <span class="na">cpu=</span><span class="s">&#34;x86&#34;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now we are ready to try it!</p>
+
+<h3 id="examples-time">Examples time</h3>
+
+<p>Let&rsquo;s start with a simple script using official Z3 API, the C# version of examples below can be found in Z3 <a title="Z3 example (C#)" href="http://z3.codeplex.com/SourceControl/latest#examples/dotnet/Program.cs" target="_blank">repository</a>. There&rsquo;s also a nice set of F# examples - I couldn&rsquo;t leave it just in comments - <a title="Z3Fs" href="https://github.com/dungpa/Z3Fs/tree/master/Z3Fs" target="_blank">Z3Fs</a>, a DSL to solve SMT problems by  <a href="https://twitter.com/dungpa">@dungpa</a>.</p>
+
+<p>For simplicity we assume that Microsoft.Z3.dll, config and libz3.dylib are in the script&rsquo;s folder.</p>
+
+<p><em>Prove that x = y implies g(x) = g(y).</em></p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="o">#</span><span class="n">r</span> <span class="s">&#34;Microsoft.Z3.dll&#34;</span>  
+
+<span class="k">open</span> <span class="nn">System</span>
+<span class="k">open</span> <span class="nn">Microsoft.Z3</span>
+<span class="k">open</span> <span class="nn">Microsoft.FSharp.Quotations</span>
+<span class="k">open</span> <span class="nn">DerivedPatterns</span>
+<span class="k">open</span> <span class="nn">Patterns</span>  
+  
+<span class="k">let</span> <span class="nv">prove</span> <span class="o">(</span><span class="n">ctx</span><span class="o">:</span> <span class="n">Context</span><span class="o">)</span> <span class="n">f</span> <span class="o">=</span>  
+    <span class="k">let</span> <span class="nv">s</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkSolver</span><span class="bp">()</span>  
+    <span class="n">s</span><span class="o">.</span><span class="n">Assert</span> <span class="o">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">MkNot</span> <span class="n">f</span><span class="o">)</span>  
+    <span class="k">match</span> <span class="n">s</span><span class="o">.</span><span class="n">Check</span><span class="bp">()</span> <span class="k">with</span>  
+    <span class="o">|</span> <span class="nn">Status</span><span class="p">.</span><span class="n">UNKNOWN</span>     <span class="o">-&gt;</span> <span class="n">printfn</span> <span class="s">&#34;unknown because %A&#34;</span> <span class="n">s</span><span class="o">.</span><span class="n">ReasonUnknown</span>  
+    <span class="o">|</span> <span class="nn">Status</span><span class="p">.</span><span class="n">SATISFIABLE</span> <span class="o">-&gt;</span> <span class="n">printfn</span> <span class="s">&#34;error&#34;</span>  
+    <span class="o">|</span> <span class="o">_</span>                  <span class="o">-&gt;</span> <span class="n">printfn</span> <span class="s">&#34;ok, proof: %A&#34;</span> <span class="n">s</span><span class="o">.</span><span class="n">Proof</span>  
+
+
+<span class="sd">///Prove that x = y implies g(x) = g(y)
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">proveSample</span><span class="bp">()</span> <span class="o">=</span>  
+    <span class="c1">// create context
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">prms</span> <span class="o">=</span> <span class="nn">System</span><span class="p">.</span><span class="nn">Collections</span><span class="p">.</span><span class="nn">Generic</span><span class="p">.</span><span class="n">Dictionary</span><span class="o">(</span><span class="n">dict</span> <span class="o">[</span> <span class="s">&#34;proof&#34;</span><span class="o">,</span> <span class="s">&#34;true&#34;</span> <span class="o">])</span>
+    <span class="k">let</span> <span class="nv">ctx</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Context</span><span class="o">(</span><span class="n">prms</span><span class="o">)</span>
+
+    <span class="c1">// create uninterpreted type
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">U</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkUninterpretedSort</span> <span class="o">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">MkSymbol</span> <span class="s">&#34;U&#34;</span><span class="o">)</span>
+    <span class="c1">// declare function g
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">g</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkFuncDecl</span><span class="o">(</span><span class="s">&#34;g&#34;</span><span class="o">,</span> <span class="n">U</span><span class="o">,</span> <span class="n">U</span><span class="o">)</span>
+
+    <span class="c1">// create x and y
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">x</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkConst</span><span class="o">(</span><span class="s">&#34;x&#34;</span><span class="o">,</span> <span class="n">U</span><span class="o">)</span>
+    <span class="k">let</span> <span class="nv">y</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkConst</span><span class="o">(</span><span class="s">&#34;y&#34;</span><span class="o">,</span> <span class="n">U</span><span class="o">)</span>
+    <span class="c1">// create g(x), g(y)
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">gx</span><span class="o">,</span> <span class="n">gy</span> <span class="o">=</span> <span class="n">g</span><span class="o">.[</span><span class="n">x</span><span class="o">],</span> <span class="n">g</span><span class="o">.[</span><span class="n">y</span><span class="o">]</span>
+
+    <span class="c1">// assert x = y
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">eq</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkEq</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">)</span>
+
+    <span class="c1">// prove g(x) = g(y)
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">f</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkEq</span><span class="o">(</span><span class="n">gx</span><span class="o">,</span> <span class="n">gy</span><span class="o">)</span>
+    <span class="n">printfn</span> <span class="s">&#34;prove: x = y implies g(x) = g(y)&#34;</span>
+    <span class="n">prove</span> <span class="n">ctx</span> <span class="o">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">MkImplies</span><span class="o">(</span><span class="n">eq</span><span class="o">,</span> <span class="n">f</span><span class="o">))</span>
+
+<span class="n">proveSample</span><span class="bp">()</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Well, it&rsquo;s a pain to write all those <code>ctx.Mk*</code>. That&rsquo;s where F# quotations come to hand. Some papers and slides mention Z3 support for quotations, though they seem to be a bit outdated - haven&rsquo;t seen anything similar in the sources. Here is an example of what it can look like.</p>
+
+<p><em>Simplify expression &ldquo;x + (y - (x + z))&rdquo;</em></p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="sd">/// SimplifiedSpecificCall
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">inline</span> <span class="o">(|</span><span class="n">Func</span><span class="o">|_|)</span> <span class="n">expr</span> <span class="o">=</span>
+    <span class="k">match</span> <span class="n">expr</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="n">Lambdas</span><span class="o">(_,</span> <span class="o">(</span><span class="n">Call</span><span class="o">(_,</span> <span class="n">minfo1</span><span class="o">,</span> <span class="o">_)))</span> <span class="o">-&gt;</span> <span class="k">function</span>
+	   <span class="o">|</span> <span class="n">Call</span><span class="o">(</span><span class="kt">obj</span><span class="o">,</span> <span class="n">minfo2</span><span class="o">,</span> <span class="n">args</span><span class="o">)</span> <span class="k">when</span> <span class="n">minfo1</span><span class="o">.</span><span class="n">MetadataToken</span> <span class="o">=</span> <span class="n">minfo2</span><span class="o">.</span><span class="n">MetadataToken</span> <span class="o">-&gt;</span> <span class="n">Some</span> <span class="n">args</span>
+	   <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">None</span>
+    <span class="o">|</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="n">failwith</span> <span class="s">&#34;invalid template parameter&#34;</span>
+
+<span class="sd">/// From quotations to Z3 objects
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">z3</span> <span class="n">expr</span> <span class="o">=</span>
+    <span class="c1">// create context
+</span><span class="c1"></span>    <span class="k">let</span> <span class="nv">prms</span> <span class="o">=</span> <span class="nn">System</span><span class="p">.</span><span class="nn">Collections</span><span class="p">.</span><span class="nn">Generic</span><span class="p">.</span><span class="n">Dictionary</span><span class="o">(</span><span class="n">dict</span> <span class="o">[</span> <span class="s">&#34;proof&#34;</span><span class="o">,</span> <span class="s">&#34;true&#34;</span> <span class="o">])</span>
+    <span class="k">let</span> <span class="nv">ctx</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">Context</span><span class="o">(</span><span class="n">prms</span><span class="o">)</span>
+    <span class="k">let</span> <span class="nv">rec</span> <span class="n">unquote</span> <span class="n">expr</span> <span class="o">=</span>
+        <span class="k">match</span> <span class="n">expr</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="n">Func</span> <span class="o">&lt;@@</span> <span class="o">(+)</span> <span class="o">@@&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">;</span> <span class="n">y</span><span class="o">]</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkAdd</span> <span class="o">(</span><span class="n">unquote</span> <span class="n">x</span><span class="o">,</span> <span class="n">unquote</span> <span class="n">y</span><span class="o">)</span>
+        <span class="o">|</span> <span class="n">Func</span> <span class="o">&lt;@@</span> <span class="o">(-)</span> <span class="o">@@&gt;</span> <span class="o">[</span><span class="n">x</span><span class="o">;</span> <span class="n">y</span><span class="o">]</span> <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkSub</span> <span class="o">(</span><span class="n">unquote</span> <span class="n">x</span><span class="o">,</span> <span class="n">unquote</span> <span class="n">y</span><span class="o">)</span>
+        <span class="o">|</span> <span class="n">Lambdas</span> <span class="o">(_,</span> <span class="n">e</span><span class="o">)</span>          <span class="o">-&gt;</span> <span class="n">unquote</span> <span class="n">e</span>
+        <span class="o">|</span> <span class="n">Var</span> <span class="n">var</span>                 <span class="o">-&gt;</span> <span class="n">ctx</span><span class="o">.</span><span class="n">MkIntConst</span> <span class="n">var</span><span class="o">.</span><span class="n">Name</span> <span class="o">:&gt;</span> <span class="n">ArithExpr</span>
+        <span class="o">|</span> <span class="n">x</span>                       <span class="o">-&gt;</span> <span class="n">failwithf</span> <span class="s">&#34;unknown expression %A&#34;</span> <span class="n">x</span>
+    <span class="n">unquote</span> <span class="n">expr</span>
+
+<span class="sd">/// Simplify expression &#34;x + (y - (x + z))&#34;
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">simplifier</span><span class="bp">()</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">t1</span> <span class="o">=</span> <span class="n">z3</span> <span class="o">&lt;@@</span> <span class="k">fun</span> <span class="n">x</span> <span class="n">y</span> <span class="n">z</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="o">(</span><span class="n">y</span> <span class="o">-</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">z</span><span class="o">))</span> <span class="o">@@&gt;</span>  
+    <span class="k">let</span> <span class="nv">t2</span> <span class="o">=</span> <span class="n">t1</span><span class="o">.</span><span class="n">Simplify</span><span class="bp">()</span>
+    <span class="n">printfn</span> <span class="s">&#34;%A -&gt; %A&#34;</span> <span class="n">t1</span> <span class="n">t2</span>
+
+<span class="n">simplifier</span><span class="bp">()</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Looks much better, doesn&rsquo;t it?</p>
+
+<p><em>Next time: bringing another f-language to mono&hellip;</em><br />
+<br/></p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">don&rsquo;t forget to clean up (<em>.a</em> and <em>.obj</em> files) the folder if you have built x64 lib before.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">MD-generated makefile &amp; co are available on <a title="Sample on GitHub" href="https://github.com/luajalla/everything-fun/tree/master/z3" target="_blank">github</a>
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-05-24</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/z3/">z3</a>
+          <a href="/tags/mono/">mono</a>
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/quotations/">quotations</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/fstar-challenge-or-the-tale-of-tails/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">F* Challenge or The Tale of Tails</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

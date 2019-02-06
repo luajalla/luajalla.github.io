@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>F* Challenge or The Tale of Tails - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="F* Challenge or The Tale of Tails" />
+<meta property="og:description" content="F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/" /><meta property="article:published_time" content="2013-06-07T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-06-07T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="F* Challenge or The Tale of Tails">
+<meta itemprop="description" content="F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications.">
+
+
+<meta itemprop="datePublished" content="2013-06-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-06-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="769">
+
+
+
+<meta itemprop="keywords" content="mono,fsharp,fstar,tail calls," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="F* Challenge or The Tale of Tails"/>
+<meta name="twitter:description" content="F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">F* Challenge or The Tale of Tails</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-06-07 </span>
+        <div class="post-category">
+            <a href="/categories/mono/"> mono </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#resources">Resources:</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.</p>
+
+<h3 id="resources">Resources:</h3>
+
+<ul>
+<li>F* <a title="F* - Security Distributed Programming with Value-Dependent Types" href="http://research.microsoft.com/en-us/projects/fstar/">project home<br /></li>
+<li>Rise4Fun – <a title="Rise4Fun - F*" href="http://rise4fun.com/FStar" target="_blank">try it online</a>/go through the <a title="Rise4Fun - F* tutorial" href="http://rise4fun.com/FStar/tutorial/guide" target="_blank">guide</a><br /></li>
+<li>F* <a title="F* Download" href="http://research.microsoft.com/en-us/downloads/e9089b8e-8871-46a8-987b-75effdcf70e6/default.aspx" target="_blank">download</a><br /></li>
+</ul>
+
+<p>To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications. But things are getting more interesting if you’re a mono user, when you want to compile the “right” compiler with blackjack and everything.</p>
+
+<p>F* Download includes the sources and some binaries to bootstrap the compiler.<br />
+There is a dependency on Z3, we need F# PowerPack libs, fslex, fsyacc and i386 version of dylib for Mac and mono version of <code>Microsoft.Z3.dll</code> library (either compile a new one or download <a title="Z3Fs" href="https://github.com/dungpa/Z3Fs/" target="_blank">here</a> or <a title="Z3 Starter" href="https://github.com/luajalla/everything-fun/tree/master/z3" target="_blank">here</a>).</p>
+
+<p>But first of all, need to admit it works only for the small programs now. That’s why I ain’t gonna list the steps now. They are actually quite straightforward – update the paths <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> and fix the errors if any (e.g. I replaced the reserved word <code>const</code> with <code>cnst</code>). You can also define <code>MONO</code> symbol and add references to <code>z3mono.dll</code>.</p>
+
+<p>The first wall is <code>Certify.dll</code> rule – got StackOverflow here. Given the .dll which is in bin folder by default, everything else compiles, including <code>fstar.exe</code>.</p>
+
+<p>At this point only the simplest programs can be successfully verified. Why only them?</p>
+
+<p>F* relies on tail call optimizations – lots and lots of recursive functions here. Consider the following simple function, it does nothing usefull but illustrates the problem:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">rec</span> <span class="n">f</span> <span class="n">x</span> <span class="n">cont</span> <span class="o">=</span>                                                       
+    <span class="k">if</span>   <span class="n">x</span> <span class="o">&lt;</span> <span class="n">0</span> <span class="k">then</span> <span class="n">0</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span class="n">cont</span> <span class="n">x</span>
+    <span class="k">else</span> <span class="n">f</span> <span class="o">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">1</span><span class="o">)</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="n">cont</span><span class="o">)</span>
+
+<span class="n">f</span> <span class="n">250000</span> <span class="n">id</span> <span class="o">//</span> <span class="n">SO</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>We can verify that the <code>.tail</code> instructions are where expected:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-v" data-lang="v"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-v" data-lang="v"><span class="p">.</span><span class="n">method</span> <span class="n">public</span> <span class="n">static</span> 
+  <span class="n">int32</span> <span class="n">f</span> <span class="p">(</span><span class="n">int32</span> <span class="n">x</span><span class="p">,</span>
+     <span class="n">class</span> <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">FSharpFunc</span><span class="err">`</span><span class="mh">2</span><span class="o">&lt;</span><span class="n">int32</span><span class="p">,</span> <span class="n">int32</span><span class="o">&gt;</span> <span class="n">cont</span>
+     <span class="p">)</span> <span class="n">cil</span> <span class="n">managed</span>   
+<span class="p">{</span>   
+ <span class="p">.</span><span class="n">custom</span> <span class="n">instance</span> <span class="k">void</span> <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span>
+    <span class="p">.</span><span class="n">CompilationArgumentCountsAttribute</span><span class="o">::</span><span class="p">.</span><span class="n">ctor</span><span class="p">(</span><span class="n">int32</span><span class="p">[])</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mh">01</span> <span class="mh">00</span> <span class="mh">02</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">01</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">01</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">00</span> <span class="mh">00</span>
+    <span class="p">)</span>
+    <span class="c1">// Method begins at RVA 0x2050
+</span><span class="c1"></span>    <span class="c1">// Code size 35 (0x23)
+</span><span class="c1"></span>    <span class="p">.</span><span class="n">maxstack</span> <span class="mh">8</span>
+    <span class="c1">// loop start
+</span><span class="c1"></span>     <span class="nl">IL_0000:</span> <span class="n">nop</span>
+     <span class="nl">IL_0001:</span> <span class="n">ldarg</span><span class="mf">.0</span>
+     <span class="nl">IL_0002:</span> <span class="n">ldc</span><span class="p">.</span><span class="n">i4</span><span class="mf">.0</span>
+     <span class="nl">IL_0003:</span> <span class="n">bge</span><span class="p">.</span><span class="n">s</span> <span class="n">IL_0007</span>
+  
+     <span class="nl">IL_0005:</span> <span class="n">ldc</span><span class="p">.</span><span class="n">i4</span><span class="mf">.0</span>
+     <span class="nl">IL_0006:</span> <span class="n">ret</span>
+  
+     <span class="nl">IL_0007:</span> <span class="n">ldarg</span><span class="mf">.0</span>
+     <span class="nl">IL_0008:</span> <span class="n">brtrue</span><span class="p">.</span><span class="n">s</span> <span class="n">IL_0014</span>
+  
+     <span class="nl">IL_000a:</span> <span class="n">ldarg</span><span class="mf">.1</span>
+     <span class="nl">IL_000b:</span> <span class="n">ldarg</span><span class="mf">.0</span>
+     <span class="nl">IL_000c:</span> <span class="n">tail</span><span class="p">.</span>  <span class="c1">// cont x
+</span><span class="c1"></span>     <span class="nl">IL_000e:</span> <span class="n">callvirt</span> <span class="n">instance</span> <span class="o">!</span><span class="mh">1</span> <span class="n">class</span> 
+           <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">FSharpFunc</span><span class="err">`</span><span class="mh">2</span><span class="o">&lt;</span><span class="n">int32</span><span class="p">,</span> <span class="n">int32</span><span class="o">&gt;::</span><span class="n">Invoke</span><span class="p">(</span><span class="o">!</span><span class="mh">0</span><span class="p">)</span>
+     <span class="nl">IL_0013:</span> <span class="n">ret</span>
+  
+     <span class="nl">IL_0014:</span> <span class="n">ldarg</span><span class="mf">.0</span>
+     <span class="nl">IL_0015:</span> <span class="n">ldc</span><span class="p">.</span><span class="n">i4</span><span class="mf">.1</span>
+     <span class="nl">IL_0016:</span> <span class="n">sub</span>
+     <span class="nl">IL_0017:</span> <span class="n">ldarg</span><span class="mf">.1</span>
+     <span class="nl">IL_0018:</span> <span class="n">newobj</span> <span class="n">instance</span> <span class="k">void</span> <span class="n">Tailcalls</span><span class="o">/</span><span class="n">f</span><span class="p">@</span><span class="mh">4</span><span class="o">::</span><span class="p">.</span><span class="n">ctor</span><span class="p">(</span>
+           <span class="n">class</span> <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">FSharpFunc</span><span class="err">`</span><span class="mh">2</span><span class="o">&lt;</span><span class="n">int32</span><span class="p">,</span> <span class="n">int32</span><span class="o">&gt;</span><span class="p">)</span> 
+     <span class="nl">IL_001d:</span> <span class="n">starg</span><span class="p">.</span><span class="n">s</span> <span class="n">cont</span>
+     <span class="nl">IL_001f:</span> <span class="n">starg</span><span class="p">.</span><span class="n">s</span> <span class="n">x</span>
+     <span class="nl">IL_0021:</span> <span class="n">br</span><span class="p">.</span><span class="n">s</span> <span class="n">IL_0000</span>
+     <span class="c1">// end loop
+</span><span class="c1"></span><span class="p">}</span>  <span class="c1">// end of method Tailcalls::f
+</span><span class="c1"></span></code></pre></td></tr></table>
+</div>
+</div>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-v" data-lang="v"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-v" data-lang="v"><span class="p">.</span><span class="n">method</span> <span class="n">public</span> <span class="n">strict</span> <span class="n">virtual</span> 
+<span class="n">instance</span> <span class="n">int32</span> <span class="n">Invoke</span> <span class="p">(</span><span class="n">int32</span> <span class="n">x</span><span class="p">)</span> <span class="n">cil</span> <span class="n">managed</span> 
+<span class="p">{</span>
+    <span class="c1">// Method begins at RVA 0x2084
+</span><span class="c1"></span>    <span class="c1">// Code size 16 (0x10)
+</span><span class="c1"></span>    <span class="p">.</span><span class="n">maxstack</span> <span class="mh">8</span>
+
+    <span class="nl">IL_0000:</span> <span class="n">nop</span>
+    <span class="nl">IL_0001:</span> <span class="n">ldarg</span><span class="mf">.1</span>
+    <span class="nl">IL_0002:</span> <span class="n">ldarg</span><span class="mf">.0</span>
+    <span class="nl">IL_0003:</span> <span class="n">ldfld</span> <span class="n">class</span> 
+          <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">FSharpFunc</span><span class="err">`</span><span class="mh">2</span><span class="o">&lt;</span><span class="n">int32</span><span class="p">,</span> <span class="n">int32</span><span class="o">&gt;</span> <span class="n">Tailcalls</span><span class="o">/</span><span class="n">f</span><span class="p">@</span><span class="mh">4</span><span class="o">::</span><span class="n">cont</span>
+    <span class="nl">IL_0008:</span> <span class="n">tail</span><span class="p">.</span>  <span class="c1">// f x cont
+</span><span class="c1"></span>    <span class="nl">IL_000a:</span> <span class="n">call</span> <span class="n">int32</span> <span class="n">Tailcalls</span><span class="o">::</span><span class="n">f</span><span class="p">(</span><span class="n">int32</span><span class="p">,</span> 
+          <span class="n">class</span> <span class="p">[</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">]</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">FSharp</span><span class="p">.</span><span class="n">Core</span><span class="p">.</span><span class="n">FSharpFunc</span><span class="err">`</span><span class="mh">2</span><span class="o">&lt;</span><span class="n">int32</span><span class="p">,</span> <span class="n">int32</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="nl">IL_000f:</span> <span class="n">ret</span>
+<span class="p">}</span>  <span class="c1">// end of method f@4::Invoke
+</span><span class="c1"></span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Does it work? Well, for .NET the answer is yes. But on mono the continuation part makes the stack grow. Manipulations with stack size are not the solution, so the sources modification seems to be a way to go.</p>
+
+<p>There’s an old <a title="Bug 476785 - Tail call support in F#" href="https://bugzilla.novell.com/show_bug.cgi?id=476785" target="_blank">issue</a> with tail calls when called and caller functions have different number of parameters. I thought that can be the case, because of <code>FSharpFunc</code> <code>Invoke</code>/<code>InvokeFast</code> methods, and created a special type for arguments, so all functions had a single parameter. It isn&rsquo;t.</p>
+
+<p>I still believe it is possible to get F* working on mono <sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>. Hope to find some spare time to dig into the logic and check how it can be rewritten with a simpler recursion, just extremely busy right now ). I also shared some ideas with Nikhil Swamy from F* team – he experimented with mono builds too and definitely knows much better what can be done. That’s an interesting challenge and, of course, the fresh ideas are very welcome!</p>
+
+<p>&nbsp;</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">it’s better to include the full paths – for example I usually happily forget that <i>fsc</i> on my machine means <i>Fast Scala Compiler</i> and waste the time trying to get why it rejects .fs files.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">everything comes to electricity at the end, right? ;)
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-06-07</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mono/">mono</a>
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/fstar/">fstar</a>
+          <a href="/tags/tail-calls/">tail calls</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/lp-simplex-draft/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">LP - Simplex Draft</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/z3-mono-starter/">
+            <span class="next-text nav-default">Z3 Mono Starter</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

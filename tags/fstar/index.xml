@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fstar on type-nat</title>
+    <link>http://type-nat.ch/tags/fstar/</link>
+    <description>Recent content in fstar on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 25 Apr 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/fstar/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Abs Puzzle</title>
+      <link>http://type-nat.ch/post/abs-puzzle/</link>
+      <pubDate>Fri, 25 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/abs-puzzle/</guid>
+      <description>If someone asked you to implement abs function (say, for ints), how would you do that? A simple experiment shows that almost everyone comes up with something like that, whether it&amp;rsquo;s F#, C#, Scala or anything else:
+1  let abs x = if x &amp;lt; 0 then -x else x   The obvious question - do the answers match your expectations? That depends&amp;hellip;
+It&amp;rsquo;s quite obvious when you think about the corner cases - here it&amp;rsquo;s the minimal integer value:</description>
+    </item>
+    
+    <item>
+      <title>Days and Ghost Refinements</title>
+      <link>http://type-nat.ch/post/days-and-ghost-refinements/</link>
+      <pubDate>Sun, 07 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/days-and-ghost-refinements/</guid>
+      <description>Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:</description>
+    </item>
+    
+    <item>
+      <title>F* Challenge or The Tale of Tails</title>
+      <link>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</link>
+      <pubDate>Fri, 07 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</guid>
+      <description>F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications.</description>
+    </item>
+    
+  </channel>
+</rss>

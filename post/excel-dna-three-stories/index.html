@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Excel-DNA: Three Stories - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&amp;rsquo;d say it&amp;rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/excel-dna-three-stories/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Excel-DNA: Three Stories" />
+<meta property="og:description" content="Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&rsquo;d say it&rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/excel-dna-three-stories/" /><meta property="article:published_time" content="2013-08-05T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-08-05T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Excel-DNA: Three Stories">
+<meta itemprop="description" content="Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&rsquo;d say it&rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.">
+
+
+<meta itemprop="datePublished" content="2013-08-05T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-08-05T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1151">
+
+
+
+<meta itemprop="keywords" content="fsharp,Excel,R," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Excel-DNA: Three Stories"/>
+<meta name="twitter:description" content="Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&rsquo;d say it&rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Excel-DNA: Three Stories</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-08-05 </span>
+        <div class="post-category">
+            <a href="/categories/fsharp/"> fsharp </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#intro-simulation">Intro: Simulation</a></li>
+<li><a href="#keep-simple-things-simple">Keep Simple Things Simple</a></li>
+<li><a href="#make-complex-things-simple">Make Complex Things Simple</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h3 id="intro-simulation">Intro: Simulation</h3>
+
+<p>A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&rsquo;d say it&rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel. The code is of unknown origin and protected, so no way to check it and I just gave up.</p>
+
+<p>Now think about an average Excel user. He/she doesn&rsquo;t care about how exactly it works, in which language written or how difficult it was for you to implement. What is important then?</p>
+
+<ul>
+<li><p><em>functionality</em>: everything what comes to mind can become a function;</p></li>
+
+<li><p><em>simplicity</em>: nobody wants to write VBA (and usually anything else too), but it&rsquo;s always nice to have some useful UDFs at hand;</p></li>
+
+<li><p><em>reliability</em>: you have a well-tested library already, so why not to call it instead of rewriting in a poor language?</p></li>
+
+<li><p><em>performance</em>: why wait for a day when there&rsquo;re highly optimized libraries and distributed computing is already invented?</p></li>
+</ul>
+
+<p>For those who hasn&rsquo;t tried it yet - check out <a title="Excel-DNA home" href="http://exceldna.codeplex.com/" target="_blank">Excel-DNA</a>. It&rsquo;s an open-source project, which allows to integrate .NET into Excel. And yes, actually not only .NET ;) Documentation, samples, links to related posts can be found on the project page.</p>
+
+<div class='align-center'>
+  <p><img src="/images/dilbert_spreadsheet.gif" alt="Spreadsheet" /></p>
+
+</div>
+
+<p>&nbsp;</p>
+
+<h3 id="keep-simple-things-simple">Keep Simple Things Simple</h3>
+
+<p>Let&rsquo;s take log-linear interpolation as an example. Simple? Sure. We want to keep calculations clear in case if someone&rsquo;d like to modify it - took 9 rows for me: functions like <code>OFFSET</code> and <code>MATCH</code> are not very friendly. And you still need to remember about sorting, extrapolation, duplicate values. What if there&rsquo;re thousands of points?</p>
+
+<p>Instead we call a UDF, which does all the work, it behaves in a specified way and can be reused in the future. I won&rsquo;t describe how to create an addin - for more information check the project <a title="Excel-DNA home" href="http://exceldna.codeplex.com/" target="_blank">homepage</a>. Briefly, in addition to a standard F# project we need a reference to <em>ExcelDna.Integration.dll</em>, <em>interpolation.dna</em> file with a reference to our library and a copy of <em>ExcelDna.xll</em> (x64 version is also available), renamed to <em>interpolation.xll</em>.</p>
+
+<p>The future UDF has <code>ExcelFunction</code> attribute <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>. For consistency with Excel function names it&rsquo;s called <code>LOGLINEAR</code>. You can also add a description, category and so on. All parameters and output here are float arrays.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">open</span> <span class="nn">ExcelDna.Integration</span>
+
+<span class="o">[&lt;</span><span class="n">AutoOpen</span><span class="o">&gt;]</span>
+<span class="k">module</span> <span class="nn">Interpolation</span> <span class="o">=</span>
+
+    <span class="k">let</span> <span class="nv">private</span> <span class="n">interpolate</span> <span class="n">curve</span> <span class="o">(</span><span class="n">point</span> <span class="o">:</span> <span class="kt">float</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">len</span> <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">length</span> <span class="n">curve</span>
+        
+        <span class="k">let</span> <span class="nv">u</span> <span class="o">=</span>
+            <span class="k">if</span>   <span class="n">point</span> <span class="o">&lt;</span> <span class="n">fst</span> <span class="n">curve</span><span class="o">.[</span><span class="n">0</span><span class="o">]</span>       <span class="k">then</span> <span class="n">1</span>
+            <span class="k">elif</span> <span class="n">point</span> <span class="o">&gt;</span> <span class="n">fst</span> <span class="n">curve</span><span class="o">.[</span><span class="n">len</span> <span class="o">-</span> <span class="n">1</span><span class="o">]</span> <span class="k">then</span> <span class="n">len</span> <span class="o">-</span> <span class="n">1</span>
+            <span class="k">else</span> <span class="nn">Array</span><span class="p">.</span><span class="n">findIndex</span> <span class="o">(</span><span class="k">fun</span> <span class="o">(</span><span class="n">v</span><span class="o">,</span> <span class="o">_)</span> <span class="o">-&gt;</span> <span class="n">point</span> <span class="o">&lt;</span> <span class="n">v</span><span class="o">)</span> <span class="n">curve</span>
+        
+        <span class="k">let</span> <span class="o">(</span><span class="n">xu</span><span class="o">,</span> <span class="n">yu</span><span class="o">),</span> <span class="o">(</span><span class="n">xd</span><span class="o">,</span> <span class="n">yd</span><span class="o">)</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.[</span><span class="n">u</span><span class="o">],</span> <span class="n">curve</span><span class="o">.[</span><span class="n">u</span><span class="o">-</span><span class="n">1</span><span class="o">]</span>
+        <span class="k">let</span> <span class="nv">lnp</span> <span class="o">=</span> <span class="n">log</span> <span class="n">yd</span> <span class="o">+</span> <span class="o">(</span><span class="n">log</span> <span class="n">yu</span> <span class="o">-</span> <span class="n">log</span> <span class="n">yd</span><span class="o">)</span> <span class="o">/</span> <span class="o">(</span><span class="n">xu</span> <span class="o">-</span> <span class="n">xd</span><span class="o">)</span> <span class="o">*</span> <span class="o">(</span><span class="n">point</span> <span class="o">-</span> <span class="n">xd</span><span class="o">)</span>
+        <span class="n">exp</span> <span class="n">lnp</span>
+
+    <span class="o">[&lt;</span><span class="n">ExcelFunction</span><span class="o">(</span><span class="n">Name</span><span class="o">=</span><span class="s">&#34;LOGLINEAR&#34;</span><span class="o">,</span> <span class="n">Description</span><span class="o">=</span><span class="s">&#34;Log-Linear Interpolation&#34;</span><span class="o">,</span>
+<span class="n">Category</span><span class="o">=</span><span class="s">&#34;Custom&#34;</span><span class="o">,</span> <span class="n">IsThreadSafe</span> <span class="o">=</span> <span class="k">true</span><span class="o">)&gt;]</span>
+    <span class="k">let</span> <span class="nv">loglinear</span> <span class="o">(</span><span class="n">xs</span><span class="o">:</span> <span class="o">_</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span><span class="o">:</span> <span class="o">_</span><span class="bp">[]</span><span class="o">)</span> <span class="n">points</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">curve</span> <span class="o">=</span>
+            <span class="nn">Seq</span><span class="p">.</span><span class="n">zip</span> <span class="n">xs</span> <span class="n">ys</span>
+            <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">distinctBy</span> <span class="n">fst</span>
+            <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">sort</span>
+            <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">toArray</span>
+
+        <span class="k">if</span> <span class="n">curve</span><span class="o">.</span><span class="n">Length</span> <span class="o">&lt;</span> <span class="n">2</span> <span class="k">then</span> <span class="n">failwith</span> <span class="s">&#34;at least 2 points are required&#34;</span>
+        <span class="nn">Array</span><span class="p">.</span><span class="n">map</span> <span class="o">(</span><span class="n">interpolate</span> <span class="n">curve</span><span class="o">)</span> <span class="n">points</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>After loading the add-in in Excel (double-click on <em>interpolation.xll</em> in output folder), you can just type <code>LOGLINEAR</code> and see the results!<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>.</p>
+
+<div class='align-center'>
+  <p><img src="/images/interpolation.png" alt="Excel-Interpolation" /></p>
+
+</div>
+
+<p>&nbsp;</p>  
+
+<h3 id="make-complex-things-simple">Make Complex Things Simple</h3>
+
+<p>Well, it&rsquo;s cool, but I still can do this interpolation by hands - and it&rsquo;ll work, you don&rsquo;t need to be super-smart to do a couple of subtractions and multiplications without mistakes. But things are getting more interesting when a bunch of standard functions is not enough.</p>
+
+<p>How about machine learning with Excel? Of course, it can be handy only for experiments with adequately small amounts of data. But for sure, not something I&rsquo;d want to write in VBA.</p>
+
+<p>A lot of my fellow traders use random forests for feature selection (it is actually what I like about RF most) before feeding the data into actual models, neural nets or anything else. So let&rsquo;s take a look at <em>rtp</em> addin, which can help to find important features and get rid of useless (and potentially harmful?) ones. Important point: this example is for demo purposes only! I took some Yahoo stock prices - it&rsquo;s not that easy to get good data for free, so can&rsquo;t call it realistic; the same works for features<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>. If you want a bit more for free, there&rsquo;re also two old kaggle competitions: <a title="Benchmark Bond Trade Price Challenge" href="https://www.kaggle.com/c/benchmark-bond-trade-price-challenge" target="_blank">Benchmark Bond Trade Price Challenge</a>  and <a title="Algorithmic Trading Challenge" href="http://www.kaggle.com/c/AlgorithmicTradingChallenge" target="_blank">Algorithmic Trading Challenge</a>  (the winners <a title="Winning Algorithmic Trading Challenge" href="http://sugiyama-www.cs.titech.ac.jp/~sugi/2013/Kaggle.pdf" target="_blank">used RF</a>).</p>
+
+<p>Anyway, we are lucky because all data is numeric. Even more than that - we have <a title="R Type Provider" href="https://github.com/BlueMountainCapital/FSharpRProvider" target="_blank">F# R Type Provider</a> and can use R&rsquo;s randomForest package!</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">open</span> <span class="nn">RProvider</span>
+<span class="k">open</span> <span class="nn">RProvider.</span><span class="n">``base``</span>
+<span class="k">open</span> <span class="nn">RProvider.randomForest</span>
+
+<span class="k">open</span> <span class="nn">ExcelDna.Integration</span>
+
+<span class="o">[&lt;</span><span class="n">ExcelFunction</span><span class="o">(</span><span class="n">Name</span> <span class="o">=</span> <span class="s">&#34;IMPORTANCE&#34;</span><span class="o">,</span> 
+    <span class="n">Description</span> <span class="o">=</span> <span class="s">&#34;Variable importance measures as produced by R&#39;s randomForest &#34;</span><span class="o">)&gt;]</span>
+<span class="k">let</span> <span class="nv">importance</span> <span class="o">(</span><span class="n">names</span> <span class="o">:</span> <span class="kt">obj</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">values</span><span class="o">:</span> <span class="kt">float</span><span class="o">[,])</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">float</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">cols</span> <span class="o">=</span> <span class="n">min</span> <span class="n">names</span><span class="o">.</span><span class="n">Length</span> <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">GetLength</span> <span class="n">1</span><span class="o">)</span>
+    <span class="k">let</span> <span class="nv">rows</span> <span class="o">=</span> <span class="n">min</span> <span class="n">ys</span><span class="o">.</span><span class="n">Length</span>    <span class="o">(</span><span class="n">values</span><span class="o">.</span><span class="n">GetLength</span> <span class="n">0</span><span class="o">)</span>
+
+    <span class="k">let</span> <span class="nv">xs</span> <span class="o">=</span> 
+        <span class="n">names</span>
+        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">take</span> <span class="n">cols</span>
+        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">mapi</span> <span class="o">(</span><span class="k">fun</span> <span class="n">j</span> <span class="n">name</span> <span class="o">-&gt;</span>
+            <span class="kt">string</span> <span class="n">name</span><span class="o">,</span> <span class="nn">Array</span><span class="p">.</span><span class="n">init</span> <span class="n">rows</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">values</span><span class="o">.[</span><span class="n">i</span><span class="o">,</span> <span class="n">j</span><span class="o">]))</span>
+        <span class="o">|&gt;</span> <span class="n">namedParams</span>
+        <span class="o">|&gt;</span> <span class="nn">R</span><span class="p">.</span><span class="n">data_frame</span>            
+
+    <span class="k">let</span> <span class="nv">rf</span> <span class="o">=</span> <span class="nn">R</span><span class="p">.</span><span class="n">randomForest</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">ys</span><span class="o">)</span>
+    <span class="o">(</span><span class="nn">R</span><span class="p">.</span><span class="n">importance</span> <span class="n">rf</span><span class="o">).</span><span class="n">Value</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Look at the R-Importance tab: we call the function <code>{=IMPORTANCE(Names,Data,Result)}</code> and get a nice set of values - the greater the value, the greener and more important it is. For example, P5 and P6 (close prices for day-5 and day-6 respectively) seem to be not very useful.</p>
+
+<div class='align-center'>
+  <p><img src="/images/excel-importance.png" alt="Spreadsheet" /></p>
+
+</div>
+
+<p>Adding features is pretty straightforward too. Say, we want to calculate Simple Moving Average with different offsets:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="o">[&lt;</span><span class="n">ExcelFunction</span><span class="o">(</span><span class="n">Name</span> <span class="o">=</span> <span class="s">&#34;SMA&#34;</span><span class="o">,</span> <span class="n">Description</span><span class="o">=</span><span class="s">&#34;Simple Moving Average&#34;</span><span class="o">)&gt;]</span>
+<span class="k">let</span> <span class="nv">sma</span> <span class="o">(</span><span class="n">values</span> <span class="o">:</span> <span class="kt">float</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">nobj</span> <span class="o">:</span> <span class="kt">float</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="nv">n</span>   <span class="o">=</span> <span class="n">int</span> <span class="n">nobj</span>
+    <span class="k">let</span> <span class="nv">len</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">Length</span>
+
+    <span class="k">if</span> <span class="n">len</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">||</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">2</span> <span class="k">then</span> <span class="n">box</span> <span class="nn">ExcelError</span><span class="p">.</span><span class="n">ExcelErrorNA</span>
+    <span class="k">else</span> 
+        <span class="k">let</span> <span class="nv">res</span> <span class="o">=</span> <span class="nn">Array2D</span><span class="p">.</span><span class="n">zeroCreate</span> <span class="n">len</span> <span class="n">1</span>
+
+        <span class="nn">Seq</span><span class="p">.</span><span class="n">windowed</span> <span class="n">n</span> <span class="n">values</span>
+        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">map</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">average</span>
+        <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">iteri</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="n">v</span> <span class="o">-&gt;</span> <span class="n">res</span><span class="o">.[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="n">1</span><span class="o">,</span> <span class="n">0</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">box</span> <span class="n">v</span><span class="o">)</span>
+        <span class="n">resize</span> <span class="n">res</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>The interesting thing here is <code>resize</code> function: it allows you not to select the whole output range when calling a function, but just type <code>=SMA(Values,5)</code> in the top cell and result array is automatically resized. The code of these examples is available on <a title="Excel-DNA Samples" href="https://github.com/luajalla/everything-fun/tree/master/exceldna-sample" target="_blank">github</a>.</p>
+
+<iframe src="https://docs.google.com/spreadsheet/pub?key=0AsEtPrcHNCbXdGFvRjRhYkwxYkhVWmxyZWxxV3dJemc&amp;output=html&amp;widget=true" height="400" width="720" frameborder="0"></iframe>  
+
+<p>Excel-DNA makes it possible to bring all .NET power to the spreadsheets. Just try it ^_^</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">see <em>interpolation</em> project <a title="Interpolation" href="https://github.com/luajalla/everything-fun/tree/master/exceldna-sample/interpolation" target="_blank">here</a>.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">as a reminder, array formulae are entered with Ctrl+Shift+Enter.
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:3">and also my experience has nothing to do with trading.
+ <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-08-05</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/excel/">Excel</a>
+          <a href="/tags/r/">R</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/the-world-around-us-back-to-words-with-j/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">The World Around Us: back to words with J</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/days-and-ghost-refinements/">
+            <span class="next-text nav-default">Days and Ghost Refinements</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

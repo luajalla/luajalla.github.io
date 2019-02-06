@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on type-nat</title>
+    <link>http://type-nat.ch/tags/r/</link>
+    <description>Recent content in R on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 25 Apr 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Traditions vs Statistics: Sechseläuten</title>
+      <link>http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/</link>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/</guid>
+      <description>What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&amp;rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&amp;rsquo;s also a day when you realize, that there&amp;rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!</description>
+    </item>
+    
+    <item>
+      <title>Log(music) with Undertone</title>
+      <link>http://type-nat.ch/post/log-music-with-undertone/</link>
+      <pubDate>Thu, 26 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/log-music-with-undertone/</guid>
+      <description>Whether you&amp;rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&amp;rsquo;ll meet the Markov chains sooner or later. And today we&amp;rsquo;ll try them on&amp;hellip; music!
+If you&amp;rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.</description>
+    </item>
+    
+    <item>
+      <title>Excel-DNA: Three Stories</title>
+      <link>http://type-nat.ch/post/excel-dna-three-stories/</link>
+      <pubDate>Mon, 05 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/excel-dna-three-stories/</guid>
+      <description>Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&amp;rsquo;d say it&amp;rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.</description>
+    </item>
+    
+  </channel>
+</rss>

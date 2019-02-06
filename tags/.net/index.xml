@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>.net on type-nat</title>
+    <link>http://type-nat.ch/tags/.net/</link>
+    <description>Recent content in .net on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 21 Feb 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Reshaping Arrays in .NET</title>
+      <link>http://type-nat.ch/post/reshaping-arrays-in-net/</link>
+      <pubDate>Sat, 21 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/reshaping-arrays-in-net/</guid>
+      <description>Reshape is one of these little functions, which look so simple and straightforward that you don&amp;rsquo;t think much about them. It&amp;rsquo;s quite useful and, I&amp;rsquo;m pretty sure, familiar to everyone who&amp;rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&amp;rsquo;s not really a problem when you know the exact type and dimensionality, e.</description>
+    </item>
+    
+    <item>
+      <title>Interop Adventure: From .NET to Matlab and Back</title>
+      <link>http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/</guid>
+      <description>A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&amp;rsquo;t want to spend years rewriting.</description>
+    </item>
+    
+    <item>
+      <title>Abs Puzzle</title>
+      <link>http://type-nat.ch/post/abs-puzzle/</link>
+      <pubDate>Fri, 25 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/abs-puzzle/</guid>
+      <description>If someone asked you to implement abs function (say, for ints), how would you do that? A simple experiment shows that almost everyone comes up with something like that, whether it&amp;rsquo;s F#, C#, Scala or anything else:
+1  let abs x = if x &amp;lt; 0 then -x else x   The obvious question - do the answers match your expectations? That depends&amp;hellip;
+It&amp;rsquo;s quite obvious when you think about the corner cases - here it&amp;rsquo;s the minimal integer value:</description>
+    </item>
+    
+  </channel>
+</rss>

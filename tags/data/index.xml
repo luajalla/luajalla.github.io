@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data on type-nat</title>
+    <link>http://type-nat.ch/tags/data/</link>
+    <description>Recent content in data on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 02 Nov 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/data/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Trying out Deedle with Bones and Regression</title>
+      <link>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</link>
+      <pubDate>Sat, 02 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</guid>
+      <description>I usually don&amp;rsquo;t need to run a regression anywhere, but it&amp;rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&amp;hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &amp;lsquo;cheated&amp;rsquo; and completed the assignments with R.</description>
+    </item>
+    
+  </channel>
+</rss>

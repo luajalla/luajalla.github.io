@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fsharp on type-nat</title>
+    <link>http://type-nat.ch/categories/fsharp/</link>
+    <description>Recent content in fsharp on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/categories/fsharp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>FsCheck and co: Testing Excel Financial Functions</title>
+      <link>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</guid>
+      <description>Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.</description>
+    </item>
+    
+    <item>
+      <title>Log(music) with Undertone</title>
+      <link>http://type-nat.ch/post/log-music-with-undertone/</link>
+      <pubDate>Thu, 26 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/log-music-with-undertone/</guid>
+      <description>Whether you&amp;rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&amp;rsquo;ll meet the Markov chains sooner or later. And today we&amp;rsquo;ll try them on&amp;hellip; music!
+If you&amp;rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.</description>
+    </item>
+    
+    <item>
+      <title>Trying out Deedle with Bones and Regression</title>
+      <link>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</link>
+      <pubDate>Sat, 02 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</guid>
+      <description>I usually don&amp;rsquo;t need to run a regression anywhere, but it&amp;rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&amp;hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &amp;lsquo;cheated&amp;rsquo; and completed the assignments with R.</description>
+    </item>
+    
+    <item>
+      <title>[F#] Dev Life&#39;s Little Pleasures</title>
+      <link>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</link>
+      <pubDate>Thu, 17 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</guid>
+      <description>Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &amp;ldquo;[F#] Dev Life&amp;rsquo;s Little Pleasures&amp;rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&amp;rsquo;mon, how can you get kg and m^2 mixed up?</description>
+    </item>
+    
+    <item>
+      <title>Excel-DNA: Three Stories</title>
+      <link>http://type-nat.ch/post/excel-dna-three-stories/</link>
+      <pubDate>Mon, 05 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/excel-dna-three-stories/</guid>
+      <description>Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&amp;rsquo;d say it&amp;rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.</description>
+    </item>
+    
+  </channel>
+</rss>

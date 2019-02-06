@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>math on type-nat</title>
+    <link>http://type-nat.ch/tags/math/</link>
+    <description>Recent content in math on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 May 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/math/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to Name a Cat</title>
+      <link>http://type-nat.ch/post/how-to-name-a-cat/</link>
+      <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/how-to-name-a-cat/</guid>
+      <description>A fun conversation about mountains, monads, types and heels reminded me about the first University years and one of our favourite math jokes. Here&amp;rsquo;s an attempt to translate it (original):
+ Btw, Basis is a good name for a cat. Yeah, imposing&amp;hellip; &amp;ldquo;Basis, come here&amp;rdquo;. &amp;ldquo;Yes&amp;hellip; Basis is full&amp;hellip; Look at our complete Basis.&amp;rdquo; &amp;ldquo;Basis, shoo from the bed! Where is your space?&amp;rdquo; &amp;ldquo;C&amp;rsquo;mon, convert to normal!&amp;rdquo; &amp;ldquo;Basis, we&amp;rsquo;ll measure you!</description>
+    </item>
+    
+    <item>
+      <title>Log(music) with Undertone</title>
+      <link>http://type-nat.ch/post/log-music-with-undertone/</link>
+      <pubDate>Thu, 26 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/log-music-with-undertone/</guid>
+      <description>Whether you&amp;rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&amp;rsquo;ll meet the Markov chains sooner or later. And today we&amp;rsquo;ll try them on&amp;hellip; music!
+If you&amp;rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.</description>
+    </item>
+    
+    <item>
+      <title>LP - Simplex Draft</title>
+      <link>http://type-nat.ch/post/lp-simplex-draft/</link>
+      <pubDate>Sat, 22 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/lp-simplex-draft/</guid>
+      <description>Everybody solves some optimization problems – the airlines schedule flights, companies manage production facilities, salesman still looks for traveling options… When you need to achieve the best outcome minimizing/maximizing a linear cost functions you meet linear programming.
+LP was developed for military purposes in 1939, so it has a long history. Now it is one of the most important problems in operations research and heavily used in different areas directly or as sub-problems.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}" /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/" />
+  <link href="http://type-nat.ch/index.xml" rel="alternate" type="application/rss+xml" title="type-nat" />
+  <link href="http://type-nat.ch/index.xml" rel="feed" type="application/rss+xml" title="type-nat" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="type-nat" />
+<meta property="og:description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://type-nat.ch/" />
+<meta property="og:updated_time" content="2014-04-25T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="type-nat">
+<meta itemprop="description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="type-nat"/>
+<meta name="twitter:description" content="Natallie&#39;s blog about tech and everything around | type nat = x:int{x &gt;= 0}"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/abs-puzzle/">Abs Puzzle</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-04-25 </span>
+      <div class="post-category">
+          <a href="/categories/languages/"> languages </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      If someone asked you to implement abs function (say, for ints), how would you do that? A simple experiment shows that almost everyone comes up with something like that, whether it&rsquo;s F#, C#, Scala or anything else:
+1  let abs x = if x &lt; 0 then -x else x   The obvious question - do the answers match your expectations? That depends&hellip;
+It&rsquo;s quite obvious when you think about the corner cases - here it&rsquo;s the minimal integer value:
+    </div>
+    <div class="read-more">
+      <a href="/post/abs-puzzle/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/fscheck-testing-excel-financial-functions/">FsCheck and co: Testing Excel Financial Functions</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-03-06 </span>
+      <div class="post-category">
+          <a href="/categories/fsharp/"> fsharp </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.
+    </div>
+    <div class="read-more">
+      <a href="/post/fscheck-testing-excel-financial-functions/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/it-almost-looks-like-a-property/">It looks almost like a property</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2014-01-26 </span>
+      <div class="post-category">
+          <a href="/categories/languages/"> languages </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Based on a true story. Only the names, places, and events have been changed.
+Many people today forget that the tools are just tools. Doesn&rsquo;t matter if it&rsquo;s OO or functional programming, take any language: there&rsquo;re plenty of ways to write awesome and even more - to write terrifying code. lets . compose . these . functions . until . your . type-checker . explodes . btw . did . you .
+    </div>
+    <div class="read-more">
+      <a href="/post/it-almost-looks-like-a-property/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/log-music-with-undertone/">Log(music) with Undertone</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-12-26 </span>
+      <div class="post-category">
+          <a href="/categories/fsharp/"> fsharp </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Whether you&rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&rsquo;ll meet the Markov chains sooner or later. And today we&rsquo;ll try them on&hellip; music!
+If you&rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.
+    </div>
+    <div class="read-more">
+      <a href="/post/log-music-with-undertone/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/trying-out-deedle-with-bones-and-regression/">Trying out Deedle with Bones and Regression</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-11-02 </span>
+      <div class="post-category">
+          <a href="/categories/fsharp/"> fsharp </a>
+          </div>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      I usually don&rsquo;t need to run a regression anywhere, but it&rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &lsquo;cheated&rsquo; and completed the assignments with R.
+    </div>
+    <div class="read-more">
+      <a href="/post/trying-out-deedle-with-bones-and-regression/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    </section>
+  
+  <nav class="pagination">
+    <a class="prev" href="/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    <a class="next" href="/page/3/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

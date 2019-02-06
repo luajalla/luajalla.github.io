@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>refinements on type-nat</title>
+    <link>http://type-nat.ch/tags/refinements/</link>
+    <description>Recent content in refinements on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 07 Jul 2013 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/refinements/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Days and Ghost Refinements</title>
+      <link>http://type-nat.ch/post/days-and-ghost-refinements/</link>
+      <pubDate>Sun, 07 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/days-and-ghost-refinements/</guid>
+      <description>Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:</description>
+    </item>
+    
+  </channel>
+</rss>

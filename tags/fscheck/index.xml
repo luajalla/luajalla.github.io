@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fscheck on type-nat</title>
+    <link>http://type-nat.ch/tags/fscheck/</link>
+    <description>Recent content in fscheck on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 06 Mar 2014 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/fscheck/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>FsCheck and co: Testing Excel Financial Functions</title>
+      <link>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</guid>
+      <description>Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.</description>
+    </item>
+    
+  </channel>
+</rss>

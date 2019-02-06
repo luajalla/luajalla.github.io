@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>type-nat</title>
+    <link>http://type-nat.ch/</link>
+    <description>Recent content on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 03 May 2016 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to Name a Cat</title>
+      <link>http://type-nat.ch/post/how-to-name-a-cat/</link>
+      <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/how-to-name-a-cat/</guid>
+      <description>A fun conversation about mountains, monads, types and heels reminded me about the first University years and one of our favourite math jokes. Here&amp;rsquo;s an attempt to translate it (original):
+ Btw, Basis is a good name for a cat. Yeah, imposing&amp;hellip; &amp;ldquo;Basis, come here&amp;rdquo;. &amp;ldquo;Yes&amp;hellip; Basis is full&amp;hellip; Look at our complete Basis.&amp;rdquo; &amp;ldquo;Basis, shoo from the bed! Where is your space?&amp;rdquo; &amp;ldquo;C&amp;rsquo;mon, convert to normal!&amp;rdquo; &amp;ldquo;Basis, we&amp;rsquo;ll measure you!</description>
+    </item>
+    
+    <item>
+      <title>Keywords Mix</title>
+      <link>http://type-nat.ch/post/keywords-mix/</link>
+      <pubDate>Tue, 15 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/keywords-mix/</guid>
+      <description>I got recently caught up with the paper work and came accross some fun notes from years ago! Couldn&amp;rsquo;t wait to share this contextual keywords mix, the courtesy of @v2_matveev:
+1 2 3 4 5 6 7  partial class where&amp;lt;partial&amp;gt; where partial: where&amp;lt;partial&amp;gt;{dynamic dynamic&amp;lt;yield&amp;gt;(dynamic dynamic){return dynamic&amp;lt;yield&amp;gt;(dynamic);}}   Yes, it compiles :)</description>
+    </item>
+    
+    <item>
+      <title>Traditions vs Statistics: Sechseläuten</title>
+      <link>http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/</link>
+      <pubDate>Sat, 25 Apr 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/</guid>
+      <description>What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&amp;rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&amp;rsquo;s also a day when you realize, that there&amp;rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!</description>
+    </item>
+    
+    <item>
+      <title>Reshaping Arrays in .NET</title>
+      <link>http://type-nat.ch/post/reshaping-arrays-in-net/</link>
+      <pubDate>Sat, 21 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/reshaping-arrays-in-net/</guid>
+      <description>Reshape is one of these little functions, which look so simple and straightforward that you don&amp;rsquo;t think much about them. It&amp;rsquo;s quite useful and, I&amp;rsquo;m pretty sure, familiar to everyone who&amp;rsquo;s written something in a language like Matlab. However, in other languages it might become a bit tricky.
+Question I asked a bunch of people how they would write reshape in a .NET language. That&amp;rsquo;s not really a problem when you know the exact type and dimensionality, e.</description>
+    </item>
+    
+    <item>
+      <title>Interop Adventure: From .NET to Matlab and Back</title>
+      <link>http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/</link>
+      <pubDate>Sun, 01 Feb 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/interop-adventure-from-net-to-matlab-and-back/</guid>
+      <description>A lot of exciting things start with the word interop, at least the chances to make several surprising discoveries are pretty high. So, we decided to call some Matlab functions from .NET, what could possibly go wrong?
+This post as a short summary of our discoveries by trial and error method.
+Why would anyone need that? Easy - because something we needed was implemented in Matlab and that was something using a bunch of mathy packages, which we didn&amp;rsquo;t want to spend years rewriting.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://type-nat.ch/about/</link>
+      <pubDate>Sun, 25 Jan 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/about/</guid>
+      <description>About me I&amp;rsquo;m Natallie Baikevich, asymptotically statistician, allocations hunter and mountains admirer who happened to find herself in Zürich together with a mix of F#, CUDA C and Python. Interested in all things performance and correctness.
+Whether you have any questions, want to chat about anything from programming languages to machine learning or up for a crazy hike - let me know! Tweet to @lu_a_jalla !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?&amp;lsquo;http&amp;rsquo;:&amp;lsquo;https&amp;rsquo;;if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+&amp;rsquo;://platform.twitter.com/widgets.js&amp;rsquo;;fjs.parentNode.insertBefore(js,fjs);}}(document, &amp;lsquo;script&amp;rsquo;, &amp;lsquo;twitter-wjs&amp;rsquo;); &amp;hellip; or email me.</description>
+    </item>
+    
+    <item>
+      <title>Abs Puzzle</title>
+      <link>http://type-nat.ch/post/abs-puzzle/</link>
+      <pubDate>Fri, 25 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/abs-puzzle/</guid>
+      <description>If someone asked you to implement abs function (say, for ints), how would you do that? A simple experiment shows that almost everyone comes up with something like that, whether it&amp;rsquo;s F#, C#, Scala or anything else:
+1  let abs x = if x &amp;lt; 0 then -x else x   The obvious question - do the answers match your expectations? That depends&amp;hellip;
+It&amp;rsquo;s quite obvious when you think about the corner cases - here it&amp;rsquo;s the minimal integer value:</description>
+    </item>
+    
+    <item>
+      <title>FsCheck and co: Testing Excel Financial Functions</title>
+      <link>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</link>
+      <pubDate>Thu, 06 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fscheck-testing-excel-financial-functions/</guid>
+      <description>Excel Financial Functions library is a .NET library written by Luca Bolognese that provides the full set of financial functions from Excel. It can be used from both F# and C# as well as from other .NET languages. The main goal for the library is compatibility with Excel, by providing the same functions, with the same behaviour.
+ The library was recently moved to GitHub and its new home is here.</description>
+    </item>
+    
+    <item>
+      <title>It looks almost like a property</title>
+      <link>http://type-nat.ch/post/it-almost-looks-like-a-property/</link>
+      <pubDate>Sun, 26 Jan 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/it-almost-looks-like-a-property/</guid>
+      <description>Based on a true story. Only the names, places, and events have been changed.
+Many people today forget that the tools are just tools. Doesn&amp;rsquo;t matter if it&amp;rsquo;s OO or functional programming, take any language: there&amp;rsquo;re plenty of ways to write awesome and even more - to write terrifying code. lets . compose . these . functions . until . your . type-checker . explodes . btw . did . you .</description>
+    </item>
+    
+    <item>
+      <title>Log(music) with Undertone</title>
+      <link>http://type-nat.ch/post/log-music-with-undertone/</link>
+      <pubDate>Thu, 26 Dec 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/log-music-with-undertone/</guid>
+      <description>Whether you&amp;rsquo;re a physicist, biologist, economist, data scientist, whatever, the chances are you&amp;rsquo;ll meet the Markov chains sooner or later. And today we&amp;rsquo;ll try them on&amp;hellip; music!
+If you&amp;rsquo;re not up to the math part, feel free to skip it.
+Math The system states changes are represented with a help of transition matrix, describing the probabilities of possible transitions. This matrix is a key to determine the state of the model after n steps.</description>
+    </item>
+    
+    <item>
+      <title>Trying out Deedle with Bones and Regression</title>
+      <link>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</link>
+      <pubDate>Sat, 02 Nov 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/trying-out-deedle-with-bones-and-regression/</guid>
+      <description>I usually don&amp;rsquo;t need to run a regression anywhere, but it&amp;rsquo;s kind of chasing me recently, starting with the Asset Pricing class and several variations of returns regressions (signed up to look at the familiar things from a different point of view&amp;hellip; well, I definitely succeeded: have you ever thought about drawing the returns, prices and discount factors in space, all at once? 1. But I &amp;lsquo;cheated&amp;rsquo; and completed the assignments with R.</description>
+    </item>
+    
+    <item>
+      <title>[F#] Dev Life&#39;s Little Pleasures</title>
+      <link>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</link>
+      <pubDate>Thu, 17 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/f-dev-lifes-little-pleasures/</guid>
+      <description>Different languages have some little things that make the life easier: for devs, their QAs and customers. The app is fast and behaves correctly, the code looks simple and understandable - everyone is happy.
+Here are the slides and a couple of code samples from my talk &amp;ldquo;[F#] Dev Life&amp;rsquo;s Little Pleasures&amp;rdquo;. Briefly, it takes some real-world problems 1 and provides the simple solutions.
+ Units of Measure - need to admit, I was a long time sceptic (c&amp;rsquo;mon, how can you get kg and m^2 mixed up?</description>
+    </item>
+    
+    <item>
+      <title>The World Around Us: back to words with J</title>
+      <link>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</link>
+      <pubDate>Sun, 25 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/the-world-around-us-back-to-words-with-j/</guid>
+      <description>Isaac Asimov
+The most exciting phrase to hear in science, the one that heralds new discoveries, is not &amp;ldquo;Eureka!&amp;rdquo; (I&amp;rsquo;ve found it!), but &amp;ldquo;That&amp;rsquo;s funny&amp;hellip;&amp;rdquo;
+ Sometimes everybody wants to get off the beaten track and see the world. See how many exciting discoveries are waiting for you there.
+I want to bring your attention to a language, which changed the vision of some things for me. This language is J.</description>
+    </item>
+    
+    <item>
+      <title>Excel-DNA: Three Stories</title>
+      <link>http://type-nat.ch/post/excel-dna-three-stories/</link>
+      <pubDate>Mon, 05 Aug 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/excel-dna-three-stories/</guid>
+      <description>Intro: Simulation A couple of days ago I found a spreadsheet, potentially quite an interesting one. In theory, it should run a simple simulation (50000 paths by default) written in VBA - I&amp;rsquo;d say it&amp;rsquo;s several minutes of work in the worst case. However, it took slightly more. One working day, to be precise. I still have no idea what it tried to do, why it ate 97% of CPU and even what exactly it computed, because all that ended with a weird error and crashed Excel.</description>
+    </item>
+    
+    <item>
+      <title>Days and Ghost Refinements</title>
+      <link>http://type-nat.ch/post/days-and-ghost-refinements/</link>
+      <pubDate>Sun, 07 Jul 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/days-and-ghost-refinements/</guid>
+      <description>Let&amp;rsquo;s look at the simple function, which calculates the number of days between dates, when there&amp;rsquo;re 30 days in a month (and 360 in a year).
+Something like this F# code:
+1 2  let days360 sy sm sd ey em ed = (ey - sy) * 360 + (em - sm) * 30 + (ed - sd)   We can even write a bunch of tests to be sure the function works:</description>
+    </item>
+    
+    <item>
+      <title>LP - Simplex Draft</title>
+      <link>http://type-nat.ch/post/lp-simplex-draft/</link>
+      <pubDate>Sat, 22 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/lp-simplex-draft/</guid>
+      <description>Everybody solves some optimization problems – the airlines schedule flights, companies manage production facilities, salesman still looks for traveling options… When you need to achieve the best outcome minimizing/maximizing a linear cost functions you meet linear programming.
+LP was developed for military purposes in 1939, so it has a long history. Now it is one of the most important problems in operations research and heavily used in different areas directly or as sub-problems.</description>
+    </item>
+    
+    <item>
+      <title>F* Challenge or The Tale of Tails</title>
+      <link>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</link>
+      <pubDate>Fri, 07 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/fstar-challenge-or-the-tale-of-tails/</guid>
+      <description>F* is a verification-oriented programming language developed at Microsoft Research. If you already know F#, or OCaml, or Haskell, or another language from ML family, you’ll find it familiar.
+Resources:  F* project home
+ Rise4Fun – try it online/go through the guide
+ F* download
+  To start experimenting with the language on your machine you need .NET 4.0. With Windows that’s it – just start enjoying verifications.</description>
+    </item>
+    
+    <item>
+      <title>Z3 Mono Starter</title>
+      <link>http://type-nat.ch/post/z3-mono-starter/</link>
+      <pubDate>Fri, 24 May 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/z3-mono-starter/</guid>
+      <description>Have you ever thought how exciting verification tools are? How do you prove the correctness of a program? Of course, the green tests bring some confidence&amp;hellip; but we all know it&amp;rsquo;s not a proof.
+Just look at Pex, it definitely can&amp;rsquo;t leave anybody cold (recommendation: skip this step for now, it was a trap).
+But this story is not about Pex, but what powers it - Z3, an efficient SMT solver from Microsoft Research.</description>
+    </item>
+    
+  </channel>
+</rss>

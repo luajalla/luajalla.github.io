@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Traditions vs Statistics: Sechseläuten - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&amp;rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&amp;rsquo;s also a day when you realize, that there&amp;rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!" /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Traditions vs Statistics: Sechseläuten" />
+<meta property="og:description" content="What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&rsquo;s also a day when you realize, that there&rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/traditions-vs-statistics-sechselaeuten/" /><meta property="article:published_time" content="2015-04-25T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-04-25T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Traditions vs Statistics: Sechseläuten">
+<meta itemprop="description" content="What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&rsquo;s also a day when you realize, that there&rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!">
+
+
+<meta itemprop="datePublished" content="2015-04-25T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-04-25T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1318">
+
+
+
+<meta itemprop="keywords" content="Zurich,statistics,fsharp,deedle,R," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Traditions vs Statistics: Sechseläuten"/>
+<meta name="twitter:description" content="What do you expect from this summer? Should you worry about 20:39 or not? Sunglasses or umbrella? Let&rsquo;s find out! 1
+Traditions Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, Sechseläuten, which is celebrated in Zürich in April. And it&rsquo;s also a day when you realize, that there&rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays!"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Traditions vs Statistics: Sechseläuten</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-04-25 </span>
+        <div class="post-category">
+            <a href="/categories/statistics/"> statistics </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#traditions">Traditions</a></li>
+<li><a href="#statistics">Statistics</a></li>
+<li><a href="#expectations">Expectations</a></li>
+<li><a href="#reality">Reality</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>What do you expect from this summer? Should you worry about <em>20:39</em> or not? Sunglasses or umbrella? Let&rsquo;s find out! <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
+
+<h3 id="traditions">Traditions</h3>
+
+<p>Each country has its own fun traditions and festivals, and Switzerland is not an exception. One of the most exciting events is the spring festival, <a href="https://www.zuerich.com/en/visit/history-tradition">Sechseläuten</a>, which is celebrated in Zürich in April. And it&rsquo;s also a day when you realize, that there&rsquo;re some people in town except the tourists walking along the Bahnhofstrasse on Saturdays! The trees become green, the flags appear here and there, the city becomes lively and colourful. And this year the day was just perfectly sunny. Not the best one for the drivers though because of the <a href="https://www.youtube.com/watch?v=VHGKHn-Om-o">parade of Guilds</a> (everyone I showed the video especially likes the bear ~1:57 :).</p>
+
+<figure class="center">
+    <img src="/images/sechselaeuten/sechselaeuten.jpg"
+         alt="Böögg"/> <figcaption>
+            <h4>Böögg (www.zuerich.com)</h4>
+        </figcaption>
+</figure>
+
+
+<p>The culmination of Sechseläuten is the burning of <a href="https://www.zuerich.com/en/visit/who-or-what-is-the-boeoegg">Böögg</a>, a figure of snowman - the winter symbol. There&rsquo;s a belief, that the faster the head explodes, the nicer summer is going to be: say, below 10 min is for sunny and warm weather, above 15 min - for rains and cold&hellip; This year it took 20 min 39 s! Doesn&rsquo;t look very nice, huh?</p>
+
+<h3 id="statistics">Statistics</h3>
+
+<p>So is there any correlation between the Böögg&rsquo;s forecast and actual weather? I couldn&rsquo;t resist checking the facts and downloaded the daily data for the Zürich weather station from the <a href="http://eca.knmi.nl/">European Climate Assessment &amp; Dataset</a> - it&rsquo;s free and contains a lot of information for the 20th century, including the period we&rsquo;re interested in, I was lucky to find it rather quickly! One can find the yearly Sechseläuten statistics, including the burning times, on the official <a href="http://www.sechselaeuten.ch/sechselaeuten/statistik.asp">Sechseläuten website</a> (in German).</p>
+
+<p>The criteria for what makes a <em>nice summer</em> are pretty subjective - I picked the mean, min and max temperature, hours of sunshine, cloud cover, humidity and precipitation. Let&rsquo;s assume the <em>cold summer</em> means lower temperatures, or more clouds, or less sunshine, or all of these together.</p>
+
+<p>Now when we know more or less what we&rsquo;d like to look at, we need to extract that information from the data - a bunch of simple csv files.</p>
+
+<p>The weather datasets uses <em>-9999</em> as indication of missing data, and another relevant column contains quality codes. As there&rsquo;s no requirement for each day&rsquo;s data to be present, we&rsquo;ll select only the valid records.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">type</span> <span class="nc">QualityCode</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="n">Valid</span>   <span class="o">=</span> <span class="n">0</span>
+  <span class="o">|</span> <span class="n">Suspect</span> <span class="o">=</span> <span class="n">1</span>
+  <span class="o">|</span> <span class="n">Missing</span> <span class="o">=</span> <span class="n">9</span>
+  
+<span class="c1">// read the dataset from a file, index by DATE and remove unnecessary columns
+</span><span class="c1"></span><span class="k">let</span> <span class="nv">readData</span> <span class="o">(</span><span class="n">fileName</span><span class="o">:</span> <span class="kt">string</span><span class="o">)</span> <span class="o">=</span> 
+    <span class="nn">Frame</span><span class="p">.</span><span class="n">ReadCsv</span> <span class="n">fileName</span>  
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">indexRowsInt</span> <span class="s">&#34;DATE&#34;</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">filterRowValues</span> <span class="o">(</span><span class="k">fun</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span><span class="o">?</span><span class="n">Q</span> <span class="o">=</span> <span class="kt">float</span> <span class="nn">QualityCode</span><span class="p">.</span><span class="n">Valid</span><span class="o">)</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">dropCol</span> <span class="s">&#34;SOUID&#34;</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">dropCol</span> <span class="s">&#34;Q&#34;</span>
+
+<span class="k">let</span> <span class="nv">dataFrames</span> <span class="o">=</span> 
+    <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="n">readData</span>
+        <span class="o">[</span>
+            <span class="s">&#34;mean_temperature.txt&#34;</span> <span class="c1">// TG, in 0.1 C
+</span><span class="c1"></span>            <span class="s">&#34;min_temperature.txt&#34;</span>  <span class="c1">// TN, in 0.1 C
+</span><span class="c1"></span>            <span class="s">&#34;max_temperature.txt&#34;</span>  <span class="c1">// TX, in 0.1 C
+</span><span class="c1"></span>            <span class="s">&#34;precipitation.txt&#34;</span>    <span class="c1">// RR, in 0.1 mm
+</span><span class="c1"></span>            <span class="s">&#34;sunshine.txt&#34;</span>         <span class="c1">// SS, in 0.1 hrs
+</span><span class="c1"></span>            <span class="s">&#34;humidity.txt&#34;</span>         <span class="c1">// HU, in 1%
+</span><span class="c1"></span>            <span class="s">&#34;clouds.txt&#34;</span>           <span class="c1">// CC, in oktas
+</span><span class="c1"></span>        <span class="o">]</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Cloud cover is in <a href="http://en.wikipedia.org/wiki/Okta">oktas</a>, where 0 means perfectly clear sky and 8 - completely cloudy.</p>
+
+<p>Now we merge all these datasets, select only the summer months, and transform the temperatures to be in degrees C, sunshine - in hours (per day) and so on:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">weatherData</span> <span class="o">=</span> 
+    <span class="nn">Frame</span><span class="p">.</span><span class="n">mergeAll</span> <span class="n">dataFrames</span> 
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">filterRows</span> <span class="o">(</span><span class="k">fun</span> <span class="n">date</span> <span class="o">_</span> <span class="o">-&gt;</span> <span class="k">let</span> <span class="nv">m</span> <span class="o">=</span> <span class="n">date</span> <span class="o">/</span> <span class="n">100</span> <span class="o">%</span> <span class="n">100</span> <span class="k">in</span> <span class="n">6</span> <span class="o">&lt;=</span> <span class="n">m</span> <span class="o">&amp;&amp;</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="n">8</span><span class="o">)</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">mapCols</span> <span class="o">(</span><span class="k">fun</span> <span class="n">col</span> <span class="n">vs</span> <span class="o">-&gt;</span> 
+        <span class="k">let</span> <span class="nv">series</span> <span class="o">=</span> <span class="n">vs</span><span class="o">.</span><span class="n">As</span><span class="bp">()</span> 
+        <span class="k">match</span> <span class="n">col</span> <span class="k">with</span>
+        <span class="o">|</span> <span class="s">&#34;HU&#34;</span> <span class="o">-&gt;</span> <span class="n">series</span> <span class="o">/</span> <span class="n">100</span><span class="o">.</span><span class="n">0</span>
+        <span class="o">|</span> <span class="s">&#34;CC&#34;</span> <span class="o">-&gt;</span> <span class="n">series</span>
+        <span class="o">|</span> <span class="o">_</span>    <span class="o">-&gt;</span> <span class="n">series</span> <span class="o">/</span> <span class="n">10</span><span class="o">.</span><span class="n">0</span><span class="o">)</span>  </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Finally, we combine the burning times and weather averages for corresponding years:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">weatherDataByYear</span> <span class="o">=</span>
+    <span class="n">weatherData</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">groupRowsByIndex</span> <span class="o">(</span><span class="k">fun</span> <span class="n">date</span> <span class="o">-&gt;</span> <span class="n">date</span> <span class="o">/</span> <span class="n">10000</span><span class="o">)</span>
+    <span class="o">|&gt;</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">applyLevel</span> <span class="n">fst</span> <span class="nn">Stats</span><span class="p">.</span><span class="n">mean</span>
+
+<span class="k">let</span> <span class="nv">fullStats</span> <span class="o">=</span> <span class="nn">Frame</span><span class="p">.</span><span class="n">join</span> <span class="nn">JoinKind</span><span class="p">.</span><span class="n">Inner</span> <span class="n">boeoeggStats</span> <span class="n">weatherDataByYear</span>
+<span class="n">fullStats</span><span class="o">.</span><span class="n">SaveCsv</span><span class="o">(</span><span class="s">&#34;fullStats.csv&#34;</span><span class="o">,</span> <span class="n">keyNames</span> <span class="o">=</span> <span class="o">[</span><span class="s">&#34;year&#34;</span><span class="o">])</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Now that we have something to look at, let&rsquo;s start with the mean temperatures. We will use R for creating the charts:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">meanTempPlot</span> <span class="o">=</span> <span class="n">qplot</span><span class="o">(</span><span class="n">duration</span><span class="o">,</span> 
+                     <span class="n">TG</span><span class="o">,</span> 
+                     <span class="n">data</span>   <span class="o">=</span> <span class="n">stats</span><span class="o">,</span> 
+                     <span class="n">geom</span>   <span class="o">=</span> <span class="n">c</span><span class="o">(</span><span class="s">&#34;point&#34;</span><span class="o">,</span> <span class="s">&#34;smooth&#34;</span><span class="o">),</span> 
+                     <span class="k">method</span> <span class="o">=</span> <span class="s">&#34;lm&#34;</span><span class="o">,</span> 
+                     <span class="n">color</span>  <span class="o">=</span> <span class="n">TG</span><span class="o">,</span>
+                     <span class="n">main</span>   <span class="o">=</span> <span class="s">&#34;Mean Temperature ~ Duration&#34;</span><span class="o">,</span> 
+                     <span class="n">xlab</span>   <span class="o">=</span> <span class="s">&#34;Duration, min&#34;</span><span class="o">,</span> 
+                     <span class="n">ylab</span>   <span class="o">=</span> <span class="s">&#34;Temperature, C&#34;</span><span class="o">)</span>
+
+<span class="n">meanTempBoxplot</span> <span class="o">=</span> <span class="n">qplot</span><span class="o">(</span><span class="n">duration</span><span class="o">,</span> 
+                        <span class="n">TG</span><span class="o">,</span> 
+                        <span class="n">data</span> <span class="o">=</span> <span class="n">stats</span><span class="o">,</span> 
+                        <span class="n">geom</span> <span class="o">=</span> <span class="n">c</span><span class="o">(</span><span class="s">&#34;boxplot&#34;</span><span class="o">,</span> <span class="s">&#34;jitter&#34;</span><span class="o">),</span> 
+                        <span class="n">outlier</span><span class="o">.</span><span class="n">colour</span> <span class="o">=</span> <span class="s">&#34;red&#34;</span><span class="o">,</span> 
+                        <span class="n">fill</span> <span class="o">=</span> <span class="n">I</span><span class="o">(</span><span class="s">&#34;#3366FFAF&#34;</span><span class="o">),</span>
+                        <span class="n">main</span> <span class="o">=</span> <span class="s">&#34;&#34;</span><span class="o">,</span> 
+                        <span class="n">xlab</span> <span class="o">=</span> <span class="s">&#34;Duration, min&#34;</span><span class="o">,</span> 
+                        <span class="n">ylab</span> <span class="o">=</span> <span class="s">&#34;Temperature, C&#34;</span><span class="o">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<div class='align-center'>
+  <p><img src="/images/sechselaeuten/mean_temperature.png" alt="Mean Temperature" /></p>
+
+</div>
+
+<p>It&rsquo;s hard not to notice that there&rsquo;s no dependency between the mean temperature and duration. However, there&rsquo;re some outliers (the red dots): for example, the point in the top-left with the highest temperature is too far from the clustered group. Ironically, that was the most &ldquo;accurate&rdquo; prediction, in the year 2003, when it took less than 6 min for the head to explode and the summer was very warm and sunny.</p>
+
+<p>The next two &ldquo;best&rdquo; years are in the rows with 20+ min. Even though in 2013 the weather was not that bad despite of 35 min for burning. The data in the table below is sorted by mean temperatures:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="n">statsByTG</span> <span class="o">=</span> <span class="n">stats</span><span class="o">[</span><span class="n">order</span><span class="o">(</span><span class="n">stats</span><span class="o">$</span><span class="n">TG</span><span class="o">),]</span> </code></pre></td></tr></table>
+</div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>year</th>
+<th>time, min</th>
+<th>avg T, C</th>
+<th>min T, C</th>
+<th>max T, C</th>
+<th>precipitation, mm</th>
+<th>sunshine, hrs</th>
+<th>humidity</th>
+<th>cloud cover, oktas</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1956</td>
+<td>4.00</td>
+<td>15.07</td>
+<td>11.12</td>
+<td>21.13</td>
+<td>5.70</td>
+<td>5.64</td>
+<td>0.74</td>
+<td>5.66</td>
+</tr>
+
+<tr>
+<td>1978</td>
+<td>12.00</td>
+<td>15.38</td>
+<td>11.42</td>
+<td>20.27</td>
+<td>4.52</td>
+<td>5.53</td>
+<td>0.73</td>
+<td>5.02</td>
+</tr>
+
+<tr>
+<td>1980</td>
+<td>17.00</td>
+<td>15.63</td>
+<td>12.10</td>
+<td>20.24</td>
+<td>3.91</td>
+<td>4.69</td>
+<td>0.75</td>
+<td>5.30</td>
+</tr>
+
+<tr>
+<td>1972</td>
+<td>8.00</td>
+<td>15.77</td>
+<td>11.86</td>
+<td>20.70</td>
+<td>4.84</td>
+<td>6.28</td>
+<td>0.78</td>
+<td>5.36</td>
+</tr>
+
+<tr>
+<td>1965</td>
+<td>20.00</td>
+<td>15.84</td>
+<td>11.77</td>
+<td>22.21</td>
+<td>5.17</td>
+<td>6.15</td>
+<td>0.77</td>
+<td>5.32</td>
+</tr>
+
+<tr>
+<td>1966</td>
+<td>16.00</td>
+<td>15.84</td>
+<td>11.62</td>
+<td>22.12</td>
+<td>5.24</td>
+<td>6.36</td>
+<td>0.74</td>
+<td>5.21</td>
+</tr>
+
+<tr>
+<td>1968</td>
+<td>5.00</td>
+<td>16.03</td>
+<td>11.72</td>
+<td>22.48</td>
+<td>3.91</td>
+<td>6.94</td>
+<td>0.71</td>
+<td>5.20</td>
+</tr>
+
+<tr>
+<td>&hellip;</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td>2013</td>
+<td>35.18</td>
+<td>18.53</td>
+<td>NA</td>
+<td>NA</td>
+<td>NA</td>
+<td>8.14</td>
+<td>0.70</td>
+<td>4.21</td>
+</tr>
+
+<tr>
+<td>1952</td>
+<td>6.00</td>
+<td>18.75</td>
+<td>13.68</td>
+<td>25.73</td>
+<td>3.05</td>
+<td>8.79</td>
+<td>0.65</td>
+<td>4.14</td>
+</tr>
+
+<tr>
+<td>1950</td>
+<td>50.00</td>
+<td>18.76</td>
+<td>13.57</td>
+<td>25.87</td>
+<td>3.43</td>
+<td>8.72</td>
+<td>0.65</td>
+<td>4.08</td>
+</tr>
+
+<tr>
+<td>1983</td>
+<td>24.33</td>
+<td>19.06</td>
+<td>14.15</td>
+<td>24.63</td>
+<td>1.72</td>
+<td>6.77</td>
+<td>0.67</td>
+<td>4.02</td>
+</tr>
+
+<tr>
+<td>1994</td>
+<td>21.92</td>
+<td>19.15</td>
+<td>14.36</td>
+<td>24.77</td>
+<td>2.77</td>
+<td>7.09</td>
+<td>0.72</td>
+<td>4.34</td>
+</tr>
+
+<tr>
+<td>2003</td>
+<td>5.70</td>
+<td>21.66</td>
+<td>16.53</td>
+<td>28.02</td>
+<td>2.29</td>
+<td>9.20</td>
+<td>0.63</td>
+<td>3.68</td>
+</tr>
+</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<p>As we see, the weather tends to be average - very dry, or rainy, or hot summers are exceptions. If you try the random forests (regression) with this data, <em>% Var explained</em> is negative.</p>
+
+<div class='align-center'>
+  <p><img src="/images/sechselaeuten/weather.png" alt="Weather" /></p>
+
+</div>
+
+<p>One can argue, that for a number of reasons (the quality of weather measures, different structure of the Böögg itself or anything else) the years 1950 and 2014 are not comparable. I tried to run the same experiment with the data for the last 15 years, removing outliers and adding the labels for bad/ok/nice weather to make it a classification problem instead of regression - but the main conclusion is the same. Take a look at the historical averages for each of the summer days (the dark-blue line): the normal range (steel-blue) is quite narrow, even though the lowest and highest points (light-blue) may vary a lot<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>:</p>
+
+<div class='align-center'>
+  <p><img src="/images/sechselaeuten/historical.png" alt="Historical Data" /></p>
+
+</div>
+
+<h3 id="expectations">Expectations</h3>
+
+<p>The results are pretty reassuring: we can be optimistic and hope that this summer will be great, or at least average - which is also quite nice. The weather is not an easy thing to predict months in advance!</p>
+
+<h3 id="reality">Reality</h3>
+
+<p>Update: The summer 2015 happened to be <a href="http://allaboutgeneva.com/2015/07/15/swiss-heatwave-2015-new-danger-alert/">extremely</a> <a href="http://www.meteoschweiz.admin.ch/home/aktuell/meteoschweiz-blog.subpage.html/de/data/blogs/2015/8/sehr-warmer-august-extrem-heisser-sommer.html">hot</a> and beat some temperature <a href="https://www.washingtonpost.com/news/capital-weather-gang/wp/2015/09/15/the-summer-of-2015-was-earths-hottest-on-record-nasa-data-show/">records</a>, not only in Europe. Let&rsquo;s hope we&rsquo;ll have more of a regular summer kind in the future.</p>
+
+<p>And I&rsquo;ve recently found out there&rsquo;s also an official study (in German): <a href="http://www.meteoswiss.admin.ch/home/climate/past/climate-of-switzerland/reports-throughout-the-year/boeoegg-prognose.html">Böögg Prognose</a>.</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">I realized that I forgot to publish this post on time (the date of event) only several days ago, then I decided to convert the data processing part and use Deedle&hellip; Maybe that&rsquo;s because of sunny Milan, but it took some time to figure out which functions to use for relatively simple groupings and aggregations.  
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:2">To see how you can create similar kinds of plots check <a href="http://rpubs.com/bradleyboehmke/weather_graphic">this post</a>.  
+ <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2015-04-25</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/zurich/">Zurich</a>
+          <a href="/tags/statistics/">statistics</a>
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/deedle/">deedle</a>
+          <a href="/tags/r/">R</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/keywords-mix/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Keywords Mix</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/reshaping-arrays-in-net/">
+            <span class="next-text nav-default">Reshaping Arrays in .NET</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
