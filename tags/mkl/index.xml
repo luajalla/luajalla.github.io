@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mkl on type-nat</title>
+    <link>http://type-nat.ch/tags/mkl/</link>
+    <description>Recent content in mkl on type-nat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 12 Feb 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://type-nat.ch/tags/mkl/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Vectorize All the Things: Multiply-Add</title>
+      <link>http://type-nat.ch/post/vectorize-all-the-things-multiply-add/</link>
+      <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://type-nat.ch/post/vectorize-all-the-things-multiply-add/</guid>
+      <description>The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&amp;rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&amp;rsquo;s time to reboot this blog.
+As someone who believes in mechanical sympathy I&amp;rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&amp;rsquo;d gladly accept them and extend the list.</description>
+    </item>
+    
+  </channel>
+</rss>

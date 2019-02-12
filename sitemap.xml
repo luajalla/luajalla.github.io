@@ -3,6 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://type-nat.ch/post/vectorize-all-the-things-multiply-add/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://type-nat.ch/post/how-to-name-a-cat/</loc>
     <lastmod>2016-05-03T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -136,6 +143,13 @@
   </url>
   
   <url>
+    <loc>http://type-nat.ch/tags/.net-core/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://type-nat.ch/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
@@ -157,7 +171,7 @@
   
   <url>
     <loc>http://type-nat.ch/post/</loc>
-    <lastmod>2016-05-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -227,7 +241,7 @@
   
   <url>
     <loc>http://type-nat.ch/tags/fsharp/</loc>
-    <lastmod>2015-04-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -303,6 +317,13 @@
   </url>
   
   <url>
+    <loc>http://type-nat.ch/tags/mkl/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://type-nat.ch/tags/mono/</loc>
     <lastmod>2014-03-06T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -319,6 +340,20 @@
   <url>
     <loc>http://type-nat.ch/tags/music/</loc>
     <lastmod>2013-12-26T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://type-nat.ch/tags/performance/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://type-nat.ch/categories/performance/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -388,7 +423,7 @@
   
   <url>
     <loc>http://type-nat.ch/</loc>
-    <lastmod>2016-05-03T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -396,6 +431,13 @@
   <url>
     <loc>http://type-nat.ch/tags/undertone/</loc>
     <lastmod>2013-12-26T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://type-nat.ch/tags/vectors/</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

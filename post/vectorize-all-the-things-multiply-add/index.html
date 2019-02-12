@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Vectorize All the Things: Multiply-Add - type-nat</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Natallie" /><meta name="description" content="The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&amp;rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&amp;rsquo;s time to reboot this blog.
+As someone who believes in mechanical sympathy I&amp;rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&amp;rsquo;d gladly accept them and extend the list." /><meta name="keywords" content="fsharp, .net, performance" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://type-nat.ch/post/vectorize-all-the-things-multiply-add/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.0a14c83a.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/typenat.css">
+
+
+<meta property="og:title" content="Vectorize All the Things: Multiply-Add" />
+<meta property="og:description" content="The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&rsquo;s time to reboot this blog.
+As someone who believes in mechanical sympathy I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://type-nat.ch/post/vectorize-all-the-things-multiply-add/" /><meta property="article:published_time" content="2019-02-12T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-02-12T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Vectorize All the Things: Multiply-Add">
+<meta itemprop="description" content="The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&rsquo;s time to reboot this blog.
+As someone who believes in mechanical sympathy I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list.">
+
+
+<meta itemprop="datePublished" content="2019-02-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-02-12T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2768">
+
+
+
+<meta itemprop="keywords" content=".net core,performance,mkl,fsharp,vectors," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vectorize All the Things: Multiply-Add"/>
+<meta name="twitter:description" content="The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&rsquo;s time to reboot this blog.
+As someone who believes in mechanical sympathy I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">type-nat</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">type-nat</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Vectorize All the Things: Multiply-Add</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-02-12 </span>
+        <div class="post-category">
+            <a href="/categories/performance/"> performance </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#multiply-add">Multiply-Add</a></li>
+<li><a href="#baseline">Baseline</a></li>
+<li><a href="#vectors">Vectors</a>
+<ul>
+<li><a href="#arrays-and-alignment">Arrays and Alignment</a></li>
+<li><a href="#multiplication-factor">Multiplication Factor</a></li>
+<li><a href="#span">Span</a></li>
+<li><a href="#mkl">MKL</a></li>
+</ul></li>
+<li><a href="#results">Results</a></li>
+<li><a href="#links">Links</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back.
+And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&rsquo;s time to reboot this blog.</p>
+
+<p>As someone who believes in <a href="https://mechanical-sympathy.blogspot.com/2011/07/why-mechanical-sympathy.html">mechanical sympathy</a>
+I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations.
+And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list.</p>
+
+<p>After working for some time with not the most recent .NET Framework I couldn&rsquo;t wait to check out .NET Core and all performance goodies that come with it.
+For benchmarking I highly recommend <a href="https://benchmarkdotnet.org/index.html">BenchmarkDotNet</a>, it&rsquo;s an amazing tool that will take the best care of your benchmarking needs.</p>
+
+<p>So let&rsquo;s dig into Multiply-Add operations and have a look at different ways to vectorize it - in .NET Framework, .NET Core and MKL.
+The code examples are in F# but it&rsquo;s of course also applicable to other .NET languages.
+Try out your performance intuition ;)</p>
+
+<div class="admonition question"><p class="admonition-title">Is vectorization more efficient on .NET Framework 4.7.2 or .NET Core 2.1.6?</p>
+  
+</div>
+
+<p>The solution with examples is <a href="https://github.com/luajalla/Experimental">here</a>. It doesn&rsquo;t include a custom-built <code>Experimental.Mkl.dll</code>, but the list of functions <code>Experimental.Mkl.Functions.txt</code>
+and the template for the commands required to build it (<code>BuildMkl.bat</code>), are there as well as full benchmark outputs.
+Describing MKL features is not the goal of this post as it&rsquo;s used just as another reference result to compare against .NET implementation, so the setup is not discussed in detail.
+If you&rsquo;re interested in finding out more about <a href="https://software.intel.com/en-us/mkl-windows-developer-guide-building-custom-dynamic-link-libraries">Intel MKL Builder</a>
+or the <a href="https://software.intel.com/en-us/mkl-developer-reference-c">library itself</a>, please check out Intel documentation.</p>
+
+<p>Note, that the tests were performed only on a single Windows 10 machine.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-ini" data-lang="ini"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-ini" data-lang="ini"><span class="na">BenchmarkDotNet</span><span class="o">=</span><span class="s">v0.11.3, OS=Windows 10.0.17134.523 (1803/April2018Update/Redstone4)       </span>
+<span class="na">Intel Xeon E-2176M CPU 2.70GHz, 1 CPU, 12 logical and 6 physical cores                    </span>
+<span class="na">Frequency</span><span class="o">=</span><span class="s">2648441 Hz, Resolution=377.5806 ns, Timer=TSC                                   </span>
+<span class="na">.NET Core SDK</span><span class="o">=</span><span class="s">2.1.500                                                                     
+</span><span class="s">  [Host] : .NET Core 2.1.6 (CoreCLR 4.6.27019.06, CoreFX 4.6.27019.05), 64bit RyuJIT DEBUG
+</span><span class="s">  Clr    : .NET Framework 4.7.2 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.3260.0           
+</span><span class="s">  Core   : .NET Core 2.1.6 (CoreCLR 4.6.27019.06, CoreFX 4.6.27019.05), 64bit RyuJIT      </span></code></pre></td></tr></table>
+</div>
+</div>
+
+<h2 id="multiply-add">Multiply-Add</h2>
+
+<p>What are the first operations on vectors that you can think of? I&rsquo;d bet add and scale (multiplication with a scalar) are probably in this list.
+To make things more interesting let&rsquo;s talk about their combo:</p>
+
+<p>$$\mathbf{z} = a\mathbf{x} + \mathbf{y}$$</p>
+
+<p>This kind of operation is not only common in numerical code, but also has a performance boost potential
+because modern processors support so-called <em>fused multiply-add</em> operations or <em>FMA</em> as an extension to SIMD instructions
+(a nice introduction on the topic is available <a href="https://instil.co/2016/03/21/parallelism-on-a-single-core-simd-with-c/">here</a>).
+Those interested in GPU computing can also benefit from <a href="https://docs.nvidia.com/cuda/floating-point/index.html#fused-multiply-add-fma">FMAs in CUDA C</a> code: the compiler is able to generate them most of the time,
+and of course writing <code>fma</code> directly is also an option.</p>
+
+<p>We consider two scenarios:</p>
+
+<ul>
+<li>Out of place, $ \mathbf{z} = a\mathbf{x} + \mathbf{y} $ (the result is stored into the 3rd array)</li>
+<li>In place,     $ \mathbf{y} = a\mathbf{x} + \mathbf{y} $ (one of the arrays is overwritten)</li>
+</ul>
+
+<div class="admonition question"><p class="admonition-title">In place or Out of place?</p>
+  
+</div>
+
+<p>For simplicity all arrays are of type <code>double[]</code> (<code>float[]</code>) and assumed to have valid dimensions.
+The relative results for <code>single[]</code> (<code>float32[]</code>) are very similar but with x2 better performance.</p>
+
+<h2 id="baseline">Baseline</h2>
+
+<p>The baseline for our tests is a good old <code>for</code> loop.
+This is not something you&rsquo;d see often in F# code, but for some application immutable-only style would be simply too expensive.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="k">let</span> <span class="nv">forIn</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">ys</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+        <span class="n">ys</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">xs</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="n">ys</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+    <span class="n">ys</span>
+    
+
+<span class="k">let</span> <span class="nv">forOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">zs</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+        <span class="n">zs</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">xs</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="n">ys</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+    <span class="n">zs</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<h2 id="vectors">Vectors</h2>
+
+<div class="admonition question"><p class="admonition-title">For or Vectors?</p>
+  
+</div>
+
+<p>.NET provides a set of <a href="https://docs.microsoft.com/en-us/dotnet/standard/numerics">SIMD-enabled types</a> including <code>Vector&lt;'T&gt;</code> that we are going to test here.
+For example .NET hardware intrinsics have already been successfully applied for <a href="https://blogs.msdn.microsoft.com/dotnet/2018/10/10/using-net-hardware-intrinsics-api-to-accelerate-machine-learning-scenarios/">improving ML.NET implementation</a>.</p>
+
+<p>There&rsquo;re multiple ways to implement multiply-add using Vectors, and we need to take the following aspects into consideration.</p>
+
+<h3 id="arrays-and-alignment">Arrays and Alignment</h3>
+
+<div class="admonition question"><p class="admonition-title">To align or not to align?</p>
+  
+</div>
+
+<p>There&rsquo;re two options for defining input arrays: we can either use the data as is or align arrays considering the number of elements in a vector,
+<code>Vector&lt;double&gt;.Count</code> (which is equal to 4 on my machine).
+Intuitively aligned arrays should be more SIMD-friendly because in this case handling boundary cases is not required.</p>
+
+<h3 id="multiplication-factor">Multiplication Factor</h3>
+
+<p><div class="admonition question"><p class="admonition-title">(a : double) or Vector&lt;double&gt;(a)?</p>
+  
+</div>
+The factor <code>a</code> can be represented as either <code>double</code> or <code>Vector&lt;double&gt;</code>, which is interesting to check as well.</p>
+
+<h3 id="span">Span</h3>
+
+<div class="admonition question"><p class="admonition-title">double[] with Vector(xs, i * 4) or Vector&lt;double&gt;[] with xs.[i]?</p>
+  
+</div>
+
+<p><code>Span&lt;'T&gt;</code> can help to cast regular arrays to arrays of vectors, which is particularly helpful for overwriting the contents of result array.
+However, when it comes to function inputs we are free to choose between using a vector with offset or arrays of vectors.
+To be fair, another way to save the results is to use <code>Vector.CopyTo</code>, but it seems to be far less efficient so let&rsquo;s skip this case.
+For a comprehensive introduction into Span have a look at <a href="https://adamsitnik.com/Span/">this post</a> by Adam Sitnik.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp">    <span class="sd">/// Out of place, arrays are not aligned, vector multiplier and inputs are not spans.
+</span><span class="sd"></span>    <span class="k">let</span> <span class="nv">vectorNotAlignedOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">nAligned</span> <span class="o">=</span> <span class="n">lengthAlignedLeq</span> <span class="n">xs</span><span class="o">.</span><span class="n">Length</span>
+        <span class="k">let</span> <span class="nv">zsVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">xs</span><span class="o">,</span> <span class="n">0</span><span class="o">,</span> <span class="n">nAligned</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">aVector</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+        <span class="k">let</span> <span class="nv">v</span>        <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;.</span><span class="n">Count</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">zsVector</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">zsVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">aVector</span> <span class="o">*</span> <span class="n">Vector</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span> <span class="o">+</span> <span class="n">Vector</span><span class="o">(</span><span class="n">ys</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">nAligned</span> <span class="k">to</span> <span class="n">zs</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">zs</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">xs</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="n">ys</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+        <span class="n">zs</span>
+
+    
+    <span class="sd">/// Out of place, arrays are aligned, scalar multiplier and inputs are not spans.
+</span><span class="sd"></span>    <span class="k">let</span> <span class="nv">vectorScalarOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">zsVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">xs</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">v</span>        <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;.</span><span class="n">Count</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">zsVector</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">zsVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">Vector</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span> <span class="o">+</span> <span class="n">Vector</span><span class="o">(</span><span class="n">ys</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span>
+        <span class="n">zs</span>
+
+
+    <span class="sd">/// In place, arrays are aligned, vector multiplier and inputs are not spans.
+</span><span class="sd"></span>    <span class="k">let</span> <span class="nv">vectorIn</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">ysVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">ys</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">aVector</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+        <span class="k">let</span> <span class="nv">v</span>        <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;.</span><span class="n">Count</span>
+            
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">ysVector</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">ysVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">aVector</span> <span class="o">*</span> <span class="n">Vector</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span> <span class="o">+</span> <span class="n">ysVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+        <span class="n">ys</span>
+
+    
+    <span class="sd">/// Out of place, arrays are aligned, vector multiplier and inputs are not spans.
+</span><span class="sd"></span>    <span class="k">let</span> <span class="nv">vectorOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">zsVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">xs</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">aVector</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+        <span class="k">let</span> <span class="nv">v</span>        <span class="o">=</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;.</span><span class="n">Count</span>
+            
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">zsVector</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">zsVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">aVector</span> <span class="o">*</span> <span class="n">Vector</span><span class="o">(</span><span class="n">xs</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span> <span class="o">+</span> <span class="n">Vector</span><span class="o">(</span><span class="n">ys</span><span class="o">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">v</span><span class="o">)</span>
+        <span class="n">zs</span>
+
+
+    <span class="sd">/// Out of place, arrays are aligned, vector multiplier and inputs are spans.
+</span><span class="sd"></span>    <span class="k">let</span> <span class="nv">vectorSpansOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="nv">xsVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">xs</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">ysVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">ys</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">zsVector</span> <span class="o">=</span> <span class="nn">MemoryMarshal</span><span class="p">.</span><span class="n">Cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">,</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;(</span><span class="n">Span</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;(</span><span class="n">zs</span><span class="o">))</span>
+        <span class="k">let</span> <span class="nv">aVector</span>  <span class="o">=</span> <span class="n">Vector</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+            
+        <span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="n">0</span> <span class="k">to</span> <span class="n">zsVector</span><span class="o">.</span><span class="n">Length</span> <span class="o">-</span> <span class="n">1</span> <span class="k">do</span>
+            <span class="n">zsVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">&lt;-</span> <span class="n">aVector</span> <span class="o">*</span> <span class="n">xsVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="n">ysVector</span><span class="o">.[</span><span class="n">i</span><span class="o">]</span>
+        <span class="n">zs</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Here&rsquo;re some of the results for the <a href="https://github.com/luajalla/Experimental/blob/master/VectorsBmk/BenchmarkResults/results/VectorsBmk.MultiplyAddVectorMiniBmk-report.html">vectors benchmark</a>:</p>
+
+<ul>
+<li><strong>.NET Core</strong> code is up to ~1.8 times faster than <strong>.NET Framework</strong> (Clr job), this is expected because only .NET Core supports vectorization natively.</li>
+<li>For the same reason the relative results are not very consistent between frameworks, so further we refer only to .NET Core.</li>
+<li><strong>Aligned</strong> version is slightly faster than <strong>not aligned</strong>, because the boundary counditions do not need to be handled separately, however for large arrays it doesn&rsquo;t seem to be the case anymore.</li>
+</ul>
+
+<table class="bmk">
+<thead><tr><th> Method</th><th>Job</th><th>N</th><th>   Mean</th><th>Error</th><th>StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>   Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody>
+</tr><tr><td>NotAlignedOut</td><td>Clr</td><td>100</td><td>53.441 ns</td><td>0.1227 ns</td><td>0.1148 ns</td><td>0.0296 ns</td><td>53.264 ns</td><td>53.348 ns</td><td>53.438 ns</td><td>53.518 ns</td><td>53.646 ns</td><td>18,712,195.0</td><td>1.84</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedOut</td><td>Clr</td><td>100</td><td>56.728 ns</td><td>0.1804 ns</td><td>0.1599 ns</td><td>0.0427 ns</td><td>56.557 ns</td><td>56.602 ns</td><td>56.699 ns</td><td>56.792 ns</td><td>57.161 ns</td><td>17,628,008.5</td><td>1.95</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>NotAlignedOut</td><td>Core</td><td>100</td><td>29.076 ns</td><td>0.0799 ns</td><td>0.0708 ns</td><td>0.0189 ns</td><td>28.994 ns</td><td>29.024 ns</td><td>29.060 ns</td><td>29.097 ns</td><td>29.263 ns</td><td>34,392,627.8</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedOut</td><td>Core</td><td>100</td><td>29.002 ns</td><td>0.4895 ns</td><td>0.4339 ns</td><td>0.1160 ns</td><td>28.459 ns</td><td>28.614 ns</td><td>28.902 ns</td><td>29.278 ns</td><td>29.991 ns</td><td>34,480,284.3</td><td>1.00</td><td>0.02</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>NotAlignedOut</td><td>Clr</td><td>103</td><td>57.559 ns</td><td>0.3002 ns</td><td>0.2661 ns</td><td>0.0711 ns</td><td>57.325 ns</td><td>57.353 ns</td><td>57.440 ns</td><td>57.645 ns</td><td>58.127 ns</td><td>17,373,491.3</td><td>1.80</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedOut</td><td>Clr</td><td>103</td><td>58.622 ns</td><td>0.2398 ns</td><td>0.2243 ns</td><td>0.0579 ns</td><td>58.206 ns</td><td>58.375 ns</td><td>58.711 ns</td><td>58.783 ns</td><td>58.931 ns</td><td>17,058,484.3</td><td>1.84</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>NotAlignedOut</td><td>Core</td><td>103</td><td>31.917 ns</td><td>0.0629 ns</td><td>0.0491 ns</td><td>0.0142 ns</td><td>31.848 ns</td><td>31.880 ns</td><td>31.900 ns</td><td>31.963 ns</td><td>31.995 ns</td><td>31,331,161.4</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedOut</td><td>Core</td><td>103</td><td>29.720 ns</td><td>0.0881 ns</td><td>0.0824 ns</td><td>0.0213 ns</td><td>29.612 ns</td><td>29.634 ns</td><td>29.727 ns</td><td>29.769 ns</td><td>29.884 ns</td><td>33,647,276.1</td><td>0.93</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr></tbody></table>
+
+<ul>
+<li>As one could expect <strong>in place</strong> is faster than <strong>out of place</strong>. For example, introducing another array also requires additional boundary checks - watch out for <code>cmp</code> and <code>jae</code> instructions in disassembly:</li>
+</ul>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">cmp</span>     <span class="no">r14d</span><span class="p">,</span><span class="no">esi</span>
+<span class="nf">jae</span>     <span class="mi">00007</span><span class="no">ff9</span><span class="err">`</span><span class="mi">02324920</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<table class="bmk">
+<thead><tr><th> Method</th><th>Job</th><th>N</th><th>   Mean</th><th>Error</th><th>StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>   Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody>
+</tr><tr><td>AlignedOut</td><td>Core</td><td>100003</td><td>36,877.708 ns</td><td>356.7336 ns</td><td>333.6889 ns</td><td>86.1581 ns</td><td>36,401.196 ns</td><td>36,489.669 ns</td><td>36,927.122 ns</td><td>37,110.404 ns</td><td>37,340.884 ns</td><td>27,116.7</td><td>1.04</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedIn</td><td>Core</td><td>100003</td><td>34,712.877 ns</td><td>231.3058 ns</td><td>216.3635 ns</td><td>55.8648 ns</td><td>34,474.578 ns</td><td>34,511.612 ns</td><td>34,684.755 ns</td><td>34,814.202 ns</td><td>35,143.618 ns</td><td>28,807.8</td><td>0.98</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr></tbody></table>
+
+<ul>
+<li>Multiplying with a <code>a : double</code> value is really not a good idea
+and leads to ~2x performance decrease comparing to <code>Vector&lt;double&gt;(a)</code> version.
+The reason is that a single value is not automatically vectorized
+and <code>call</code> to CoreLib function is performed instead of <code>vmulpd</code> instruction:</li>
+</ul>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">call</span>    <span class="no">System.Numerics.Vector</span><span class="err">`</span><span class="mi">1</span><span class="p">[[</span><span class="no">System.Double</span><span class="p">,</span> <span class="no">System.Private.CoreLib</span><span class="p">]].</span><span class="no">op_Multiply</span><span class="p">(</span><span class="no">Double</span><span class="p">,</span> <span class="no">System.Numerics.Vector</span><span class="err">`</span><span class="mi">1</span><span class="err">&lt;</span><span class="no">Double</span><span class="err">&gt;</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<table class="bmk">
+<thead><tr><th> Method</th><th>Job</th><th>N</th><th>   Mean</th><th>Error</th><th>StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>   Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody>
+</tr><tr><td>NotAlignedOut</td><td>Core</td><td>100003</td><td>35,495.294 ns</td><td>324.4563 ns</td><td>270.9357 ns</td><td>75.1440 ns</td><td>34,658.200 ns</td><td>35,480.689 ns</td><td>35,562.836 ns</td><td>35,595.042 ns</td><td>35,808.595 ns</td><td>28,172.7</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>ScalarOut</td><td>Core</td><td>100003</td><td>77,333.464 ns</td><td>749.1684 ns</td><td>664.1182 ns</td><td>177.4931 ns</td><td>76,488.622 ns</td><td>76,955.850 ns</td><td>77,255.329 ns</td><td>77,621.272 ns</td><td>79,002.630 ns</td><td>12,931.0</td><td>2.18</td><td>0.02</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr></tbody></table>
+
+<ul>
+<li>Finally, <code>Span&lt;Vector&lt;double&gt;&gt;</code> version seems to be faster in all cases except for large arrays.
+This is an interesting behaviour, and would need a closer investigation to explain why that happens - I&rsquo;ll leave it for another time.</li>
+</ul>
+
+<table class="bmk">
+<thead><tr><th> Method</th><th>Job</th><th>N</th><th>   Mean</th><th>Error</th><th>StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>   Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody>
+</tr><tr><td>AlignedOut</td><td>Core</td><td>1003</td><td>304.120 ns</td><td>1.2893 ns</td><td>1.2060 ns</td><td>0.3114 ns</td><td>302.499 ns</td><td>303.135 ns</td><td>303.741 ns</td><td>305.064 ns</td><td>306.713 ns</td><td>3,288,176.4</td><td>0.96</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>SpansOut</td><td>Core</td><td>1003</td><td>247.484 ns</td><td>2.4008 ns</td><td>2.2457 ns</td><td>0.5798 ns</td><td>244.554 ns</td><td>245.691 ns</td><td>246.610 ns</td><td>248.767 ns</td><td>253.063 ns</td><td>4,040,668.9</td><td>0.78</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AlignedOut</td><td>Core</td><td>100003</td><td>36,877.708 ns</td><td>356.7336 ns</td><td>333.6889 ns</td><td>86.1581 ns</td><td>36,401.196 ns</td><td>36,489.669 ns</td><td>36,927.122 ns</td><td>37,110.404 ns</td><td>37,340.884 ns</td><td>27,116.7</td><td>1.04</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>SpansOut</td><td>Core</td><td>100003</td><td>38,141.007 ns</td><td>418.7630 ns</td><td>349.6861 ns</td><td>96.9855 ns</td><td>37,677.874 ns</td><td>37,876.792 ns</td><td>37,998.140 ns</td><td>38,378.497 ns</td><td>38,960.044 ns</td><td>26,218.5</td><td>1.07</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr></tbody></table>
+
+<h3 id="mkl">MKL</h3>
+
+<div class="admonition question"><p class="admonition-title">Applying matrix functions: [n x 1] or [1 x n]?</p>
+  
+</div>
+
+<p>According to the <a href="https://software.intel.com/en-us/mkl-developer-reference-c-blas-and-sparse-blas-routines">documentation</a>
+MKL has multiple functions we can use to implement our multiply-add operation in BLAS Level 1 functions and BLAS-like extensions.
+Without going into too much detail, there exist lower-level functions and extensions.
+The latter support transpose operations and different matrix formats as well as offsets between rows or columns.
+Here we have some freedom to pick the dimensions of the matrix, because the inputs are anyway represented as 1D arrays,
+for example <code>[n x 1]</code> vs <code>[1 x n]</code> for an array with <code>n</code> elements.</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fsharp" data-lang="fsharp"><span class="sd">/// In place, CBLAS daxpy 
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mklAxpyIn</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">cblas_daxpy</span> <span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">xs</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>
+    <span class="n">ys</span>
+
+
+<span class="sd">/// In place, CBLAS daxpby
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mklAxpbyIn</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">cblas_daxpby</span><span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">xs</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>
+    <span class="n">ys</span>
+    
+
+<span class="sd">/// Out of place, CBLAS dcopy + daxpy 
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mklAxpyOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">cblas_dcopy</span> <span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">zs</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">cblas_daxpy</span> <span class="o">(</span><span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">xs</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">zs</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>
+    <span class="n">ys</span>
+
+
+<span class="sd">/// Out of place, mkl_domatcopy with &#34;matrix&#34; dimensions [1 x n]
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mklMataddRowOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">MKL_Domatadd</span> <span class="o">(</span><span class="sc">&#39;R&#39;</span><span class="o">,</span> <span class="sc">&#39;N&#39;</span><span class="o">,</span> <span class="sc">&#39;N&#39;</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">xs</span><span class="o">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">ys</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">zs</span><span class="o">,</span> <span class="n">zs</span><span class="o">.</span><span class="n">Length</span><span class="o">)</span>
+    <span class="n">zs</span>
+
+
+<span class="sd">/// Out of place, mkl_domatcopy with &#34;matrix&#34; dimensions [n x 1]
+</span><span class="sd"></span><span class="k">let</span> <span class="nv">mklMataddColOut</span> <span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="kt">double</span><span class="o">)</span> <span class="o">(</span><span class="n">xs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">ys</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">(</span><span class="n">zs</span> <span class="o">:</span> <span class="kt">double</span><span class="bp">[]</span><span class="o">)</span> <span class="o">=</span>
+    <span class="nn">MKL</span><span class="p">.</span><span class="n">MKL_Domatadd</span> <span class="o">(</span><span class="sc">&#39;R&#39;</span><span class="o">,</span> <span class="sc">&#39;N&#39;</span><span class="o">,</span> <span class="sc">&#39;N&#39;</span><span class="o">,</span> <span class="n">xs</span><span class="o">.</span><span class="n">Length</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">a</span><span class="o">,</span> <span class="n">xs</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">1</span><span class="o">.</span><span class="n">0</span><span class="o">,</span> <span class="n">ys</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">zs</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span>
+    <span class="n">zs</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>A quick look at the <a href="https://github.com/luajalla/Experimental/blob/master/VectorsBmk/BenchmarkResults/results/VectorsBmk.MultiplyAddMklMiniBmk-report.html">results</a>
+shows that one has to be very careful with functions selection:</p>
+
+<ul>
+<li><p>While flexible extensions are very useful in some scenarios our Multiply-Add usecase is not that complex.
+<code>mkl_domatadd</code> is 4-8 times slower than simple <code>cblas_daxpy</code>.
+To be fair <code>char</code> type for arguments in <code>extern</code> definition of <code>mkl_domatadd</code> is not a smart choice because of allocations,
+it&rsquo;s here for clarity reasons. The better solution is to use integers, but the function will still be slower than <code>cblas_daxpy</code> (and this is noticeable mostly on smaller arrays anyway).</p></li>
+
+<li><p>Interestingly, single <strong>Row</strong> format <code>1 x n</code> is 3-7 times more efficient than single <strong>Column</strong> <code>n x 1</code> (for large array it&rsquo;s 53x baseline!).</p></li>
+
+<li><p><strong>Out of place</strong> is around 2 times slower because it has to be performed via copy and <strong>in place</strong> function <code>cblas_daxpy</code>.</p></li>
+</ul>
+
+<table class="bmk">
+<thead><tr><th>Method</th><th>Job</th><th>N</th><th>   Mean</th><th>  Error</th><th> StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>  Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr>
+</thead><tbody>
+</tr><tr><td>AxpyIn</td><td>Core</td><td>103</td><td>28.40 ns</td><td>0.1583 ns</td><td>0.1404 ns</td><td>0.0375 ns</td><td>28.36 ns</td><td>28.25 ns</td><td>28.32 ns</td><td>28.42 ns</td><td>28.74 ns</td><td>35,205,224.0</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AxpbyIn</td><td>Core</td><td>103</td><td>33.16 ns</td><td>0.0733 ns</td><td>0.0612 ns</td><td>0.0170 ns</td><td>33.14 ns</td><td>33.08 ns</td><td>33.12 ns</td><td>33.18 ns</td><td>33.32 ns</td><td>30,157,209.4</td><td>1.17</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AxpyOut</td><td>Core</td><td>103</td><td>49.94 ns</td><td>0.2313 ns</td><td>0.2050 ns</td><td>0.0548 ns</td><td>49.86 ns</td><td>49.71 ns</td><td>49.81 ns</td><td>49.98 ns</td><td>50.41 ns</td><td>20,025,979.5</td><td>1.76</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>MataddRowOut</td><td>Core</td><td>103</td><td>119.93 ns</td><td>0.3128 ns</td><td>0.2773 ns</td><td>0.0741 ns</td><td>119.95 ns</td><td>119.48 ns</td><td>119.72 ns</td><td>120.03 ns</td><td>120.47 ns</td><td>8,338,274.5</td><td>4.22</td><td>0.02</td><td>0.0150</td><td>-</td><td>-</td><td>96 B</td>
+</tr><tr><td>MataddColOut</td><td>Core</td><td>103</td><td>385.99 ns</td><td>0.9004 ns</td><td>0.7519 ns</td><td>0.2085 ns</td><td>386.11 ns</td><td>384.55 ns</td><td>385.41 ns</td><td>386.45 ns</td><td>387.34 ns</td><td>2,590,771.2</td><td>13.59</td><td>0.08</td><td>0.0148</td><td>-</td><td>-</td><td>96 B</td>
+</tr><tr><td>AxpyIn</td><td>Core</td><td>100003</td><td>5,357.79 ns</td><td>148.5879 ns</td><td>423.9297 ns</td><td>43.7250 ns</td><td>5,240.98 ns</td><td>4,563.81 ns</td><td>5,103.49 ns</td><td>5,581.75 ns</td><td>6,401.51 ns</td><td>186,644.0</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AxpbyIn</td><td>Core</td><td>100003</td><td>5,840.88 ns</td><td>122.6757 ns</td><td>253.3467 ns</td><td>35.1329 ns</td><td>5,739.96 ns</td><td>5,540.38 ns</td><td>5,632.27 ns</td><td>5,933.44 ns</td><td>6,444.85 ns</td><td>171,207.2</td><td>1.11</td><td>0.10</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>AxpyOut</td><td>Core</td><td>100003</td><td>14,290.63 ns</td><td>285.8218 ns</td><td>267.3579 ns</td><td>69.0315 ns</td><td>14,251.62 ns</td><td>13,936.29 ns</td><td>14,060.52 ns</td><td>14,463.59 ns</td><td>14,936.70 ns</td><td>69,975.9</td><td>2.77</td><td>0.34</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>MataddRowOut</td><td>Core</td><td>100003</td><td>40,185.48 ns</td><td>81.8306 ns</td><td>72.5407 ns</td><td>19.3873 ns</td><td>40,191.22 ns</td><td>40,071.33 ns</td><td>40,142.59 ns</td><td>40,216.19 ns</td><td>40,332.23 ns</td><td>24,884.6</td><td>7.83</td><td>0.93</td><td>-</td><td>-</td><td>-</td><td>96 B</td>
+</tr><tr><td>MataddColOut</td><td>Core</td><td>100003</td><td>271,920.30 ns</td><td>2,036.6226 ns</td><td>1,805.4129 ns</td><td>482.5169 ns</td><td>271,196.07 ns</td><td>270,153.21 ns</td><td>270,761.24 ns</td><td>272,728.61 ns</td><td>276,126.84 ns</td><td>3,677.5</td><td>52.96</td><td>6.37</td><td>-</td><td>-</td><td>-</td><td>96 B</td>
+
+</tr></tbody></table>
+
+<h2 id="results">Results</h2>
+
+<p>So is there a difference between <code>for</code> loops and vectorized code?</p>
+
+<ul>
+<li>.NET <code>double</code> Vectors are approximately <strong>2x faster</strong> than <code>for</code>. But RyuJIT is actually quite smart and already uses vectorized operations:</li>
+</ul>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">vmovaps</span> <span class="no">xmm1</span><span class="p">,</span><span class="no">xmm0</span>
+<span class="nf">vmulsd</span>  <span class="no">xmm1</span><span class="p">,</span><span class="no">xmm1</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rdx</span><span class="err">+</span><span class="no">r9</span><span class="p">*</span><span class="mi">8</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">]</span>
+<span class="nf">vaddsd</span>  <span class="no">xmm1</span><span class="p">,</span><span class="no">xmm1</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">r9</span><span class="p">*</span><span class="mi">8</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">]</span>
+<span class="nf">vmovsd</span>  <span class="no">qword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">r9</span><span class="p">*</span><span class="mi">8</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">],</span><span class="no">xmm1</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p>Compare to similar code that Legacy JIT would generate for this function (e.g. <code>addsd</code> instead of <code>vaddsd</code>):</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">movapd</span>      <span class="no">xmm0</span><span class="p">,</span><span class="no">xmm1</span>  
+<span class="no">mulsd</span>       <span class="no">xmm0</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r10</span><span class="err">+</span><span class="no">r9</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">]</span>  
+<span class="no">addsd</span>       <span class="no">xmm0</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">r9</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">]</span>  
+<span class="no">movsd</span>       <span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">r9</span><span class="err">+</span><span class="mi">10</span><span class="no">h</span><span class="p">],</span><span class="no">xmm0</span>  </code></pre></td></tr></table>
+</div>
+</div>
+
+<p>And more efficient version with vectors:</p>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">vbroadcastsd</span> <span class="no">ymm0</span><span class="p">,</span><span class="no">xmm0</span>
+<span class="na">...</span>
+<span class="nf">vmulpd</span>  <span class="no">ymm1</span><span class="p">,</span><span class="no">ymm0</span><span class="p">,</span><span class="no">ymm1</span>
+<span class="nf">vmovupd</span> <span class="no">ymm2</span><span class="p">,</span><span class="no">ymmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r9</span><span class="p">]</span>
+<span class="nf">vaddpd</span>  <span class="no">ymm1</span><span class="p">,</span><span class="no">ymm1</span><span class="p">,</span><span class="no">ymm2</span>
+<span class="nf">vmovupd</span> <span class="no">ymmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rcx</span><span class="p">],</span><span class="no">ymm1</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<ul>
+<li><strong>MKL</strong> has some overhead or similar results on smaller arrays but better performance (up to 12x in this test) on large ones.
+One of the reasons is that MKL optimizes multiply-add operations even further by using an appropriate FMA instruction <code>vfmadd213sd</code>.
+More information about Advanced Vector Extensions (AVX) is available <a href="https://software.intel.com/en-us/articles/how-intel-avx2-improves-performance-on-server-applications">here</a>.</li>
+</ul>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">vmovsd</span>      <span class="no">xmm0</span><span class="p">,</span><span class="no">qword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">]</span>
+<span class="nf">add</span>         <span class="no">r8</span><span class="p">,</span><span class="no">r9</span>
+<span class="nf">vfmadd213sd</span> <span class="no">xmm0</span><span class="p">,</span><span class="no">xmm7</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rsi</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">]</span>
+<span class="nf">vmovlpd</span>     <span class="no">qword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rsi</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">],</span><span class="no">xmm0</span></code></pre></td></tr></table>
+</div>
+</div>
+
+<p><strong>Summing up</strong>, the performance improvements in .NET Core and modern RyuJIT are quite impressive and for smaller arrays are even competitive as compared to native MKL libraries.
+Simple <code>for</code> loops are transformed into vectorized instructions, even though explicitly vectorized code is still significantly faster.
+At the same time JIT doesn&rsquo;t perform all possible optimizations (yet?) as we&rsquo;ve seen with a specialized case of <code>fma</code> operation,
+and one has to be very careful when multiplying vectors by a factor, because it makes quite a difference.</p>
+
+<p>The tricks like casting numerical arrays to arrays of vectors and alignments not only simplify the code and make it more robust and clear,
+but also leverage mechanical sympathy. So let&rsquo;s start writing a bit more machine-friendly code and enjoy the results!</p>
+
+<table class="bmk">
+<thead><tr><th>Method</th><th>Job</th><th>N</th><th>   Mean</th><th>Error</th><th>StdDev</th><th>StdErr</th><th>    Min</th><th>     Q1</th><th> Median</th><th>     Q3</th><th>    Max</th><th>   Op/s</th><th>Ratio</th><th>RatioSD</th><th>Gen 0/1k Op</th><th>Gen 1/1k Op</th><th>Gen 2/1k Op</th><th>Allocated Memory/Op</th>
+</tr></tr><tr><td>For</td><td>Core</td><td>4</td><td>3.727 ns</td><td>0.0384 ns</td><td>0.0359 ns</td><td>0.0093 ns</td><td>3.682 ns</td><td>3.707 ns</td><td>3.718 ns</td><td>3.751 ns</td><td>3.800 ns</td><td>268,323,787.9</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Vector</td><td>Core</td><td>4</td><td>2.363 ns</td><td>0.0137 ns</td><td>0.0121 ns</td><td>0.0032 ns</td><td>2.343 ns</td><td>2.356 ns</td><td>2.364 ns</td><td>2.366 ns</td><td>2.387 ns</td><td>423,166,784.1</td><td>0.63</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>VectorSpans</td><td>Core</td><td>4</td><td>2.437 ns</td><td>0.0111 ns</td><td>0.0098 ns</td><td>0.0026 ns</td><td>2.420 ns</td><td>2.431 ns</td><td>2.435 ns</td><td>2.444 ns</td><td>2.458 ns</td><td>410,359,292.0</td><td>0.65</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Axpy</td><td>Core</td><td>4</td><td>23.044 ns</td><td>0.0560 ns</td><td>0.0496 ns</td><td>0.0133 ns</td><td>22.958 ns</td><td>23.014 ns</td><td>23.036 ns</td><td>23.071 ns</td><td>23.140 ns</td><td>43,394,548.5</td><td>6.19</td><td>0.06</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>For</td><td>Core</td><td>103</td><td>69.797 ns</td><td>0.1113 ns</td><td>0.1041 ns</td><td>0.0269 ns</td><td>69.611 ns</td><td>69.729 ns</td><td>69.780 ns</td><td>69.865 ns</td><td>70.045 ns</td><td>14,327,201.8</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Vector</td><td>Core</td><td>103</td><td>30.588 ns</td><td>0.1315 ns</td><td>0.1230 ns</td><td>0.0318 ns</td><td>30.453 ns</td><td>30.512 ns</td><td>30.534 ns</td><td>30.679 ns</td><td>30.866 ns</td><td>32,692,121.7</td><td>0.44</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>VectorSpans</td><td>Core</td><td>103</td><td>26.251 ns</td><td>0.0343 ns</td><td>0.0286 ns</td><td>0.0079 ns</td><td>26.193 ns</td><td>26.245 ns</td><td>26.249 ns</td><td>26.268 ns</td><td>26.310 ns</td><td>38,094,025.8</td><td>0.38</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Axpy</td><td>Core</td><td>103</td><td>26.805 ns</td><td>0.0638 ns</td><td>0.0533 ns</td><td>0.0148 ns</td><td>26.701 ns</td><td>26.783 ns</td><td>26.803 ns</td><td>26.831 ns</td><td>26.910 ns</td><td>37,305,908.8</td><td>0.38</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>For</td><td>Core</td><td>1003</td><td>614.265 ns</td><td>1.9209 ns</td><td>1.6041 ns</td><td>0.4449 ns</td><td>612.373 ns</td><td>612.876 ns</td><td>614.061 ns</td><td>615.123 ns</td><td>618.375 ns</td><td>1,627,963.2</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Vector</td><td>Core</td><td>1003</td><td>255.404 ns</td><td>0.4940 ns</td><td>0.4621 ns</td><td>0.1193 ns</td><td>254.778 ns</td><td>255.094 ns</td><td>255.329 ns</td><td>255.930 ns</td><td>256.335 ns</td><td>3,915,359.8</td><td>0.42</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>VectorSpans</td><td>Core</td><td>1003</td><td>210.470 ns</td><td>0.3816 ns</td><td>0.3382 ns</td><td>0.0904 ns</td><td>209.864 ns</td><td>210.221 ns</td><td>210.446 ns</td><td>210.580 ns</td><td>211.158 ns</td><td>4,751,267.2</td><td>0.34</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Axpy</td><td>Core</td><td>1003</td><td>110.691 ns</td><td>0.2618 ns</td><td>0.2186 ns</td><td>0.0606 ns</td><td>110.399 ns</td><td>110.473 ns</td><td>110.689 ns</td><td>110.879 ns</td><td>110.996 ns</td><td>9,034,150.3</td><td>0.18</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>For</td><td>Core</td><td>100003</td><td>60,780.472 ns</td><td>148.1639 ns</td><td>131.3434 ns</td><td>35.1030 ns</td><td>60,565.275 ns</td><td>60,668.842 ns</td><td>60,819.284 ns</td><td>60,897.133 ns</td><td>60,966.039 ns</td><td>16,452.7</td><td>1.00</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Vector</td><td>Core</td><td>100003</td><td>31,056.083 ns</td><td>164.5393 ns</td><td>145.8598 ns</td><td>38.9827 ns</td><td>30,897.109 ns</td><td>30,965.186 ns</td><td>30,998.533 ns</td><td>31,125.262 ns</td><td>31,459.747 ns</td><td>32,199.8</td><td>0.51</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>VectorSpans</td><td>Core</td><td>100003</td><td>32,314.710 ns</td><td>151.4383 ns</td><td>141.6555 ns</td><td>36.5753 ns</td><td>32,134.773 ns</td><td>32,228.085 ns</td><td>32,260.626 ns</td><td>32,414.202 ns</td><td>32,587.829 ns</td><td>30,945.7</td><td>0.53</td><td>0.00</td><td>-</td><td>-</td><td>-</td><td>-</td>
+</tr><tr><td>Axpy</td><td>Core</td><td>100003</td><td>5,178.782 ns</td><td>103.2439 ns</td><td>241.3293 ns</td><td>29.9332 ns</td><td>4,488.865 ns</td><td>5,050.068 ns</td><td>5,193.735 ns</td><td>5,336.972 ns</td><td>5,628.889 ns</td><td>193,095.6</td><td>0.08</td><td>0.01</td><td>-</td><td>-</td><td>-</td><td>-</td>
+
+</tr></tbody></table>
+
+<h2 id="links">Links</h2>
+
+<ol>
+<li><a href="https://github.com/luajalla/Experimental">Sources and benchmark results</a></li>
+<li><a href="https://benchmarkdotnet.org/index.html">BenchmarkDotNet</a> and its <a href="https://benchmarkdotnet.org/articles/features/disassembler.html">DisassemblyDiagnoser</a></li>
+<li><a href="https://adamsitnik.com/Span/">Span</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/standard/numerics">SIMD-enabled types</a></li>
+<li><a href="https://instil.co/2016/03/21/parallelism-on-a-single-core-simd-with-c/">SIMD in C#</a></li>
+<li><a href="https://blogs.msdn.microsoft.com/dotnet/2018/10/10/using-net-hardware-intrinsics-api-to-accelerate-machine-learning-scenarios/">Using .NET hardware intrinsics API to accelerate Machine Learning scenarios</a></li>
+<li><a href="https://software.intel.com/en-us/mkl-developer-reference-c-blas-and-sparse-blas-routines">BLAS routines</a></li>
+<li><a href="https://software.intel.com/en-us/articles/how-intel-avx2-improves-performance-on-server-applications">Intel AVX2</a></li>
+<li><a href="https://docs.nvidia.com/cuda/floating-point/index.html#fused-multiply-add-fma">FMAs in CUDA C</a></li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Natallie</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-02-12</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/.net-core/">.net core</a>
+          <a href="/tags/performance/">performance</a>
+          <a href="/tags/mkl/">mkl</a>
+          <a href="/tags/fsharp/">fsharp</a>
+          <a href="/tags/vectors/">vectors</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/how-to-name-a-cat/">
+            <span class="next-text nav-default">How to Name a Cat</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    (function() {
+      
+      
+      if (window.location.hostname === 'localhost') return;
+
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      var disqus_shortname = 'typenat';
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:lu-a-jalla@ya.ru" class="iconfont icon-email" title="email"></a>
+      <a href="https://twitter.com/lu_a_jalla" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="https://linkedin.com/in/natallieb" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="https://github.com/luajalla" class="iconfont icon-github" title="github"></a>
+  <a href="http://type-nat.ch/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2013 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Natallie</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
