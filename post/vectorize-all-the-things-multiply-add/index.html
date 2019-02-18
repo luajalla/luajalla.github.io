@@ -45,7 +45,7 @@ As someone who believes in mechanical sympathy I&amp;rsquo;d like to share some 
 As someone who believes in mechanical sympathy I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations. And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://type-nat.ch/post/vectorize-all-the-things-multiply-add/" /><meta property="article:published_time" content="2019-02-12T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-02-12T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-02-18T00:00:00&#43;00:00"/>
 
 <meta itemprop="name" content="Vectorize All the Things: Multiply-Add">
 <meta itemprop="description" content="The rise of Machine Learning is bringing the fashion for numerical tricks and hardware acceleration back. And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, it&rsquo;s time to reboot this blog.
@@ -53,7 +53,7 @@ As someone who believes in mechanical sympathy I&rsquo;d like to share some of t
 
 
 <meta itemprop="datePublished" content="2019-02-12T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-02-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-02-18T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="2768">
 
 
@@ -172,6 +172,11 @@ And now that I&rsquo;ve completed my bacterial DNA counting adventures at ETHZ, 
 <p>As someone who believes in <a href="https://mechanical-sympathy.blogspot.com/2011/07/why-mechanical-sympathy.html">mechanical sympathy</a>
 I&rsquo;d like to share some of the experiments in vectorizing simple-yet-fundamental operations.
 And if you have some insights how to beat the benchmarks below, I&rsquo;d gladly accept them and extend the list.</p>
+
+<div class="admonition info">
+  <p>Update 2019-02-18. Correction: <code>vmulsd</code> is a scalar and not vectorized instruction. Thanks Mårten!</p>
+
+</div>
 
 <p>After working for some time with not the most recent .NET Framework I couldn&rsquo;t wait to check out .NET Core and all performance goodies that come with it.
 For benchmarking I highly recommend <a href="https://benchmarkdotnet.org/index.html">BenchmarkDotNet</a>, it&rsquo;s an amazing tool that will take the best care of your benchmarking needs.</p>
@@ -630,7 +635,7 @@ it&rsquo;s here for clarity reasons. The better solution is to use integers, but
 <p>So is there a difference between <code>for</code> loops and vectorized code?</p>
 
 <ul>
-<li>.NET <code>double</code> Vectors are approximately <strong>2x faster</strong> than <code>for</code>. But RyuJIT is actually quite smart and already uses vectorized operations:</li>
+<li>.NET <code>double</code> Vectors are approximately <strong>2x faster</strong> than <code>for</code>. So what kind of instructions does RyuJIT use in the loops?</li>
 </ul>
 
 <div class="highlight"><div class="chroma">
@@ -648,7 +653,7 @@ it&rsquo;s here for clarity reasons. The better solution is to use integers, but
 </div>
 </div>
 
-<p>Compare to similar code that Legacy JIT would generate for this function (e.g. <code>addsd</code> instead of <code>vaddsd</code>):</p>
+<p>Compare to similar code that Legacy JIT would generate for this function (e.g. SSE instruction <code>addsd</code> vs AVX <code>vaddsd</code>):</p>
 
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -665,7 +670,7 @@ it&rsquo;s here for clarity reasons. The better solution is to use integers, but
 </div>
 </div>
 
-<p>And more efficient version with vectors:</p>
+<p>And more efficient version with vectors (note <code>pd</code> in the names):</p>
 
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -688,27 +693,21 @@ it&rsquo;s here for clarity reasons. The better solution is to use integers, but
 
 <ul>
 <li><strong>MKL</strong> has some overhead or similar results on smaller arrays but better performance (up to 12x in this test) on large ones.
-One of the reasons is that MKL optimizes multiply-add operations even further by using an appropriate FMA instruction <code>vfmadd213sd</code>.
+One of the reasons is that MKL optimizes multiply-add operations even further by using an appropriate FMA instruction <code>vfmadd213pd</code>.
 More information about Advanced Vector Extensions (AVX) is available <a href="https://software.intel.com/en-us/articles/how-intel-avx2-improves-performance-on-server-applications">here</a>.</li>
 </ul>
 
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-asm" data-lang="asm"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">vmovsd</span>      <span class="no">xmm0</span><span class="p">,</span><span class="no">qword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">r8</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">]</span>
-<span class="nf">add</span>         <span class="no">r8</span><span class="p">,</span><span class="no">r9</span>
-<span class="nf">vfmadd213sd</span> <span class="no">xmm0</span><span class="p">,</span><span class="no">xmm7</span><span class="p">,</span><span class="no">mmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rsi</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">]</span>
-<span class="nf">vmovlpd</span>     <span class="no">qword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rsi</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">],</span><span class="no">xmm0</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">vfmadd213pd</span> <span class="no">ymm0</span><span class="p">,</span><span class="no">ymm7</span><span class="p">,</span><span class="no">ymmword</span> <span class="no">ptr</span> <span class="p">[</span><span class="no">rsi</span><span class="err">+</span><span class="no">FFFFFFFFFFFFFF00h</span><span class="p">]</span></code></pre></td></tr></table>
 </div>
 </div>
 
 <p><strong>Summing up</strong>, the performance improvements in .NET Core and modern RyuJIT are quite impressive and for smaller arrays are even competitive as compared to native MKL libraries.
-Simple <code>for</code> loops are transformed into vectorized instructions, even though explicitly vectorized code is still significantly faster.
+Using vectorized instructions helps to make the code significantly faster.
 At the same time JIT doesn&rsquo;t perform all possible optimizations (yet?) as we&rsquo;ve seen with a specialized case of <code>fma</code> operation,
 and one has to be very careful when multiplying vectors by a factor, because it makes quite a difference.</p>
 
@@ -759,7 +758,7 @@ but also leverage mechanical sympathy. So let&rsquo;s start writing a bit more m
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
-    <span class="item-content">2019-02-12</span>
+    <span class="item-content">2019-02-18</span>
   </p>
   
   
